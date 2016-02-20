@@ -1,0 +1,24 @@
+{
+  "generator-jhipster": {
+    "baseName": "pia",
+    "packageName": "eu.ownyourdata.pia",
+    "packageFolder": "eu/ownyourdata/pia",
+    "authenticationType": "oauth2",
+    "hibernateCache": "ehcache",
+    "clusteredHttpSession": "no",
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "no",
+    "useSass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "enableTranslation": true,
+    "enableSocialSignIn": false,
+    "rememberMeKey": "d44a9db95bf95a0ac6149457e2701911319966b2",
+    "testFrameworks": [
+      "gatling"
+    ]
+  }
+}

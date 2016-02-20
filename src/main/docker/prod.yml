@@ -1,0 +1,10 @@
+pia-postgresql:
+  container_name: pia-postgresql
+  image: postgres:9.4.5
+  # volumes:
+  #   - ~/volumes/jhipster/pia/postgresql/:/var/lib/postgresql/
+  environment:
+    - POSTGRES_USER=pia
+    - POSTGRES_PASSWORD=
+  ports:
+    - "5432:5432"
