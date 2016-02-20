@@ -22,7 +22,7 @@ Developement Ribbon
     left: 0;
     border: 0;
     z-index: 1000;
-    background-image: url("../images/development_ribbon.png");
+    background-image: url("../images/alpha_ribbon.png");
     background-position: center center;
     background-repeat: no-repeat;
 }

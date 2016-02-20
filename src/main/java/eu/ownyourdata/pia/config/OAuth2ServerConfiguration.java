@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -17,15 +16,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.AuthorizationRequest;
-import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class OAuth2ServerConfiguration {
@@ -91,9 +89,17 @@ public class OAuth2ServerConfiguration {
         @Inject
         private JHipsterProperties jHipsterProperties;
 
+        @Inject
+        private ClientDetailsService clientDetailsService;
+
         @Bean
         public TokenStore tokenStore() {
             return new JdbcTokenStore(dataSource);
+        }
+
+        @Bean
+        public JdbcClientDetailsService jdbcClientDetailsService() {
+            return new JdbcClientDetailsService(dataSource);
         }
 
         @Inject
@@ -101,33 +107,11 @@ public class OAuth2ServerConfiguration {
         private AuthenticationManager authenticationManager;
 
         @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-                throws Exception {
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
             endpoints
-                    .tokenStore(tokenStore()).userApprovalHandler(new UserApprovalHandler(){
-
-                @Override
-                public boolean isApproved(AuthorizationRequest authorizationRequest, Authentication userAuthentication) {
-                    return true;
-                }
-
-                @Override
-                public AuthorizationRequest checkForPreApproval(AuthorizationRequest authorizationRequest, Authentication userAuthentication) {
-                    return authorizationRequest;
-                }
-
-                @Override
-                public AuthorizationRequest updateAfterApproval(AuthorizationRequest authorizationRequest, Authentication userAuthentication) {
-                    return authorizationRequest;
-                }
-
-                @Override
-                public Map<String, Object> getUserApprovalRequest(AuthorizationRequest authorizationRequest, Authentication userAuthentication) {
-                    return new HashMap<String,Object>();
-                }
-            })
-                    .authenticationManager(authenticationManager);
+                .tokenStore(tokenStore())
+                .authenticationManager(authenticationManager);
         }
 
         @Override
@@ -137,21 +121,13 @@ public class OAuth2ServerConfiguration {
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
-            clients
-                .inMemory()
-                .withClient(jHipsterProperties.getSecurity().getAuthentication().getOauth().getClientid())
-                .scopes("read", "write")
-                .authorities(AuthoritiesConstants.ADMIN, AuthoritiesConstants.USER)
-                .authorizedGrantTypes("password", "refresh_token", "authorization_code", "implicit")
-                .secret(jHipsterProperties.getSecurity().getAuthentication().getOauth().getSecret())
-                .accessTokenValiditySeconds(jHipsterProperties.getSecurity().getAuthentication().getOauth().getTokenValidityInSeconds())
-                .and()
-                .withClient("my_cool_plugin")
-                .authorizedGrantTypes("client_credentials")
-                .scopes("datatype.mood:read","datatype.notification:write")
-                .secret("secret");
-
+            clients.withClientDetails(jdbcClientDetailsService())
+                    .withClient(jHipsterProperties.getSecurity().getAuthentication().getOauth().getClientid())
+                    .scopes("read", "write")
+                    .authorities(AuthoritiesConstants.ADMIN, AuthoritiesConstants.USER)
+                    .authorizedGrantTypes("password", "refresh_token", "authorization_code", "implicit")
+                    .secret(jHipsterProperties.getSecurity().getAuthentication().getOauth().getSecret())
+                    .accessTokenValiditySeconds(jHipsterProperties.getSecurity().getAuthentication().getOauth().getTokenValidityInSeconds());
         }
     }
 }
