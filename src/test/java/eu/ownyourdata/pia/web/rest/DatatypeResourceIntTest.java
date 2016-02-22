@@ -3,17 +3,15 @@ package eu.ownyourdata.pia.web.rest;
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Datatype;
 import eu.ownyourdata.pia.repository.DatatypeRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,6 +24,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -124,7 +123,6 @@ public class DatatypeResourceIntTest {
         restDatatypeMockMvc.perform(get("/api/datatypes?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(datatype.getId().intValue())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
@@ -136,10 +134,9 @@ public class DatatypeResourceIntTest {
         datatypeRepository.saveAndFlush(datatype);
 
         // Get the datatype
-        restDatatypeMockMvc.perform(get("/api/datatypes/{id}", datatype.getId()))
+        restDatatypeMockMvc.perform(get("/api/datatypes/{name}", datatype.getName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(datatype.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
@@ -186,7 +183,7 @@ public class DatatypeResourceIntTest {
 		int databaseSizeBeforeDelete = datatypeRepository.findAll().size();
 
         // Get the datatype
-        restDatatypeMockMvc.perform(delete("/api/datatypes/{id}", datatype.getId())
+        restDatatypeMockMvc.perform(delete("/api/datatypes/{name}", datatype.getName())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

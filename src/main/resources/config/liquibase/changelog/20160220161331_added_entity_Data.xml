@@ -24,15 +24,15 @@
             <column name="value" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
-            <column name="type_id" type="bigint"/>
+
+            <column name="type_name" type="varchar(255)"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
-        <addForeignKeyConstraint baseColumnNames="type_id"
+
+        <addForeignKeyConstraint baseColumnNames="type_name"
                                  baseTableName="data"
-                                 constraintName="fk_data_type_id"
-                                 referencedColumnNames="id"
+                                 constraintName="fk_data_type_name"
+                                 referencedColumnNames="name"
                                  referencedTableName="datatype"/>
 
     </changeSet>

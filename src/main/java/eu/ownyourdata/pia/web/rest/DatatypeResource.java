@@ -6,7 +6,6 @@ import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +26,10 @@ import java.util.Optional;
 public class DatatypeResource {
 
     private final Logger log = LoggerFactory.getLogger(DatatypeResource.class);
-        
+
     @Inject
     private DatatypeRepository datatypeRepository;
-    
+
     /**
      * POST  /datatypes -> Create a new datatype.
      */
@@ -40,12 +39,10 @@ public class DatatypeResource {
     @Timed
     public ResponseEntity<Datatype> createDatatype(@Valid @RequestBody Datatype datatype) throws URISyntaxException {
         log.debug("REST request to save Datatype : {}", datatype);
-        if (datatype.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("datatype", "idexists", "A new datatype cannot already have an ID")).body(null);
-        }
+
         Datatype result = datatypeRepository.save(datatype);
-        return ResponseEntity.created(new URI("/api/datatypes/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("datatype", result.getId().toString()))
+        return ResponseEntity.created(new URI("/api/datatypes/" + result.getName()))
+            .headers(HeaderUtil.createEntityCreationAlert("datatype", result.getName()))
             .body(result);
     }
 
@@ -58,12 +55,10 @@ public class DatatypeResource {
     @Timed
     public ResponseEntity<Datatype> updateDatatype(@Valid @RequestBody Datatype datatype) throws URISyntaxException {
         log.debug("REST request to update Datatype : {}", datatype);
-        if (datatype.getId() == null) {
-            return createDatatype(datatype);
-        }
+
         Datatype result = datatypeRepository.save(datatype);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("datatype", datatype.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("datatype", datatype.getName()))
             .body(result);
     }
 
