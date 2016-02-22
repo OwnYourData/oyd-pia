@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.builders.JdbcClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -20,13 +21,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
 public class OAuth2ServerConfiguration {
@@ -97,17 +101,30 @@ public class OAuth2ServerConfiguration {
         @Inject
         private JHipsterProperties jHipsterProperties;
 
-        @Inject
-        private ClientDetailsService clientDetailsService;
-
         @Bean
         public TokenStore tokenStore() {
             return new JdbcTokenStore(dataSource);
         }
 
+
         @Bean
         public JdbcClientDetailsService jdbcClientDetailsService() throws Exception {
-            return new JdbcClientDetailsService(dataSource);
+            BaseClientDetails baseClientDetails = new BaseClientDetails();
+            baseClientDetails.setClientId(jHipsterProperties.getSecurity().getAuthentication().getOauth().getClientid());
+            baseClientDetails.setScope(Arrays.asList("read","write"));
+            baseClientDetails.setAuthorities(AuthorityUtils.createAuthorityList(AuthoritiesConstants.ADMIN, AuthoritiesConstants.USER));
+            baseClientDetails.setAuthorizedGrantTypes(Arrays.asList("password", "refresh_token", "authorization_code", "implicit"));
+            baseClientDetails.setClientSecret(jHipsterProperties.getSecurity().getAuthentication().getOauth().getSecret());
+            baseClientDetails.setAccessTokenValiditySeconds(jHipsterProperties.getSecurity().getAuthentication().getOauth().getTokenValidityInSeconds());
+
+
+            JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
+            try {
+                jdbcClientDetailsService.addClientDetails(baseClientDetails);
+            } catch(ClientAlreadyExistsException e) {
+                //ignore
+            }
+            return jdbcClientDetailsService;
         }
 
         @Inject
@@ -129,13 +146,7 @@ public class OAuth2ServerConfiguration {
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-           clients.withClientDetails(jdbcClientDetailsService()).inMemory()
-                    .withClient(jHipsterProperties.getSecurity().getAuthentication().getOauth().getClientid())
-                    .scopes("read", "write")
-                    .authorities(AuthoritiesConstants.ADMIN, AuthoritiesConstants.USER)
-                    .authorizedGrantTypes("password", "refresh_token", "authorization_code", "implicit")
-                    .secret(jHipsterProperties.getSecurity().getAuthentication().getOauth().getSecret())
-                    .accessTokenValiditySeconds(jHipsterProperties.getSecurity().getAuthentication().getOauth().getTokenValidityInSeconds());
+           clients.withClientDetails(jdbcClientDetailsService());
         }
     }
 }
