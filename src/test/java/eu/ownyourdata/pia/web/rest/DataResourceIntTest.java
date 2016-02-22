@@ -3,6 +3,8 @@ package eu.ownyourdata.pia.web.rest;
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Data;
 import eu.ownyourdata.pia.repository.DataRepository;
+import eu.ownyourdata.pia.web.rest.dto.DataDTO;
+import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +50,9 @@ public class DataResourceIntTest {
     private DataRepository dataRepository;
 
     @Inject
+    private DataMapper dataMapper;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -62,6 +67,7 @@ public class DataResourceIntTest {
         MockitoAnnotations.initMocks(this);
         DataResource dataResource = new DataResource();
         ReflectionTestUtils.setField(dataResource, "dataRepository", dataRepository);
+        ReflectionTestUtils.setField(dataResource, "dataMapper", dataMapper);
         this.restDataMockMvc = MockMvcBuilders.standaloneSetup(dataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -79,10 +85,11 @@ public class DataResourceIntTest {
         int databaseSizeBeforeCreate = dataRepository.findAll().size();
 
         // Create the Data
+        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(data)))
+                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the Data in the database
@@ -100,10 +107,11 @@ public class DataResourceIntTest {
         data.setValue(null);
 
         // Create the Data, which fails.
+        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(data)))
+                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
                 .andExpect(status().isBadRequest());
 
         List<Data> datas = dataRepository.findAll();
@@ -156,10 +164,11 @@ public class DataResourceIntTest {
 
         // Update the data
         data.setValue(UPDATED_VALUE);
+        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
 
         restDataMockMvc.perform(put("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(data)))
+                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
                 .andExpect(status().isOk());
 
         // Validate the Data in the database

@@ -4,8 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -23,9 +25,9 @@ public class Data implements Serializable {
     @NotNull
     @Column(name = "value", nullable = false)
     private String value;
-
+    
     @ManyToOne
-    @JoinColumn(name = "type_name")
+    @JoinColumn(name = "type_id")
     private Datatype type;
 
     public Long getId() {
@@ -39,7 +41,7 @@ public class Data implements Serializable {
     public String getValue() {
         return value;
     }
-
+    
     public void setValue(String value) {
         this.value = value;
     }

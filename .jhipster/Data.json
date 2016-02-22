@@ -18,8 +18,8 @@
             ]
         }
     ],
-    "changelogDate": "20160220161331",
-    "dto": "no",
+    "changelogDate": "20160222215747",
+    "dto": "mapstruct",
     "service": "no",
     "pagination": "infinite-scroll"
 }

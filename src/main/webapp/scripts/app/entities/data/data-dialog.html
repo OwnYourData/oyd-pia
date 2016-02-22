@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label translate="piaApp.data.type" for="field_type">type</label>
-            <select class="form-control" id="field_type" name="type" ng-model="data.type" ng-options="datatype as datatype.name for datatype in datatypes track by datatype.id">
+            <select class="form-control" id="field_type" name="type" ng-model="data.typeId" ng-options="datatype.id as datatype.name for datatype in datatypes">
                 <option value=""></option>
             </select>
         </div>
