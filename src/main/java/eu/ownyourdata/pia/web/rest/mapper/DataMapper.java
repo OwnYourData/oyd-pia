@@ -7,6 +7,7 @@ import eu.ownyourdata.pia.web.rest.dto.DataDTO;
 import org.mapstruct.*;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * Mapper for the entity Data and its DTO DataDTO.
@@ -25,8 +26,25 @@ public abstract class DataMapper {
         Data result = new Data();
         result.setId(dataDTO.getId());
         result.setValue(dataDTO.getValue());
-        result.setType(datatypeRepository.findOneByName(dataDTO.getType()).get());
+
+        setDatatype(result, dataDTO.getType());
 
         return result;
+    }
+
+    private void setDatatype(Data result, String type) {
+        Optional<Datatype> datatype = datatypeRepository.findOneByName(type);
+        if (datatype.isPresent()) {
+            result.setType(datatype.get());
+        } else {
+            result.setType(createDatatype(type));
+        }
+    }
+
+    private Datatype createDatatype(String type) {
+        Datatype newDatatype = new Datatype();
+        newDatatype.setName(type);
+
+        return datatypeRepository.save(newDatatype);
     }
 }
