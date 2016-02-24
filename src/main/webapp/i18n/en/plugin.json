@@ -1,0 +1,9 @@
+{
+    "piaApp": {
+        "plugin" : {
+            "home": {
+                "title": "Plugins"
+            }
+        }
+    }
+}

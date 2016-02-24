@@ -18,10 +18,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import java.util.*;
 import javax.inject.Inject;
 import javax.servlet.*;
+import java.util.Arrays;
+import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -140,6 +142,15 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         }
         return new CorsFilter(source);
     }
+
+    /*
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(100000000);
+        return resolver;
+    }
+    */
 
     /**
      * Initializes H2 console

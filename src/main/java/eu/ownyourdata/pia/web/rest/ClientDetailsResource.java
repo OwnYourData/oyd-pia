@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,12 +60,20 @@ public class ClientDetailsResource {
     @Timed
     public ResponseEntity<ClientDetails> createClientDetail(@Valid @RequestBody BaseClientDetails clientDetails) throws URISyntaxException {
         log.debug("REST request to save ClientDetails : {}", clientDetails);
-        clientRegistrationService.addClientDetails(clientDetails);
+        BaseClientDetails baseClientDetails = new BaseClientDetails();
+        baseClientDetails.setClientId(clientDetails.getClientId());
+        baseClientDetails.setClientSecret(clientDetails.getClientSecret());
+        baseClientDetails.setScope(clientDetails.getScope());
+        baseClientDetails.setRefreshTokenValiditySeconds(3600);
+        baseClientDetails.setAccessTokenValiditySeconds(3600);
+        baseClientDetails.setAuthorizedGrantTypes(Collections.singleton("client_credentials"));
+
+        clientRegistrationService.addClientDetails(baseClientDetails);
 
 
-        return ResponseEntity.created(new URI("/api/clientdetails/" + clientDetails.getClientId()))
-            .headers(HeaderUtil.createEntityCreationAlert("clientdetails", clientDetails.getClientId()))
-            .body(clientDetails);
+        return ResponseEntity.created(new URI("/api/clientdetails/" + baseClientDetails.getClientId()))
+            .headers(HeaderUtil.createEntityCreationAlert("clientdetails", baseClientDetails.getClientId()))
+            .body(baseClientDetails);
     }
 
     /*
