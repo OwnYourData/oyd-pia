@@ -3,10 +3,10 @@ package eu.ownyourdata.pia.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.Data;
 import eu.ownyourdata.pia.repository.DataRepository;
+import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
-import eu.ownyourdata.pia.web.rest.dto.DataDTO;
-import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,13 +35,13 @@ import java.util.stream.Collectors;
 public class DataResource {
 
     private final Logger log = LoggerFactory.getLogger(DataResource.class);
-        
+
     @Inject
     private DataRepository dataRepository;
-    
+
     @Inject
     private DataMapper dataMapper;
-    
+
     /**
      * POST  /datas -> Create a new data.
      */
@@ -49,16 +49,16 @@ public class DataResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<DataDTO> createData(@Valid @RequestBody DataDTO dataDTO) throws URISyntaxException {
-        log.debug("REST request to save Data : {}", dataDTO);
-        if (dataDTO.getId() != null) {
+    public ResponseEntity<JSONObject> createData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
+        log.debug("REST request to save Data : {}", json);
+        if (!json.optString("id").equals("")) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("data", "idexists", "A new data cannot already have an ID")).body(null);
         }
-        Data data = dataMapper.dataDTOToData(dataDTO);
+        Data data = dataMapper.jsonToData(json);
         data = dataRepository.save(data);
-        DataDTO result = dataMapper.dataToDataDTO(data);
-        return ResponseEntity.created(new URI("/api/datas/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("data", result.getId().toString()))
+        JSONObject result = dataMapper.dataToJson(data);
+        return ResponseEntity.created(new URI("/api/datas/" + result.optString("id")))
+            .headers(HeaderUtil.createEntityCreationAlert("data", result.optString("id")))
             .body(result);
     }
 
@@ -69,16 +69,16 @@ public class DataResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<DataDTO> updateData(@Valid @RequestBody DataDTO dataDTO) throws URISyntaxException {
-        log.debug("REST request to update Data : {}", dataDTO);
-        if (dataDTO.getId() == null) {
-            return createData(dataDTO);
+    public ResponseEntity<JSONObject> updateData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
+        log.debug("REST request to update Data : {}", json);
+        if (json.optString("id").equals("")) {
+            return createData(json);
         }
-        Data data = dataMapper.dataDTOToData(dataDTO);
+        Data data = dataMapper.jsonToData(json);
         data = dataRepository.save(data);
-        DataDTO result = dataMapper.dataToDataDTO(data);
+        JSONObject result = dataMapper.dataToJson(data);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("data", dataDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("data", result.optString("id")))
             .body(result);
     }
 
@@ -90,13 +90,13 @@ public class DataResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<DataDTO>> getAllDatas(Pageable pageable)
+    public ResponseEntity<List<JSONObject>> getAllDatas(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Datas");
-        Page<Data> page = dataRepository.findAll(pageable); 
+        Page<Data> page = dataRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/datas");
         return new ResponseEntity<>(page.getContent().stream()
-            .map(dataMapper::dataToDataDTO)
+            .map(e -> dataMapper.dataToJson(e))
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
     }
 
@@ -107,10 +107,10 @@ public class DataResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<DataDTO> getData(@PathVariable Long id) {
+    public ResponseEntity<JSONObject> getData(@PathVariable Long id) {
         log.debug("REST request to get Data : {}", id);
         Data data = dataRepository.findOne(id);
-        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
+        JSONObject dataDTO = dataMapper.dataToJson(data);
         return Optional.ofNullable(dataDTO)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -1,10 +1,11 @@
 package eu.ownyourdata.pia.web.rest.mapper;
 
-import eu.ownyourdata.pia.domain.*;
+import eu.ownyourdata.pia.domain.Data;
+import eu.ownyourdata.pia.domain.Datatype;
 import eu.ownyourdata.pia.repository.DatatypeRepository;
-import eu.ownyourdata.pia.web.rest.dto.DataDTO;
-
-import org.mapstruct.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.mapstruct.Mapper;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -18,17 +19,27 @@ public abstract class DataMapper {
     @Inject
     private DatatypeRepository datatypeRepository;
 
-    @Mapping(source = "type.name", target = "type")
-    public abstract DataDTO dataToDataDTO(Data data);
+    public JSONObject dataToJson(Data data) {
+        try {
+            JSONObject result = new JSONObject(data.getValue());
+            result.put("id", data.getId());
+            result.put("type", data.getType().getName());
+            return result;
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    @Mapping(source = "typeId", target = "type")
-    public Data dataDTOToData(DataDTO dataDTO) {
+
+    public Data jsonToData(JSONObject json) {
         Data result = new Data();
-        result.setId(dataDTO.getId());
-        result.setValue(dataDTO.getValue());
+        result.setId(json.optLong("id"));
+        setDatatype(result, json.optString("type"));
 
-        setDatatype(result, dataDTO.getType());
+        json.remove("id");
+        json.remove("type");
 
+        result.setValue(json.toString());
         return result;
     }
 

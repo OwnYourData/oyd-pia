@@ -3,19 +3,17 @@ package eu.ownyourdata.pia.web.rest;
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Data;
 import eu.ownyourdata.pia.repository.DataRepository;
-import eu.ownyourdata.pia.web.rest.dto.DataDTO;
 import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
-
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -28,6 +26,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -85,7 +84,7 @@ public class DataResourceIntTest {
         int databaseSizeBeforeCreate = dataRepository.findAll().size();
 
         // Create the Data
-        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
+        JSONObject dataDTO = dataMapper.dataToJson(data);
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -107,7 +106,7 @@ public class DataResourceIntTest {
         data.setValue(null);
 
         // Create the Data, which fails.
-        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
+        JSONObject dataDTO = dataMapper.dataToJson(data);
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -164,7 +163,7 @@ public class DataResourceIntTest {
 
         // Update the data
         data.setValue(UPDATED_VALUE);
-        DataDTO dataDTO = dataMapper.dataToDataDTO(data);
+        JSONObject dataDTO = dataMapper.dataToJson(data);
 
         restDataMockMvc.perform(put("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
