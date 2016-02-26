@@ -2,7 +2,9 @@ package eu.ownyourdata.pia.web.rest;
 
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Data;
+import eu.ownyourdata.pia.domain.Datatype;
 import eu.ownyourdata.pia.repository.DataRepository;
+import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -42,11 +44,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class DataResourceIntTest {
 
-    private static final String DEFAULT_VALUE = "AAAAA";
-    private static final String UPDATED_VALUE = "BBBBB";
+    private static final String DEFAULT_VALUE = "{\"value\":5}";
+    private static final String UPDATED_VALUE = "{\"value\":8}";
 
     @Inject
     private DataRepository dataRepository;
+
+    @Inject
+    private DatatypeRepository datatypeRepository;
 
     @Inject
     private DataMapper dataMapper;
@@ -70,11 +75,18 @@ public class DataResourceIntTest {
         this.restDataMockMvc = MockMvcBuilders.standaloneSetup(dataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
+
+        Datatype datatype = new Datatype();
+        datatype.setName("testdata");
+
+        datatypeRepository.deleteAll();
+        datatypeRepository.save(datatype);
     }
 
     @Before
     public void initTest() {
         data = new Data();
+        data.setType(datatypeRepository.findOneByName("testdata").get());
         data.setValue(DEFAULT_VALUE);
     }
 
@@ -88,7 +100,7 @@ public class DataResourceIntTest {
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
+                .content(dataDTO.toString()))
                 .andExpect(status().isCreated());
 
         // Validate the Data in the database
@@ -103,14 +115,15 @@ public class DataResourceIntTest {
     public void checkValueIsRequired() throws Exception {
         int databaseSizeBeforeTest = dataRepository.findAll().size();
         // set the field null
-        data.setValue(null);
+        data.setType(null);
+
 
         // Create the Data, which fails.
         JSONObject dataDTO = dataMapper.dataToJson(data);
 
         restDataMockMvc.perform(post("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
+                .content(dataDTO.toString()))
                 .andExpect(status().isBadRequest());
 
         List<Data> datas = dataRepository.findAll();
@@ -128,7 +141,7 @@ public class DataResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(data.getId().intValue())))
-                .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
+                .andExpect(jsonPath("$.[*].value").value(hasItem(5)));
     }
 
     @Test
@@ -142,15 +155,7 @@ public class DataResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(data.getId().intValue()))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()));
-    }
-
-    @Test
-    @Transactional
-    public void getNonExistingData() throws Exception {
-        // Get the data
-        restDataMockMvc.perform(get("/api/datas/{id}", Long.MAX_VALUE))
-                .andExpect(status().isNotFound());
+            .andExpect(jsonPath("$.value").value(5));
     }
 
     @Test
@@ -167,7 +172,7 @@ public class DataResourceIntTest {
 
         restDataMockMvc.perform(put("/api/datas")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(dataDTO)))
+                .content(dataDTO.toString()))
                 .andExpect(status().isOk());
 
         // Validate the Data in the database

@@ -51,7 +51,7 @@ public class DataResource {
     @Timed
     public ResponseEntity<JSONObject> createData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
         log.debug("REST request to save Data : {}", json);
-        if (!json.optString("id").equals("")) {
+        if (!json.optString("id").equals("") || json.optString("type").equals("")) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("data", "idexists", "A new data cannot already have an ID")).body(null);
         }
         Data data = dataMapper.jsonToData(json);

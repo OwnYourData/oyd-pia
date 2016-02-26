@@ -23,7 +23,7 @@ public abstract class DataMapper {
         try {
             JSONObject result = new JSONObject(data.getValue());
             result.put("id", data.getId());
-            result.put("type", data.getType().getName());
+            result.put("type", data.getType() == null ? null : data.getType().getName());
             return result;
         } catch (JSONException e) {
             throw new RuntimeException(e);

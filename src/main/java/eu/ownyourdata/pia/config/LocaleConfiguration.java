@@ -50,6 +50,6 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/extension/**").addResourceLocations("file:extension/");
+          registry.addResourceHandler("/plugins/**").addResourceLocations("file:plugins/");
     }
 }

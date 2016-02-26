@@ -2,8 +2,8 @@
     <div>{{application.name}}</div>
     <div>Access:</div>
     <ul>
-        <li ng-repeat="(attribute, value) in application.permissions">
-            {{attribute}} ({{value}})
+        <li ng-repeat="permission in application.permissions">
+            {{permission}}
         </li>
     </ul>
 

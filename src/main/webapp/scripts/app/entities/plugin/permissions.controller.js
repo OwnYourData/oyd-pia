@@ -14,8 +14,8 @@ angular.module('piaApp').controller("PluginPermissionController", function ($sco
 
                     $.each(zip.files, function (index, zipEntry) {
                         var name = zipEntry.name;
-                        if(name.indexOf('permissions.json', name.length - 'permissions.json'.length) !== -1) {
-                            parsePermissions(zipEntry);
+                        if(name.indexOf('manifest.json', name.length - 'manifest.json'.length) !== -1) {
+                            parseManifest(zipEntry);
                         }
                         if(name.indexOf('schedules.json', name.length - 'schedules.json'.length) !== -1) {
                             parseSchedules(zipEntry);
@@ -30,7 +30,7 @@ angular.module('piaApp').controller("PluginPermissionController", function ($sco
         reader.readAsArrayBuffer(file);
     }
 
-    function parsePermissions(entry) {
+    function parseManifest(entry) {
         $scope.application = JSON.parse(entry.asText());
     }
 

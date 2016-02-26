@@ -1,6 +1,3 @@
-/**
- * Created by michael on 23.02.16.
- */
 'use strict';
 
 angular.module('piaApp')
@@ -27,4 +24,73 @@ angular.module('piaApp')
                     }]
                 }
             })
+            .state('plugin.detail', {
+                parent: 'entity',
+                url: '/plugin/{id}',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'piaApp.plugin.detail.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'scripts/app/entities/plugin/plugin-detail.html',
+                        controller: 'PluginDetailController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('plugin');
+                        return $translate.refresh();
+                    }],
+                    entity: ['$stateParams', 'Plugin', function($stateParams, Plugin) {
+                        return Plugin.get({id : $stateParams.id});
+                    }]
+                }
+            })
+            .state('plugin.edit', {
+                parent: 'plugin',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/plugin/plugin-dialog.html',
+                        controller: 'PluginDialogController',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['Plugin', function(Plugin) {
+                                return Plugin.get({id : $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('plugin', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            })
+            .state('plugin.delete', {
+                parent: 'plugin',
+                url: '/{id}/delete',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/plugin/plugin-delete-dialog.html',
+                        controller: 'PluginDeleteController',
+                        size: 'md',
+                        resolve: {
+                            entity: ['Plugin', function(Plugin) {
+                                return Plugin.get({id : $stateParams.id});
+                            }]
+                        }
+                    }).result.then(function(result) {
+                        $state.go('plugin', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
+            });
     });

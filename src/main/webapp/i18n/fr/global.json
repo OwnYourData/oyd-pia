@@ -9,6 +9,7 @@
                 "main": "Entités",
                 "datatype": "Datatype",
                 "data": "Data",
+                "plugin": "Plugin",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
