@@ -1,0 +1,15 @@
+<div class="ngdialog-content">
+    <div>{{application.name}}</div>
+    <div>Access:</div>
+    <ul>
+        <li ng-repeat="(attribute, value) in application.permissions">
+            {{attribute}} ({{value}})
+        </li>
+    </ul>
+
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm()">Grant</button>
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Deny
+        </button>
+    </div>
+</div>
