@@ -28,8 +28,7 @@ public class Plugin implements Serializable {
     @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
-    @NotNull
-    @Column(name = "path", nullable = false)
+    @Column(name = "path", nullable = true)
     private String path;
 
     public Long getId() {

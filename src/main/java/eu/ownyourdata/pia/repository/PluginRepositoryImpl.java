@@ -2,6 +2,7 @@ package eu.ownyourdata.pia.repository;
 
 import eu.ownyourdata.pia.domain.InvalidManifestException;
 import eu.ownyourdata.pia.domain.Manifest;
+import eu.ownyourdata.pia.domain.Plugin;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -37,18 +38,28 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
         return FileUtils.getFile(getPluginInstallPath(identifier)).exists();
     }
 
+
+
     @Override
-    public Manifest install(ZipFile zip) throws ManifestNotFoundException, PluginAlreadyInstalledException, InvalidManifestException, PluginInstallationException {
+    public Plugin install(ZipFile zip) throws ManifestNotFoundException, PluginAlreadyInstalledException, InvalidManifestException, PluginInstallationException {
         Manifest manifest = extractManifest(zip);
 
         verifyPluginNotInstalled(manifest);
 
-        install(zip,manifest);
-
-        return manifest;
+        return install(zip,manifest);
     }
 
-    private void install(ZipFile zip, Manifest manifest) throws PluginInstallationException {
+    @Override
+    public Plugin uninstall(Plugin plugin) throws IOException {
+        File file = new File(plugin.getPath());
+        if (!file.isAbsolute()) {
+            FileUtils.deleteDirectory(file);
+        }
+
+        return plugin;
+    }
+
+    private Plugin install(ZipFile zip, Manifest manifest) throws PluginInstallationException {
         String pluginIdentifier = manifest.getIdentifier();
         try {
             String installPath = getPluginInstallPath(pluginIdentifier);
@@ -67,6 +78,15 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
                     FileUtils.forceMkdir(new File(filePath));
                 }
             }
+
+            Plugin plugin = new Plugin();
+
+            plugin.setIdentifier(pluginIdentifier);
+            plugin.setName(pluginIdentifier);
+            plugin.setPath(installPath);
+
+            return plugin;
+
         } catch (IOException exception) {
             throw new PluginInstallationException("Could not install plugin " + pluginIdentifier, exception);
         } finally {
@@ -115,8 +135,8 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     }
 
     @Override
-    public void activate(String identifier) throws InvalidManifestException, PluginActivationException {
-        String pluginInstallPath = getPluginInstallPath(identifier);
+    public Plugin activate(Plugin plugin) throws InvalidManifestException, PluginActivationException {
+        String pluginInstallPath = plugin.getPath();
         try {
             Manifest manifest = new Manifest(FileUtils.readFileToString(new File(concat(pluginInstallPath,"manifest.json"))));
 
@@ -124,10 +144,17 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             clientRegistrationService.addClientDetails(clientDetails);
 
             writePluginClientCredentials(clientDetails,pluginInstallPath);
-
+            return plugin;
         } catch (IOException e) {
             throw new PluginActivationException(e);
         }
+    }
+
+    @Override
+    public Plugin deactivate(Plugin plugin) {
+        clientRegistrationService.removeClientDetails(plugin.getIdentifier());
+
+        return plugin;
     }
 
     private void writePluginClientCredentials(BaseClientDetails clientDetails, String pluginInstallPath) throws IOException {
@@ -136,7 +163,10 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             json.put("client_id", clientDetails.getClientId());
             json.put("client_secret", clientDetails.getClientSecret());
 
-            FileUtils.writeStringToFile(new File(FilenameUtils.concat(pluginInstallPath,"credentials.json")),json.toString());
+            File credentials = new File(FilenameUtils.concat(pluginInstallPath, "credentials.json"));
+
+            FileUtils.deleteQuietly(credentials);
+            FileUtils.writeStringToFile(credentials,json.toString());
         } catch (JSONException e) {
             assert(false);
         }

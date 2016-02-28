@@ -54,6 +54,7 @@ angular.module('piaApp')
                         data: {'file': file, 'name': 'plugin'}
                     }).then(function (resp) {
                         console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                        $state.go('plugin', null, { reload: true });
                     }, function (resp) {
                         console.log('Error status: ' + resp.status);
                         console.log(resp);
@@ -63,7 +64,7 @@ angular.module('piaApp')
                     });
                 }, function (error) {
                     console.log('Modal promise rejected. Reason: ', error);
-                    $scope.file = null;
+
                 });
             }
         };

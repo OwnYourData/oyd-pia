@@ -2,9 +2,10 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.InvalidManifestException;
-import eu.ownyourdata.pia.domain.Manifest;
 import eu.ownyourdata.pia.domain.Plugin;
 import eu.ownyourdata.pia.repository.*;
+import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
+import eu.ownyourdata.pia.web.rest.mapper.PluginMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
 import eu.ownyourdata.pia.web.utils.Files;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Plugin.
@@ -37,6 +39,9 @@ public class PluginResource {
     private final Logger log = LoggerFactory.getLogger(PluginResource.class);
 
     private static final int BUFFER_SIZE = 4096;
+
+    @Inject
+    private PluginMapper pluginMapper;
 
     @Inject
     private PluginRepository pluginRepository;
@@ -52,27 +57,32 @@ public class PluginResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Plugin>> getAllPlugins(Pageable pageable)
-        throws URISyntaxException {
+    public ResponseEntity<List<PluginDTO>> getAllPlugins(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Plugins");
         Page<Plugin> page = pluginRepository.findAll(pageable);
+
+        List<PluginDTO> pluginDTOs = page.getContent().stream()
+            .map(plugin -> pluginMapper.pluginToPluginDTO(plugin))
+            .collect(Collectors.toList());
+
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/plugins");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(pluginDTOs, headers, HttpStatus.OK);
     }
 
     /**
      * GET  /plugins/:id -> get the "id" plugin.
      */
-    @RequestMapping(value = "/plugins/{id}",
+    @RequestMapping(value = "/plugins/{id:.+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Plugin> getPlugin(@PathVariable Long id) {
+    public ResponseEntity<PluginDTO> getPlugin(@PathVariable Long id) {
         log.debug("REST request to get Plugin : {}", id);
         Plugin plugin = pluginRepository.findOne(id);
         return Optional.ofNullable(plugin)
             .map(result -> new ResponseEntity<>(
-                result,
+                pluginMapper.pluginToPluginDTO(result),
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -86,16 +96,29 @@ public class PluginResource {
     @Timed
     public ResponseEntity<Void> deletePlugin(@PathVariable Long id) {
         log.debug("REST request to delete Plugin : {}", id);
-        pluginRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("plugin", id.toString())).build();
+        Plugin plugin = pluginRepository.findOne(id);
+
+        if (plugin != null) {
+            try {
+                pluginRepository.deactivate(plugin);
+                pluginRepository.uninstall(plugin);
+                pluginRepository.delete(id);
+                return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("plugin", id.toString())).build();
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST, value = "/plugins/upload")
     public void upload(@RequestPart("name") String name, @RequestPart("file") MultipartFile file) throws IOException, JSONException {
         try {
-            Manifest manifest = pluginRepository.install(Files.toZipFile(file));
-            pluginRepository.activate(manifest.getIdentifier());
+            Plugin plugin = pluginRepository.install(Files.toZipFile(file));
+            pluginRepository.activate(plugin);
+            pluginRepository.save(plugin);
         } catch (ManifestNotFoundException e) {
             e.printStackTrace();
         } catch (PluginAlreadyInstalledException e) {

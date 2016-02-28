@@ -3,7 +3,7 @@
         "plugin" : {
             "home": {
                 "title": "Plugins",
-                "createLabel": "Create a new Plugin",
+                "createLabel": "Upload a new Plugin",
                 "createOrEditLabel": "Create or edit a Plugin",
                 "search": "Search for Plugin"
             },
