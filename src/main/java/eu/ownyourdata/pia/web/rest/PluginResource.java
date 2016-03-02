@@ -18,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,16 +37,11 @@ public class PluginResource {
 
     private final Logger log = LoggerFactory.getLogger(PluginResource.class);
 
-    private static final int BUFFER_SIZE = 4096;
-
     @Inject
     private PluginMapper pluginMapper;
 
     @Inject
     private PluginRepository pluginRepository;
-
-    @Inject
-    private ClientRegistrationService clientRegistrationService;
 
 
     /**

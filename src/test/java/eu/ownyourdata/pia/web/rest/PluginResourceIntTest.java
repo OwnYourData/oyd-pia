@@ -3,6 +3,7 @@ package eu.ownyourdata.pia.web.rest;
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Plugin;
 import eu.ownyourdata.pia.repository.PluginRepository;
+import eu.ownyourdata.pia.web.rest.mapper.PluginMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,9 @@ public class PluginResourceIntTest {
     private PluginRepository pluginRepository;
 
     @Inject
+    private PluginMapper pluginMapper;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -65,6 +69,8 @@ public class PluginResourceIntTest {
         MockitoAnnotations.initMocks(this);
         PluginResource pluginResource = new PluginResource();
         ReflectionTestUtils.setField(pluginResource, "pluginRepository", pluginRepository);
+        ReflectionTestUtils.setField(pluginResource,"pluginMapper", pluginMapper);
+
         this.restPluginMockMvc = MockMvcBuilders.standaloneSetup(pluginResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -86,7 +92,7 @@ public class PluginResourceIntTest {
         pluginRepository.saveAndFlush(plugin);
 
         // Get all the plugins
-        restPluginMockMvc.perform(get("/api/plugins?sort=id,desc"))
+        restPluginMockMvc.perform(get("/api/plugins"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(plugin.getId().intValue())))

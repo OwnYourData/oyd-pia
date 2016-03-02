@@ -10,6 +10,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
+import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
 import javax.inject.Inject;
@@ -152,8 +153,11 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     @Override
     public Plugin deactivate(Plugin plugin) {
-        clientRegistrationService.removeClientDetails(plugin.getIdentifier());
-
+        try {
+            clientRegistrationService.removeClientDetails(plugin.getIdentifier());
+        } catch (NoSuchClientException exception) {
+            // ignore, remove silently
+        }
         return plugin;
     }
 
