@@ -49,6 +49,7 @@ public class DataResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @CrossOrigin
     public ResponseEntity<JSONObject> createData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
         log.debug("REST request to save Data : {}", json);
         if (!json.optString("id").equals("") || json.optString("type").equals("")) {

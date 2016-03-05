@@ -143,15 +143,6 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         return new CorsFilter(source);
     }
 
-    /*
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSize(100000000);
-        return resolver;
-    }
-    */
-
     /**
      * Initializes H2 console
      */
