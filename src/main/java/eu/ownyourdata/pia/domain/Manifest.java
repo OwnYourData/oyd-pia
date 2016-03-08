@@ -18,6 +18,10 @@ public class Manifest {
 
     private String json;
 
+    private Environment environment;
+
+    private String command;
+
     private List<String> permissions = new ArrayList<>();
 
     public Manifest(String json) throws InvalidManifestException {
@@ -33,6 +37,8 @@ public class Manifest {
                     this.permissions.add(permissions.getString(i));
                 }
             }
+            environment = Environment.valueOf(jsonObject.optString("environment").toUpperCase());
+            command = jsonObject.optString("command");
         } catch (JSONException e) {
             throw new InvalidManifestException(e);
         }
@@ -55,6 +61,17 @@ public class Manifest {
     }
 
     public boolean isValid() {
-        return StringUtils.isNotBlank(identifier);
+        return
+            StringUtils.isNotBlank(identifier)
+            && StringUtils.isNotBlank(command)
+            && environment != null;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

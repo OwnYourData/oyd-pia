@@ -12,7 +12,7 @@ import java.util.Objects;
  * A Datatype.
  */
 @Entity
-@Table(name = "datatype", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+@Table(name = "datatype")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Datatype implements Serializable {
 

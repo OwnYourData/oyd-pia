@@ -1,6 +1,7 @@
 package eu.ownyourdata.pia.web.rest.mapper;
 
 import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.repository.ProcessRepository;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import org.mapstruct.Mapper;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -17,6 +18,9 @@ public abstract class PluginMapper {
     @Inject
     private ClientDetailsService clientDetailsService;
 
+    @Inject
+    private ProcessRepository processRepository;
+
     public PluginDTO pluginToPluginDTO(Plugin plugin) {
         if (plugin == null) {
             return null;
@@ -27,6 +31,7 @@ public abstract class PluginMapper {
         target.setIdentifier(plugin.getIdentifier());
         target.setName(plugin.getName());
         target.setPath(plugin.getPath());
+        target.setRunning(processRepository.isRunning(plugin));
 
         try {
             target.setPermissions(clientDetailsService.loadClientByClientId(target.getIdentifier()).getScope());

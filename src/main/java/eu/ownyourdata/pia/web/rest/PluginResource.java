@@ -43,6 +43,8 @@ public class PluginResource {
     @Inject
     private PluginRepository pluginRepository;
 
+    @Inject
+    private ProcessRepository processRepository;
 
     /**
      * GET  /plugins -> get all the plugins.
@@ -67,7 +69,7 @@ public class PluginResource {
     /**
      * GET  /plugins/:id -> get the "id" plugin.
      */
-    @RequestMapping(value = "/plugins/{id:.+}",
+    @RequestMapping(value = "/plugins/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -79,6 +81,41 @@ public class PluginResource {
                 pluginMapper.pluginToPluginDTO(result),
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /plugins/:id/start -> start the "id" plugin.
+     */
+    @RequestMapping(value = "/plugins/{id}/start",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> startPlugin(@PathVariable Long id) {
+        log.debug("REST request to start Plugin : {}", id);
+        Plugin plugin = pluginRepository.findOne(id);
+        try {
+            processRepository.create(plugin);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * GET  /plugins/:id/stop -> stop the "id" plugin.
+     */
+    @RequestMapping(value = "/plugins/{id}/stop",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> stopPlugin(@PathVariable Long id) {
+        log.debug("REST request to start Plugin : {}", id);
+        Plugin plugin = pluginRepository.findOne(id);
+        if (processRepository.stop(plugin)) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     /**

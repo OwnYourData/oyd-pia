@@ -85,6 +85,8 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             plugin.setIdentifier(pluginIdentifier);
             plugin.setName(pluginIdentifier);
             plugin.setPath(installPath);
+            plugin.setCommand(manifest.getCommand());
+            plugin.setEnvironment(manifest.getEnvironment());
 
             return plugin;
 
