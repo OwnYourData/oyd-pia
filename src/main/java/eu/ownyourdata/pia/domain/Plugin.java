@@ -25,7 +25,7 @@ public class Plugin implements Serializable {
     private String name;
 
     @NotNull
-    @Column(name = "identifier", nullable = false)
+    @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
     @Column(name = "path", nullable = true)
@@ -34,6 +34,7 @@ public class Plugin implements Serializable {
     @Column(name = "environment", nullable=false)
     @Enumerated(EnumType.STRING)
     private Environment environment;
+
 
     @Column(name = "command", nullable =false)
     private String command;

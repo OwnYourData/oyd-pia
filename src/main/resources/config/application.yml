@@ -15,7 +15,7 @@ spring:
     jpa:
         open-in-view: false
         hibernate:
-            ddl-auto: none
+            ddl-auto: update
             naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
     messages:
         basename: classpath:/i18n/messages
@@ -24,6 +24,8 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
+
+multipart.maxFileSize: 10485760
 
 security:
     basic:

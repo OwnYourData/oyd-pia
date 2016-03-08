@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.io.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -40,14 +41,13 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     }
 
 
-
     @Override
     public Plugin install(ZipFile zip) throws ManifestNotFoundException, PluginAlreadyInstalledException, InvalidManifestException, PluginInstallationException {
         Manifest manifest = extractManifest(zip);
 
         verifyPluginNotInstalled(manifest);
 
-        return install(zip,manifest);
+        return install(zip, manifest);
     }
 
     @Override
@@ -64,21 +64,9 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
         String pluginIdentifier = manifest.getIdentifier();
         try {
             String installPath = getPluginInstallPath(pluginIdentifier);
-            FileUtils.forceMkdir(new File(installPath));
 
-            Enumeration<? extends ZipEntry> entries = zip.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                String filePath = concat(installPath, entry.getName());
-
-                if (!entry.isDirectory()) {
-                    // if the entry is a file, extracts it
-                    extractFile(zip.getInputStream(entry), filePath);
-                } else {
-                    // if the entry is a directory, make the directory
-                    FileUtils.forceMkdir(new File(filePath));
-                }
-            }
+            extract(zip, installPath);
+            install(manifest, installPath);
 
             Plugin plugin = new Plugin();
 
@@ -90,8 +78,8 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
             return plugin;
 
-        } catch (IOException exception) {
-            throw new PluginInstallationException("Could not install plugin " + pluginIdentifier, exception);
+        } catch (IOException e) {
+            throw new PluginInstallationException("Could not install plugin " + pluginIdentifier, e);
         } finally {
             try {
                 zip.close();
@@ -99,6 +87,43 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
                 // ignore
             }
         }
+    }
+
+    private void extract(ZipFile zip, String installPath) throws IOException {
+        FileUtils.forceMkdir(new File(installPath));
+
+        Enumeration<? extends ZipEntry> entries = zip.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            String filePath = concat(installPath, entry.getName());
+
+            if (!entry.isDirectory()) {
+                // if the entry is a file, extracts it
+                extractFile(zip.getInputStream(entry), filePath);
+            } else {
+                // if the entry is a directory, make the directory
+                FileUtils.forceMkdir(new File(filePath));
+            }
+        }
+    }
+
+    private boolean install(Manifest manifest, String installPath) throws PluginInstallationException {
+        if (manifest.getInstallation().isPresent()) try {
+            File log = new File(FilenameUtils.concat(installPath, "installation.log"));
+
+            ProcessBuilder processBuilder = new ProcessBuilder(manifest.getInstallation().get().split(" "));
+            processBuilder.directory(new File(installPath));
+            processBuilder.redirectError(log);
+            processBuilder.redirectOutput(log);
+
+            Process process = processBuilder.start();
+
+            return process.waitFor(30, TimeUnit.SECONDS);
+        } catch (IOException | InterruptedException e) {
+            throw new PluginInstallationException("Could not install plugin " + manifest.getIdentifier(), e);
+        }
+
+        return true;
     }
 
     private String getPluginInstallPath(String pluginIdentifier) {
@@ -118,7 +143,7 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     private void verifyPluginNotInstalled(Manifest manifest) throws PluginAlreadyInstalledException {
         if (isInstalled(manifest.getIdentifier())) {
-            throw new PluginAlreadyInstalledException("Plugin "+manifest.getIdentifier()+" is already installed");
+            throw new PluginAlreadyInstalledException("Plugin " + manifest.getIdentifier() + " is already installed");
         }
     }
 
@@ -141,12 +166,12 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     public Plugin activate(Plugin plugin) throws InvalidManifestException, PluginActivationException {
         String pluginInstallPath = plugin.getPath();
         try {
-            Manifest manifest = new Manifest(FileUtils.readFileToString(new File(concat(pluginInstallPath,"manifest.json"))));
+            Manifest manifest = new Manifest(FileUtils.readFileToString(new File(concat(pluginInstallPath, "manifest.json"))));
 
             BaseClientDetails clientDetails = createBaseClientDetails(manifest);
             clientRegistrationService.addClientDetails(clientDetails);
 
-            writePluginClientCredentials(clientDetails,pluginInstallPath);
+            writePluginClientCredentials(clientDetails, pluginInstallPath);
             return plugin;
         } catch (IOException e) {
             throw new PluginActivationException(e);
@@ -172,9 +197,9 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             File credentials = new File(FilenameUtils.concat(pluginInstallPath, "credentials.json"));
 
             FileUtils.deleteQuietly(credentials);
-            FileUtils.writeStringToFile(credentials,json.toString());
+            FileUtils.writeStringToFile(credentials, json.toString());
         } catch (JSONException e) {
-            assert(false);
+            assert (false);
         }
     }
 

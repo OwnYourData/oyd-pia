@@ -1,12 +1,13 @@
 <div class="ngdialog-content">
     <div>{{application.name}}</div>
-    <div>Access:</div>
-    <ul>
-        <li ng-repeat="permission in application.permissions">
-            {{permission}}
-        </li>
-    </ul>
-
+    <div ng-if="application">
+        <div>Access:</div>
+        <ul>
+            <li ng-repeat="permission in application.permissions">
+                {{permission}}
+            </li>
+        </ul>
+    </div>
     <div class="ngdialog-buttons">
         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm()">Grant</button>
         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">Deny

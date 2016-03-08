@@ -41,6 +41,16 @@ angular.module('piaApp')
             };
         };
 
+        $scope.start = function(plugin) {
+            Plugin.start(plugin);
+            $state.go('plugin', null, { reload: true });
+        };
+
+        $scope.stop = function(plugin) {
+            Plugin.stop(plugin);
+            $state.go('plugin', null, { reload: true });
+        };
+
         $scope.upload = function (file) {
             if (file) {
                 ngDialog.openConfirm({

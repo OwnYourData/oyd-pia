@@ -22,6 +22,7 @@
                     <th jh-sort-by="name"><span translate="piaApp.plugin.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="identifier"><span translate="piaApp.plugin.identifier">Identifier</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="path"><span translate="piaApp.plugin.path">Path</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="running"><span translate="piaApp.plugin.state">State</span><span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -31,19 +32,16 @@
                     <td>{{plugin.name}}</td>
                     <td>{{plugin.identifier}}</td>
                     <td>{{plugin.path}}</td>
+                    <td>{{plugin.state}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="plugin.detail({id:plugin.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
+                            <button ng-if="plugin.state == 'Stopped'" ng-click="start(plugin)" class="btn btn-success btn-sm">
+                                <span class="glyphicon glyphicon-play"></span>
+                                <span translate="piaApp.plugin.start">Start</span>
                             </button>
-                            <button type="submit"
-                                    ui-sref="plugin.edit({id:plugin.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                            <button ng-if="plugin.state == 'Running'" ng-click="stop(plugin)" class="btn btn-warning btn-sm">
+                                <span class="glyphicon glyphicon-stop"></span>
+                                <span translate="piaApp.plugin.stop">Stop</span>
                             </button>
                             <button type="submit"
                                     ui-sref="plugin.delete({id:plugin.id})"

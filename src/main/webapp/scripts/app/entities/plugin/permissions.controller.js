@@ -17,9 +17,6 @@ angular.module('piaApp').controller("PluginPermissionController", function ($sco
                         if(name.indexOf('manifest.json', name.length - 'manifest.json'.length) !== -1) {
                             parseManifest(zipEntry);
                         }
-                        if(name.indexOf('schedules.json', name.length - 'schedules.json'.length) !== -1) {
-                            parseSchedules(zipEntry);
-                        }
                     });
                 } catch(e) {
 
@@ -31,10 +28,6 @@ angular.module('piaApp').controller("PluginPermissionController", function ($sco
     }
 
     function parseManifest(entry) {
-        $scope.application = JSON.parse(entry.asText());
-    }
-
-    function parseSchedules(entry) {
         $scope.application = JSON.parse(entry.asText());
     }
 

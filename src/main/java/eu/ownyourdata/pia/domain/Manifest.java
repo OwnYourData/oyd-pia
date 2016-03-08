@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by michael on 26.02.16.
@@ -20,7 +21,10 @@ public class Manifest {
 
     private Environment environment;
 
+    private Optional<String> installation;
+
     private String command;
+
 
     private List<String> permissions = new ArrayList<>();
 
@@ -39,6 +43,7 @@ public class Manifest {
             }
             environment = Environment.valueOf(jsonObject.optString("environment").toUpperCase());
             command = jsonObject.optString("command");
+            installation = Optional.ofNullable(jsonObject.optString("installation",null));
         } catch (JSONException e) {
             throw new InvalidManifestException(e);
         }
@@ -69,6 +74,10 @@ public class Manifest {
 
     public Environment getEnvironment() {
         return environment;
+    }
+
+    public Optional<String> getInstallation() {
+        return installation;
     }
 
     public String getCommand() {

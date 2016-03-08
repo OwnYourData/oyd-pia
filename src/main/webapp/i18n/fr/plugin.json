@@ -18,7 +18,10 @@
             },
             "name": "Name",
             "identifier": "Identifier",
-            "path": "Path"
+            "path": "Path",
+            "state":"Statut",
+            "start": "Début",
+            "stop": "Stop"
         }
     }
 }

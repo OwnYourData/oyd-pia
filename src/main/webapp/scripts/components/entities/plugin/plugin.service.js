@@ -11,6 +11,8 @@ angular.module('piaApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'start' : { method:'GET', url:'api/plugins/:id/start'},
+            'stop' : { method:'GET', url:'api/plugins/:id/stop'},
         });
     });

@@ -14,7 +14,7 @@ public class PluginDTO {
 
     private Set<String> permissions;
 
-    private boolean running;
+    private String state;
 
     public Long getId() {
         return id;
@@ -56,11 +56,11 @@ public class PluginDTO {
         this.permissions = permissions;
     }
 
-    public boolean isRunning() {
-        return running;
+    public String getState() {
+        return state;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setState(String state) {
+        this.state = state;
     }
 }

@@ -62,8 +62,11 @@ public class InMemoryProcessRepository implements ProcessRepository {
         processBuilder.environment().put("PORT","8081");
         processBuilder.environment().put("ID",clientId);
         processBuilder.environment().put("SECRET",clientSecret);
+        processBuilder.redirectError(log);
         processBuilder.redirectOutput(log);
         Process process = processBuilder.start();
+
+        processes.put(plugin,process);
 
         return process;
     }

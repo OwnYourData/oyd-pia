@@ -31,7 +31,7 @@ public abstract class PluginMapper {
         target.setIdentifier(plugin.getIdentifier());
         target.setName(plugin.getName());
         target.setPath(plugin.getPath());
-        target.setRunning(processRepository.isRunning(plugin));
+        target.setState(processRepository.isRunning(plugin) ? "Running" : "Stopped");
 
         try {
             target.setPermissions(clientDetailsService.loadClientByClientId(target.getIdentifier()).getScope());
