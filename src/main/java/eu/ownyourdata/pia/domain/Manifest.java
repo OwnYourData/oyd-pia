@@ -21,10 +21,13 @@ public class Manifest {
 
     private Environment environment;
 
+    private String type;
+
+    private String name;
+
     private Optional<String> installation;
 
     private String command;
-
 
     private List<String> permissions = new ArrayList<>();
 
@@ -33,17 +36,28 @@ public class Manifest {
 
         try {
             JSONObject jsonObject = new JSONObject(json);
-            identifier = jsonObject.optString("identifier");
+            name = jsonObject.getString("name");
+            identifier = jsonObject.getString("identifier");
+            type = jsonObject.getString("type");
             description = jsonObject.optString("description");
-            if (jsonObject.has("permissions")) {
-                JSONArray permissions = jsonObject.getJSONArray("permissions");
-                for(int i=0;i<permissions.length();i++) {
-                    this.permissions.add(permissions.getString(i));
+
+            if (type.startsWith("host")) {
+                environment = Environment.valueOf(jsonObject.getString("environment").toUpperCase());
+                command = jsonObject.optString("startCommand");
+                installation = Optional.ofNullable(jsonObject.optString("postExtractCommand",null));
+            }
+            if ("html".equalsIgnoreCase(type)) {
+                environment = Environment.HOST_HTML;
+                command = null;
+                installation = Optional.empty();
+
+                if (jsonObject.has("permissions")) {
+                    JSONArray permissions = jsonObject.getJSONArray("permissions");
+                    for(int i=0;i<permissions.length();i++) {
+                        this.permissions.add(permissions.getString(i));
+                    }
                 }
             }
-            environment = Environment.valueOf(jsonObject.optString("environment").toUpperCase());
-            command = jsonObject.optString("command");
-            installation = Optional.ofNullable(jsonObject.optString("installation",null));
         } catch (JSONException e) {
             throw new InvalidManifestException(e);
         }
@@ -76,11 +90,15 @@ public class Manifest {
         return environment;
     }
 
-    public Optional<String> getInstallation() {
+    public Optional<String> getPostExtractCommand() {
         return installation;
     }
 
-    public String getCommand() {
+    public String getStartCommand() {
         return command;
+    }
+
+    public String getType() {
+        return type;
     }
 }

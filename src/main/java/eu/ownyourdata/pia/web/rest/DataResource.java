@@ -91,6 +91,7 @@ public class DataResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
+    @CrossOrigin
     public ResponseEntity<List<JSONObject>> getAllDatas(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Datas");

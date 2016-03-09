@@ -28,16 +28,18 @@ public class Plugin implements Serializable {
     @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
-    @Column(name = "path", nullable = true)
+    @Column(name = "path", nullable = false)
     private String path;
 
     @Column(name = "environment", nullable=false)
     @Enumerated(EnumType.STRING)
     private Environment environment;
 
-
-    @Column(name = "command", nullable =false)
+    @Column(name = "command")
     private String command;
+
+    @Column(name = "type", nullable = false)
+    private String type;
 
     public Long getId() {
         return id;
@@ -85,6 +87,14 @@ public class Plugin implements Serializable {
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

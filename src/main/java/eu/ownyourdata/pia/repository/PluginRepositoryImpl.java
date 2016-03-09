@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.io.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -29,11 +30,13 @@ import static org.apache.commons.io.FilenameUtils.concat;
 public class PluginRepositoryImpl implements PluginRepositoryCustom {
     public static final String PLUGINS_PATH = "plugins";
 
-
     private static final int BUFFER_SIZE = 4096;
 
     @Inject
     private ClientRegistrationService clientRegistrationService;
+
+    @Inject
+    private PluginRepository pluginRepository;
 
     @Override
     public boolean isInstalled(String identifier) {
@@ -63,7 +66,7 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     private Plugin install(ZipFile zip, Manifest manifest) throws PluginInstallationException {
         String pluginIdentifier = manifest.getIdentifier();
         try {
-            String installPath = getPluginInstallPath(pluginIdentifier);
+            String installPath = getTargetPluginInstallPath(manifest);
 
             extract(zip, installPath);
             install(manifest, installPath);
@@ -73,8 +76,9 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             plugin.setIdentifier(pluginIdentifier);
             plugin.setName(pluginIdentifier);
             plugin.setPath(installPath);
-            plugin.setCommand(manifest.getCommand());
+            plugin.setCommand(manifest.getStartCommand());
             plugin.setEnvironment(manifest.getEnvironment());
+            plugin.setType(manifest.getType());
 
             return plugin;
 
@@ -108,10 +112,10 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     }
 
     private boolean install(Manifest manifest, String installPath) throws PluginInstallationException {
-        if (manifest.getInstallation().isPresent()) try {
+        if (manifest.getPostExtractCommand().isPresent()) try {
             File log = new File(FilenameUtils.concat(installPath, "installation.log"));
 
-            ProcessBuilder processBuilder = new ProcessBuilder(manifest.getInstallation().get().split(" "));
+            ProcessBuilder processBuilder = new ProcessBuilder(manifest.getPostExtractCommand().get().split(" "));
             processBuilder.directory(new File(installPath));
             processBuilder.redirectError(log);
             processBuilder.redirectOutput(log);
@@ -128,6 +132,24 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     private String getPluginInstallPath(String pluginIdentifier) {
         return concat(PLUGINS_PATH, pluginIdentifier);
+    }
+
+    private String getTargetPluginInstallPath(Manifest manifest) throws PluginInstallationException {
+        if(manifest.getType().startsWith("host")) {
+            return getPluginInstallPath(manifest.getIdentifier());
+        }
+        if(manifest.getType().equals("html")) {
+            List<Plugin> hosts = pluginRepository.findByType("host/html");
+            if (hosts.isEmpty()) {
+                throw new PluginInstallationException("No host found for plugin type html");
+            } else if(hosts.size() > 1) {
+                throw new PluginInstallationException("Multiple hosts found for plugin type html");
+            } else {
+                return concat(concat(hosts.get(0).getPath(),"modules"),manifest.getIdentifier());
+            }
+        }
+
+        throw new PluginInstallationException("Unknown plugin type "+manifest.getType());
     }
 
 
