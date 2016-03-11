@@ -6,9 +6,13 @@
             <div class="col-xs-4 no-padding-left">
                 <button class="btn btn-primary" ngf-select="upload($file)">
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span
-                        translate="piaApp.plugin.home.createLabel">Upload new plugin
-                    </span>
+                    <span translate="piaApp.plugin.home.createLabel">Upload new plugin</span>
+                </button>
+            </div>
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="plugin.register">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span translate="piaApp.plugin.home.registerLabel">Register new plugin</span>
                 </button>
             </div>
         </div>
@@ -17,41 +21,48 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr jh-sort="predicate" ascending="reverse" callback="reset()">
-                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span translate="piaApp.plugin.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="identifier"><span translate="piaApp.plugin.identifier">Identifier</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="path"><span translate="piaApp.plugin.path">Path</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="running"><span translate="piaApp.plugin.state">State</span><span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
+            <tr jh-sort="predicate" ascending="reverse" callback="reset()">
+                <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="name"><span translate="piaApp.plugin.name">Name</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="identifier"><span translate="piaApp.plugin.identifier">Identifier</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="path"><span translate="piaApp.plugin.path">Path</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="running"><span translate="piaApp.plugin.state">State</span><span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th></th>
+            </tr>
             </thead>
             <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
-                <tr ng-repeat="plugin in plugins track by plugin.id">
-                    <td><a ui-sref="plugin.detail({id:plugin.id})">{{plugin.id}}</a></td>
-                    <td>{{plugin.name}}</td>
-                    <td>{{plugin.identifier}}</td>
-                    <td>{{plugin.path}}</td>
-                    <td>{{plugin.state}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button ng-if="plugin.state == 'Stopped'" ng-click="start(plugin)" class="btn btn-success btn-sm">
-                                <span class="glyphicon glyphicon-play"></span>
-                                <span translate="piaApp.plugin.start">Start</span>
-                            </button>
-                            <button ng-if="plugin.state == 'Running'" ng-click="stop(plugin)" class="btn btn-warning btn-sm">
-                                <span class="glyphicon glyphicon-stop"></span>
-                                <span translate="piaApp.plugin.stop">Stop</span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="plugin.delete({id:plugin.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+            <tr ng-repeat="plugin in plugins track by plugin.id">
+                <td><a ui-sref="plugin.detail({id:plugin.id})">{{plugin.id}}</a></td>
+                <td>{{plugin.name}}</td>
+                <td>{{plugin.identifier}}</td>
+                <td>{{plugin.path}}</td>
+                <td>{{plugin.state}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button ng-if="plugin.state == 'Stopped' && plugin.type == host" ng-click="start(plugin)"
+                                class="btn btn-success btn-sm">
+                            <span class="glyphicon glyphicon-play"></span>
+                            <span translate="piaApp.plugin.start">Start</span>
+                        </button>
+                        <button ng-if="plugin.state == 'Running'" ng-click="stop(plugin)"
+                                class="btn btn-warning btn-sm">
+                            <span class="glyphicon glyphicon-stop"></span>
+                            <span translate="piaApp.plugin.stop">Stop</span>
+                        </button>
+                        <button type="submit"
+                                ui-sref="plugin.delete({id:plugin.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

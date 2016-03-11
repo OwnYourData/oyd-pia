@@ -9,6 +9,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -34,6 +36,9 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     @Inject
     private ClientRegistrationService clientRegistrationService;
+
+    @Inject
+    private ClientDetailsService clientDetailsService;
 
     @Inject
     private PluginRepository pluginRepository;
@@ -208,6 +213,17 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
             // ignore, remove silently
         }
         return plugin;
+    }
+
+    @Override
+    public ClientDetails register(Manifest manifest) {
+        try {
+            return clientDetailsService.loadClientByClientId(manifest.getIdentifier());
+        } catch (NoSuchClientException exception) {
+            BaseClientDetails clientDetails = createBaseClientDetails(manifest);
+            clientRegistrationService.addClientDetails(clientDetails);
+            return clientDetails;
+        }
     }
 
     private void writePluginClientCredentials(BaseClientDetails clientDetails, String pluginInstallPath) throws IOException {

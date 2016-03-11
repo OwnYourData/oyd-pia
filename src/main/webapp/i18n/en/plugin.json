@@ -4,6 +4,7 @@
             "home": {
                 "title": "Plugins",
                 "createLabel": "Upload a new Plugin",
+                "registerLabel": "Register a new Plugin",
                 "createOrEditLabel": "Create or edit a Plugin",
                 "search": "Search for Plugin"
             },
@@ -21,7 +22,13 @@
             "path": "Path",
             "state": "Status",
             "start": "Start",
-            "stop": "Stop"
+            "stop": "Stop",
+            "register": {
+                "title": "Register a new Plugin",
+                "instructions": "Paste Base64 Code",
+                "grant": "Grant",
+                "deny": "Deny"
+            }
         }
     }
 }

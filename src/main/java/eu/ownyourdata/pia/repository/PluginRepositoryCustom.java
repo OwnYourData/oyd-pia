@@ -1,7 +1,9 @@
 package eu.ownyourdata.pia.repository;
 
 import eu.ownyourdata.pia.domain.InvalidManifestException;
+import eu.ownyourdata.pia.domain.Manifest;
 import eu.ownyourdata.pia.domain.Plugin;
+import org.springframework.security.oauth2.provider.ClientDetails;
 
 import java.io.IOException;
 import java.util.zip.ZipFile;
@@ -16,4 +18,5 @@ public interface PluginRepositoryCustom {
     Plugin uninstall(Plugin plugin) throws IOException;
     Plugin activate(Plugin plugin) throws InvalidManifestException, PluginActivationException;
     Plugin deactivate(Plugin plugin);
+    ClientDetails register(Manifest manifest);
 }

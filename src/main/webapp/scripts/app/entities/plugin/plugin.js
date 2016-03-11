@@ -92,5 +92,18 @@ angular.module('piaApp')
                         $state.go('^');
                     })
                 }]
+            })
+            .state('plugin.register', {
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'scripts/app/entities/plugin/plugin-register-dialog.html',
+                        controller: 'PluginRegisterDialogController',
+                        size: 'lg',
+                    }).result.then(function(result) {
+                        $state.go('plugin', null, { reload: true });
+                    }, function() {
+                        $state.go('^');
+                    })
+                }]
             });
     });

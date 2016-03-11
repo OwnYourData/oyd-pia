@@ -12,6 +12,7 @@ angular.module('piaApp')
                 }
             },
             'update': { method:'PUT' },
+            'register': {method:'POST', url:'api/plugins/register'},
             'start' : { method:'GET', url:'api/plugins/:id/start'},
             'stop' : { method:'GET', url:'api/plugins/:id/stop'},
         });
