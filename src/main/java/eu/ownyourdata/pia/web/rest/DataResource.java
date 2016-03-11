@@ -2,7 +2,9 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.Data;
+import eu.ownyourdata.pia.domain.Datatype;
 import eu.ownyourdata.pia.repository.DataRepository;
+import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
@@ -38,6 +40,9 @@ public class DataResource {
 
     @Inject
     private DataRepository dataRepository;
+
+    @Inject
+    private DatatypeRepository datatypeRepository;
 
     @Inject
     private DataMapper dataMapper;
@@ -100,6 +105,31 @@ public class DataResource {
         return new ResponseEntity<>(page.getContent().stream()
             .map(e -> dataMapper.dataToJson(e))
             .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
+    }
+
+
+    /**
+     * GET  /datas -> get all the datas.
+     */
+    @RequestMapping(value = "/data/{type:.+}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    @CrossOrigin
+    public ResponseEntity<List<JSONObject>> getAllData(@PathVariable String type, Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get a page of Datas");
+        Optional<Datatype> datatype = datatypeRepository.findOneByName(type);
+        if (datatype.isPresent()) {
+            Page<Data> page = dataRepository.findAllByType(datatype.get(),pageable);
+
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/data/"+type);
+            return new ResponseEntity<>(page.getContent().stream()
+                .map(e -> dataMapper.dataToJson(e))
+                .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<JSONObject>>(HttpStatus.OK);
+        }
     }
 
     /**

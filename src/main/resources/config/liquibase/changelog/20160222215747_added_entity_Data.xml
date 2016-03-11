@@ -21,14 +21,14 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="value" type="varchar(255)">
+            <column name="value" type="varchar(10000)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="type_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        
+
         <addForeignKeyConstraint baseColumnNames="type_id"
                                  baseTableName="data"
                                  constraintName="fk_data_type_id"

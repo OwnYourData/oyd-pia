@@ -21,7 +21,7 @@ public class Data implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "value", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "value", nullable = false, columnDefinition = "TEXT", length = 10000)
     private String value;
 
     @ManyToOne
