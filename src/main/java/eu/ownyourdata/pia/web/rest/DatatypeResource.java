@@ -2,14 +2,15 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.Datatype;
+import eu.ownyourdata.pia.repository.DataRepository;
 import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -27,10 +28,13 @@ import java.util.Optional;
 public class DatatypeResource {
 
     private final Logger log = LoggerFactory.getLogger(DatatypeResource.class);
-        
+
     @Inject
     private DatatypeRepository datatypeRepository;
-    
+
+    @Inject
+    private DataRepository dataRepository;
+
     /**
      * POST  /datatypes -> Create a new datatype.
      */
@@ -103,8 +107,11 @@ public class DatatypeResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional
     public ResponseEntity<Void> deleteDatatype(@PathVariable Long id) {
         log.debug("REST request to delete Datatype : {}", id);
+        Datatype datatype = datatypeRepository.findOne(id);
+        dataRepository.removeByType(datatype);
         datatypeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("datatype", id.toString())).build();
     }

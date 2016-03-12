@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,6 +70,29 @@ public class DataResource {
     }
 
     /**
+     * POST  /datas -> Create a new data.
+     */
+    @RequestMapping(value = "/data/{type:.+}",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @CrossOrigin
+    @PreAuthorize("#oauth2.hasScope(#type+':write')")
+    public ResponseEntity<JSONObject> createData(@PathVariable String type, @Valid @RequestBody JSONObject json) throws URISyntaxException {
+        log.debug("REST request to save Data : {}", json);
+        if (!json.optString("id").equals("") || !json.optString("type").equals(type)) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("data", "idexists", "A new data cannot already have an ID")).body(null);
+        }
+
+        Data data = dataMapper.jsonToData(json);
+        data = dataRepository.save(data);
+        JSONObject result = dataMapper.dataToJson(data);
+        return ResponseEntity.created(new URI("/api/datas/" + result.optString("id")))
+            .headers(HeaderUtil.createEntityCreationAlert("data", result.optString("id")))
+            .body(result);
+    }
+
+    /**
      * PUT  /datas -> Updates an existing data.
      */
     @RequestMapping(value = "/datas",
@@ -96,7 +120,6 @@ public class DataResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    @CrossOrigin
     public ResponseEntity<List<JSONObject>> getAllDatas(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Datas");
@@ -117,6 +140,7 @@ public class DataResource {
     @Timed
     @Transactional(readOnly = true)
     @CrossOrigin
+    @PreAuthorize("#oauth2.hasScope(#type+':read')")
     public ResponseEntity<List<JSONObject>> getAllData(@PathVariable String type, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Datas");
         Optional<Datatype> datatype = datatypeRepository.findOneByName(type);
