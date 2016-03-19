@@ -11,7 +11,7 @@
             "updated": "A Datatype is updated with identifier {{ param }}",
             "deleted": "A Datatype is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Datatype {{ id }}?"
+                "question": "Are you sure you want to delete Datatype {{ name }}?"
             },
             "detail": {
                 "title": "Datatype"
