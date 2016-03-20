@@ -1,11 +1,13 @@
 package eu.ownyourdata.pia.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -26,6 +28,10 @@ public class Datatype implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "type")
+    private Collection<Data> data;
 
     public Long getId() {
         return id;

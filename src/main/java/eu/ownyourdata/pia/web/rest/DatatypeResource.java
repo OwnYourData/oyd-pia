@@ -2,6 +2,7 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.Datatype;
+import eu.ownyourdata.pia.domain.DatatypeCount;
 import eu.ownyourdata.pia.repository.DataRepository;
 import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
@@ -81,7 +82,7 @@ public class DatatypeResource {
     public List<Datatype> getAllDatatypes() {
         log.debug("REST request to get all Datatypes");
         return datatypeRepository.findAll();
-            }
+    }
 
     /**
      * GET  /datatypes/:id -> get the "id" datatype.
@@ -98,6 +99,19 @@ public class DatatypeResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /datatypes/:id -> get the "id" datatype.
+     */
+    @RequestMapping(value = "/datatypes/counts",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<DatatypeCount>> getDatatypeCounts() {
+        log.debug("REST request to get DatatypeCounts");
+
+        return ResponseEntity.ok(datatypeRepository.getCounts());
     }
 
     /**

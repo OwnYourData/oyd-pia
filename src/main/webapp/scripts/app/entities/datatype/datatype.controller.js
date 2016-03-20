@@ -8,6 +8,9 @@ angular.module('piaApp')
             Datatype.query(function(result) {
                $scope.datatypes = result;
             });
+            Datatype.counts(function(result) {
+                $scope.counts = result;
+            });
         };
         $scope.loadAll();
 
@@ -24,4 +27,9 @@ angular.module('piaApp')
                 id: null
             };
         };
+
+        $scope.getCount = function(type) {
+            console.log('get count of type '+type);
+            return $scope.counts
+        }
     });

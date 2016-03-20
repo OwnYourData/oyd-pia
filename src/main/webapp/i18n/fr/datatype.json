@@ -17,7 +17,8 @@
                 "title": "Datatype"
             },
             "name": "Name",
-            "description": "Description"
+            "description": "Description",
+            "count": "#"
         }
     }
 }
