@@ -1,14 +1,15 @@
 package eu.ownyourdata.pia.repository;
 
 import eu.ownyourdata.pia.domain.InvalidManifestException;
-import eu.ownyourdata.pia.domain.plugin.*;
+import eu.ownyourdata.pia.domain.plugin.Manifest;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.PluginFactory;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginCredentialsWriter;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginInstaller;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginUninstaller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -31,9 +32,6 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     private ClientRegistrationService clientRegistrationService;
 
     @Inject
-    private ClientDetailsService clientDetailsService;
-
-    @Inject
     private PluginRepository pluginRepository;
 
     @Inject
@@ -47,8 +45,6 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     @Override
     public Plugin install(ZipFile zip) throws ManifestNotFoundException, PluginAlreadyInstalledException, InvalidManifestException, PluginInstallationException {
-
-
         //verifyPluginNotInstalled(manifest);
         try {
             Plugin plugin = pluginFactory.build(zip);
@@ -69,28 +65,6 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
         return plugin;
     }
 
-    private Plugin createPlugin(Manifest manifest) throws InvalidManifestException {
-
-        if (manifest.getType().equals("host")) {
-            HostPlugin plugin = new HostPlugin();
-            plugin.setIdentifier(manifest.getIdentifier());
-            plugin.setName(manifest.getIdentifier());
-            plugin.setStartCommand(manifest.getStartCommand());
-
-
-            return plugin;
-        }
-
-        if (manifest.getType().equals("html")) {
-            HostedPlugin plugin = new HostedPlugin();
-            plugin.setIdentifier(manifest.getIdentifier());
-            plugin.setName(manifest.getIdentifier());
-
-            return plugin;
-        }
-
-        throw new InvalidManifestException("unknown type");
-    }
 
     private String getPluginInstallPath(String pluginIdentifier) {
         return concat(PLUGINS_PATH, pluginIdentifier);
@@ -105,7 +79,6 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
 
     @Override
     public ClientDetails activate(Plugin plugin) throws InvalidManifestException, PluginActivationException {
-
         try {
             BaseClientDetails clientDetails = createBaseClientDetails(plugin);
             clientRegistrationService.addClientDetails(clientDetails);

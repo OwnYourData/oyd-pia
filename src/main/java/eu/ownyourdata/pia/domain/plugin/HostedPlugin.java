@@ -15,7 +15,13 @@ public class HostedPlugin extends Plugin {
     @OneToOne
     private HostPlugin host;
 
+    public void setHost(HostPlugin host) {
+        this.host = host;
+    }
 
+    public HostPlugin getHost() {
+        return host;
+    }
 
     public String getPath() {
         return FilenameUtils.concat(FilenameUtils.concat(host.getPath(),host.getModulesPath()),getIdentifier());

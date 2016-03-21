@@ -1,7 +1,9 @@
 package eu.ownyourdata.pia.domain.plugin;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by michael on 20.03.16.
@@ -14,26 +16,12 @@ public class HostPlugin extends StandalonePlugin {
     @Column(name = "modules_path")
     private String modulesPath;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="Hostings", joinColumns=@JoinColumn(name="plugin_id"))
-    @Column(name="hostings")
-    public List<String> hostings;
-
-
     public String getModulesPath() {
         return modulesPath;
     }
 
     public void setModulesPath(String modulesPath) {
         this.modulesPath = modulesPath;
-    }
-
-    public List<String> getHostings() {
-        return hostings;
-    }
-
-    public void setHostings(List<String> hostings) {
-        this.hostings = hostings;
     }
 
     @Override

@@ -5,8 +5,6 @@ import org.apache.commons.lang3.Validate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,8 +18,6 @@ public class Manifest {
 
     private String description;
 
-    private String json;
-
     private String type;
 
     private String name;
@@ -32,9 +28,9 @@ public class Manifest {
 
     private String modules;
 
-    private List<String> hostings = new ArrayList<>();
-
     private List<String> permissions = new ArrayList<>();
+
+    private List<String> requires = new ArrayList<>();
 
     private Manifest() {
 
@@ -60,10 +56,6 @@ public class Manifest {
         return startCommand;
     }
 
-    public String getJson() {
-        return json;
-    }
-
     public String getType() {
         return type;
     }
@@ -72,16 +64,15 @@ public class Manifest {
         return name;
     }
 
-    public List<String> getHostings() {
-        return hostings;
-    }
-
     public String getModules() {
         return modules;
     }
 
+    public List<String> getRequires() {
+        return requires;
+    }
+
     public static class ManifestBuilder {
-        private final Logger log = LoggerFactory.getLogger(ManifestBuilder.class);
 
         private Manifest manifest = new Manifest();
 
@@ -105,31 +96,31 @@ public class Manifest {
             manifest.installCommand = jsonObject.optString("installCommand");
             manifest.modules = jsonObject.optString("modules");
 
-            withHostings(jsonObject.optJSONArray("hostings"));
             withPermissions(jsonObject.optJSONArray("permissions"));
+            withRequirements(jsonObject.optJSONArray("requires"));
 
             return this;
         }
 
-        private ManifestBuilder withHostings(JSONArray hostings) {
-            try {
-                if (hostings != null) {
-                    for (int i = 0; i < hostings.length(); i++) {
-                        manifest.hostings.add(hostings.getString(i));
-                    }
-                }
-            } catch (JSONException e) {
-                exception = e;
-            }
-
-            return this;
-        }
 
         private ManifestBuilder withPermissions(JSONArray permissions) {
             try {
                 if (permissions != null) {
                     for (int i = 0; i < permissions.length(); i++) {
                         manifest.permissions.add(permissions.getString(i));
+                    }
+                }
+            } catch (JSONException e) {
+                exception = e;
+            }
+            return this;
+        }
+
+        private ManifestBuilder withRequirements(JSONArray requirements) {
+            try {
+                if (requirements != null) {
+                    for (int i = 0; i < requirements.length(); i++) {
+                        manifest.requires.add(requirements.getString(i));
                     }
                 }
             } catch (JSONException e) {
@@ -158,6 +149,21 @@ public class Manifest {
             return this;
         }
 
+        public ManifestBuilder withStartCommand(String startCommand) {
+            manifest.startCommand = startCommand;
+            return this;
+        }
+
+        public ManifestBuilder withModules(String modules) {
+            manifest.modules = modules;
+            return this;
+        }
+
+        public ManifestBuilder withRequirements(String... requirements) {
+            Collections.addAll(manifest.requires, requirements);
+            return this;
+        }
+
         public ManifestBuilder withPermissions(String... permissions) {
             Collections.addAll(manifest.permissions, permissions);
             return this;
@@ -175,7 +181,10 @@ public class Manifest {
                 if (manifest.type.equals("host")) {
                     Validate.notBlank(manifest.startCommand, "hosts startCommand must not be blank");
                     Validate.notBlank(manifest.modules, "hosts modules must not be blank");
-                    Validate.notEmpty(manifest.hostings,"hosts hostings capables must not be empty");
+                }
+
+                if (manifest.type.equals("hosted")) {
+                    Validate.notEmpty(manifest.requires);
                 }
 
                 return manifest;

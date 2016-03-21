@@ -1,11 +1,14 @@
 package eu.ownyourdata.pia.domain.plugin;
 
 import eu.ownyourdata.pia.domain.InvalidManifestException;
+import eu.ownyourdata.pia.repository.HostPluginRepository;
 import eu.ownyourdata.pia.repository.ManifestNotFoundException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -15,24 +18,28 @@ import java.util.zip.ZipFile;
 @Component
 public class PluginFactory {
 
+    @Inject
+    private HostPluginRepository hostPluginRepository;
+
     public Plugin build(ZipFile zip) throws InvalidManifestException, ManifestNotFoundException {
         Manifest manifest = extractManifest(zip);
 
-        if(manifest.getType().equals("host")) {
-            HostPlugin hostPugin = createHostPugin(manifest);
-
-            return hostPugin;
-        }
-        if(manifest.getType().equals("html")) {
-
-        }
-        return null;
+        return build(manifest);
     }
 
     public Plugin build(Manifest manifest)  {
-        if(manifest.getType().equals("external")) {
-            return createExternalPlugin(manifest);
+        switch (manifest.getType()) {
+            case "host": {
+                return createHostPugin(manifest);
+            }
+            case "hosted": {
+                return createHostedPlugin(manifest);
+            }
+            case "external": {
+                return createExternalPlugin(manifest);
+            }
         }
+
         return null;
     }
 
@@ -42,7 +49,21 @@ public class PluginFactory {
         newPlugin.setStartCommand(manifest.getStartCommand());
         newPlugin.setInstallCommand(manifest.getInstallCommand());
         newPlugin.setModulesPath(manifest.getModules());
-        newPlugin.setHostings(manifest.getHostings());
+
+        return newPlugin;
+    }
+
+    private HostedPlugin createHostedPlugin(Manifest manifest) {
+        HostedPlugin newPlugin = setGeneralProperties(new HostedPlugin(),manifest);
+
+        for(String requires : manifest.getRequires()) {
+            Optional<HostPlugin> hostPlugin = hostPluginRepository.findOneByIdentifier(requires);
+            if (hostPlugin.isPresent()) {
+                newPlugin.setHost(hostPlugin.get());
+                break;
+            }
+        }
+
 
         return newPlugin;
     }
