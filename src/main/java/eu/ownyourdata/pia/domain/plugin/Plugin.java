@@ -1,20 +1,26 @@
-package eu.ownyourdata.pia.domain;
+package eu.ownyourdata.pia.domain.plugin;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Polymorphism;
+import org.hibernate.annotations.PolymorphismType;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * A Plugin.
  */
 @Entity
-@Table(name = "plugin")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name="Plugin_Type")
+@Polymorphism(type = PolymorphismType.IMPLICIT)
+@Table(name="Plugin")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Plugin implements Serializable {
+public abstract class Plugin implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,18 +34,11 @@ public class Plugin implements Serializable {
     @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
-    @Column(name = "path", nullable = false)
-    private String path;
 
-    @Column(name = "environment", nullable=false)
-    @Enumerated(EnumType.STRING)
-    private Environment environment;
-
-    @Column(name = "command")
-    private String command;
-
-    @Column(name = "type", nullable = false)
-    private String type;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="Permissions", joinColumns=@JoinColumn(name="plugin_id"))
+    @Column(name="permission")
+    public List<String> permissions;
 
     public Long getId() {
         return id;
@@ -65,37 +64,15 @@ public class Plugin implements Serializable {
         this.identifier = identifier;
     }
 
-    public String getPath() {
-        return path;
+    public List<String> getPermissions() {
+        return permissions;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 
-    public Environment getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    public abstract void accept(PluginVisitor visitor) throws Exception;
 
     @Override
     public boolean equals(Object o) {
@@ -123,7 +100,6 @@ public class Plugin implements Serializable {
             "id=" + id +
             ", name='" + name + "'" +
             ", identifier='" + identifier + "'" +
-            ", path='" + path + "'" +
             '}';
     }
 }

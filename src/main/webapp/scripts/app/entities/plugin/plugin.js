@@ -102,7 +102,7 @@ angular.module('piaApp')
                     }).result.then(function(result) {
                         $state.go('plugin', null, { reload: true });
                     }, function() {
-                        $state.go('^');
+                        $state.go('plugin', null, { reload: true });
                     })
                 }]
             });

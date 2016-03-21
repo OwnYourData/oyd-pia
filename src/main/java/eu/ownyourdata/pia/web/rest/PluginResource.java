@@ -1,9 +1,10 @@
 package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.ownyourdata.pia.domain.InvalidManifestException;
-import eu.ownyourdata.pia.domain.Manifest;
-import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.domain.*;
+import eu.ownyourdata.pia.domain.plugin.Manifest;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 import eu.ownyourdata.pia.repository.*;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import eu.ownyourdata.pia.web.rest.mapper.PluginMapper;
@@ -100,7 +101,7 @@ public class PluginResource {
         log.debug("REST request to start Plugin : {}", id);
         Plugin plugin = pluginRepository.findOne(id);
         try {
-            processRepository.create(plugin);
+            processRepository.create(((StandalonePlugin) plugin));
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -117,7 +118,7 @@ public class PluginResource {
     public ResponseEntity<Void> stopPlugin(@PathVariable Long id) {
         log.debug("REST request to start Plugin : {}", id);
         Plugin plugin = pluginRepository.findOne(id);
-        if (processRepository.stop(plugin)) {
+        if (processRepository.stop(((StandalonePlugin) plugin))) {
             return ResponseEntity.status(HttpStatus.OK).build();
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -142,6 +143,8 @@ public class PluginResource {
                 pluginRepository.delete(id);
                 return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("plugin", id.toString())).build();
             } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         } else {
@@ -174,9 +177,11 @@ public class PluginResource {
     public ResponseEntity<JSONObject> register(@Valid @RequestBody String base64) throws IOException, JSONException {
         byte[] decode = Base64.getDecoder().decode(base64);
         try {
-            Manifest manifest = new Manifest(new String(decode,"UTF-8"));
+            Manifest manifest = new Manifest.ManifestBuilder().withJSON(new String(decode,"UTF-8")).build();
 
-            ClientDetails clientDetails = pluginRepository.register(manifest);
+            Plugin plugin = pluginRepository.get(manifest);
+            ClientDetails clientDetails = pluginRepository.activate(plugin);
+            pluginRepository.save(plugin);
 
             JSONObject result = new JSONObject();
             result.put("client_id",clientDetails.getClientId());
@@ -184,6 +189,8 @@ public class PluginResource {
 
             return new ResponseEntity(result, HttpStatus.OK);
         } catch (InvalidManifestException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (PluginActivationException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

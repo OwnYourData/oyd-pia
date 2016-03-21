@@ -1,6 +1,7 @@
 package eu.ownyourdata.pia.repository;
 
-import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -50,13 +51,13 @@ public class InMemoryProcessRepository implements ProcessRepository {
     }
 
     @Override
-    public Process create(Plugin plugin) throws IOException {
+    public Process create(StandalonePlugin plugin) throws IOException {
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(plugin.getIdentifier());
         String clientId = clientDetails.getClientId();
         String clientSecret = clientDetails.getClientSecret();
         File log = new File(FilenameUtils.concat(plugin.getPath(), plugin.getIdentifier() + ".log"));
 
-        ProcessBuilder processBuilder = new ProcessBuilder(plugin.getCommand().split(" "));
+        ProcessBuilder processBuilder = new ProcessBuilder(plugin.getStartCommand().split(" "));
         processBuilder.directory(new File(plugin.getPath()));
         processBuilder.environment().put("NODE_ENV","production");
         processBuilder.environment().put("PORT","8081");
@@ -72,7 +73,7 @@ public class InMemoryProcessRepository implements ProcessRepository {
     }
 
     @Override
-    public boolean stop(Plugin plugin) {
+    public boolean stop(StandalonePlugin plugin) {
         Optional<Process> process = Optional.ofNullable(processes.get(plugin));
         if (process.isPresent()) {
             process.get().destroy();

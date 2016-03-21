@@ -1,6 +1,6 @@
 package eu.ownyourdata.pia.web.rest.mapper;
 
-import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.repository.ProcessRepository;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import org.mapstruct.Mapper;
@@ -30,7 +30,6 @@ public abstract class PluginMapper {
         target.setId(plugin.getId());
         target.setIdentifier(plugin.getIdentifier());
         target.setName(plugin.getName());
-        target.setPath(plugin.getPath());
         target.setState(processRepository.isRunning(plugin) ? "Running" : "Stopped");
 
         try {
@@ -42,6 +41,6 @@ public abstract class PluginMapper {
         return target;
     }
 
-    public abstract Plugin pluginDTOtoPlugin(PluginDTO pluginDTO);
+
 
 }

@@ -1,6 +1,7 @@
 package eu.ownyourdata.pia.repository;
 
-import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 
 import java.io.IOException;
 
@@ -9,6 +10,6 @@ import java.io.IOException;
  */
 public interface ProcessRepository {
     boolean isRunning(Plugin plugin);
-    Process create(Plugin plugin) throws IOException;
-    boolean stop(Plugin plugin);
+    Process create(StandalonePlugin plugin) throws IOException;
+    boolean stop(StandalonePlugin plugin);
 }

@@ -1,7 +1,8 @@
 package eu.ownyourdata.pia.web.rest;
 
 import eu.ownyourdata.pia.Application;
-import eu.ownyourdata.pia.domain.Plugin;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 import eu.ownyourdata.pia.repository.PluginRepository;
 import eu.ownyourdata.pia.web.rest.mapper.PluginMapper;
 import org.junit.Before;
@@ -62,7 +63,7 @@ public class PluginResourceIntTest {
 
     private MockMvc restPluginMockMvc;
 
-    private Plugin plugin;
+    private StandalonePlugin plugin;
 
     @PostConstruct
     public void setup() {
@@ -78,7 +79,7 @@ public class PluginResourceIntTest {
 
     @Before
     public void initTest() {
-        plugin = new Plugin();
+        plugin = new StandalonePlugin();
         plugin.setName(DEFAULT_NAME);
         plugin.setIdentifier(DEFAULT_IDENTIFIER);
         plugin.setPath(DEFAULT_PATH);
