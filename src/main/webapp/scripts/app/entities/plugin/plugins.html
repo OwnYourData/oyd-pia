@@ -3,13 +3,13 @@
     <jh-alert></jh-alert>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-2">
                 <button class="btn btn-primary" ngf-select="upload($file)">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span translate="piaApp.plugin.home.createLabel">Upload new plugin</span>
                 </button>
             </div>
-            <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-2">
                 <button class="btn btn-primary" ui-sref="plugin.register">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span translate="piaApp.plugin.home.registerLabel">Register new plugin</span>
@@ -28,7 +28,7 @@
                     class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="identifier"><span translate="piaApp.plugin.identifier">Identifier</span> <span
                     class="glyphicon glyphicon-sort"></span></th>
-                <th jh-sort-by="path"><span translate="piaApp.plugin.path">Path</span> <span
+                <th jh-sort-by="path"><span translate="piaApp.plugin.type">Type</span> <span
                     class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="running"><span translate="piaApp.plugin.state">State</span><span
                     class="glyphicon glyphicon-sort"></span></th>
@@ -40,11 +40,11 @@
                 <td><a ui-sref="plugin.detail({id:plugin.id})">{{plugin.id}}</a></td>
                 <td>{{plugin.name}}</td>
                 <td>{{plugin.identifier}}</td>
-                <td>{{plugin.path}}</td>
+                <td>{{plugin.type}}</td>
                 <td>{{plugin.state}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button ng-if="plugin.state == 'Stopped' && plugin.type == host" ng-click="start(plugin)"
+                        <button ng-if="plugin.state == 'Stopped' && plugin.type == 'Host'" ng-click="start(plugin)"
                                 class="btn btn-success btn-sm">
                             <span class="glyphicon glyphicon-play"></span>
                             <span translate="piaApp.plugin.start">Start</span>

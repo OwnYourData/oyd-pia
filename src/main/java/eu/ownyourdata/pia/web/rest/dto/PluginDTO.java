@@ -16,6 +16,9 @@ public class PluginDTO {
 
     private String state;
 
+    private String type;
+
+
     public Long getId() {
         return id;
     }
@@ -62,5 +65,13 @@ public class PluginDTO {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

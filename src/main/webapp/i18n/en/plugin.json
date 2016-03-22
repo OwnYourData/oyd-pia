@@ -20,6 +20,7 @@
             "name": "Name",
             "identifier": "Identifier",
             "path": "Path",
+            "type": "Type",
             "state": "Status",
             "start": "Start",
             "stop": "Stop",
