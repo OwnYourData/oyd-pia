@@ -28,7 +28,7 @@ public class PluginFactoryTest {
     private PluginFactory pluginFactory;
 
     @Before
-    public void setup() throws InvalidManifestException {
+    public void setup() throws InvalidManifestException, RequirementManifestException {
         MockitoAnnotations.initMocks(this);
 
 
@@ -47,7 +47,7 @@ public class PluginFactoryTest {
     }
 
     @Test
-    public void requiredPluginAvailable() throws InvalidManifestException {
+    public void requiredPluginAvailable() throws InvalidManifestException, RequirementManifestException {
         when(hostPluginRepository.findOneByIdentifier("eu.required.plugin")).thenReturn(Optional.of(existing));
 
         Manifest newManifest = new Manifest.ManifestBuilder()
@@ -61,5 +61,20 @@ public class PluginFactoryTest {
 
         assertThat(newPlugin, instanceOf(HostedPlugin.class));
         assertThat(((HostedPlugin) newPlugin).getHost(),is(existing));
+    }
+
+
+    @Test(expected = RequirementManifestException.class)
+    public void requiredPluginNotAvailableThrowsRequiredManifestException() throws InvalidManifestException, RequirementManifestException {
+        when(hostPluginRepository.findOneByIdentifier("eu.required.plugin")).thenReturn(Optional.empty());
+
+        Manifest newManifest = new Manifest.ManifestBuilder()
+            .withIdentifier("eu.new.plugin")
+            .withName("New Plugin")
+            .withType("hosted")
+            .withRequirements("eu.required.plugin")
+            .build();
+
+        pluginFactory.build(newManifest);
     }
 }

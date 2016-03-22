@@ -28,8 +28,8 @@ public class PluginInstaller implements PluginVisitor {
     }
 
     @Override
-    public void visit(HostedPlugin plugin) {
-
+    public void visit(HostedPlugin plugin) throws IOException {
+        UnzipUtils.extract(zip, plugin.getPath());
     }
 
     @Override

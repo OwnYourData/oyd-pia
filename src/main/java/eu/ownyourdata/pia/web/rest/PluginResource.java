@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.*;
 import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
 import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 import eu.ownyourdata.pia.repository.*;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
@@ -191,6 +192,8 @@ public class PluginResource {
         } catch (InvalidManifestException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (PluginActivationException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (RequirementManifestException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

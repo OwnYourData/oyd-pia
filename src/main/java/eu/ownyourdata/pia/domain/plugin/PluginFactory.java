@@ -21,13 +21,13 @@ public class PluginFactory {
     @Inject
     private HostPluginRepository hostPluginRepository;
 
-    public Plugin build(ZipFile zip) throws InvalidManifestException, ManifestNotFoundException {
+    public Plugin build(ZipFile zip) throws InvalidManifestException, ManifestNotFoundException, RequirementManifestException {
         Manifest manifest = extractManifest(zip);
 
         return build(manifest);
     }
 
-    public Plugin build(Manifest manifest)  {
+    public Plugin build(Manifest manifest) throws RequirementManifestException {
         switch (manifest.getType()) {
             case "host": {
                 return createHostPugin(manifest);
@@ -53,7 +53,7 @@ public class PluginFactory {
         return newPlugin;
     }
 
-    private HostedPlugin createHostedPlugin(Manifest manifest) {
+    private HostedPlugin createHostedPlugin(Manifest manifest) throws RequirementManifestException {
         HostedPlugin newPlugin = setGeneralProperties(new HostedPlugin(),manifest);
 
         for(String requires : manifest.getRequires()) {
@@ -64,6 +64,9 @@ public class PluginFactory {
             }
         }
 
+        if (newPlugin.getHost() == null) {
+            throw new RequirementManifestException("could not meet requirements: "+manifest.getRequires());
+        }
 
         return newPlugin;
     }

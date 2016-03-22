@@ -23,17 +23,17 @@ public class PluginCredentialsWriter implements PluginVisitor {
 
     @Override
     public void visit(HostPlugin hostPlugin) throws Exception {
-        writePluginClientCredentials(hostPlugin);
+        writePluginClientCredentials(hostPlugin.getPath());
     }
 
     @Override
     public void visit(HostedPlugin hostedPlugin) throws Exception {
-
+        writePluginClientCredentials(hostedPlugin.getPath());
     }
 
     @Override
     public void visit(StandalonePlugin standalonePlugin) throws Exception {
-        writePluginClientCredentials(standalonePlugin);
+        writePluginClientCredentials(standalonePlugin.getPath());
     }
 
     @Override
@@ -41,13 +41,13 @@ public class PluginCredentialsWriter implements PluginVisitor {
 
     }
 
-    private void writePluginClientCredentials(StandalonePlugin plugin) throws IOException {
+    private void writePluginClientCredentials(String path) throws IOException {
         try {
             JSONObject json = new JSONObject();
             json.put("client_id", clientDetails.getClientId());
             json.put("client_secret", clientDetails.getClientSecret());
 
-            File credentials = new File(FilenameUtils.concat(plugin.getPath(), "credentials.json"));
+            File credentials = new File(FilenameUtils.concat(path, "credentials.json"));
 
             FileUtils.deleteQuietly(credentials);
             FileUtils.writeStringToFile(credentials, json.toString());

@@ -4,6 +4,7 @@ import eu.ownyourdata.pia.domain.InvalidManifestException;
 import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.PluginFactory;
+import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginCredentialsWriter;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginInstaller;
 import eu.ownyourdata.pia.domain.plugin.visitor.PluginUninstaller;
@@ -104,7 +105,7 @@ public class PluginRepositoryImpl implements PluginRepositoryCustom {
     }
 
     @Override
-    public Plugin get(Manifest manifest) {
+    public Plugin get(Manifest manifest) throws RequirementManifestException {
         return pluginRepository.findOneByIdentifier(manifest.getIdentifier())
             .map(plugin -> plugin)
             .orElse(pluginFactory.build(manifest));
