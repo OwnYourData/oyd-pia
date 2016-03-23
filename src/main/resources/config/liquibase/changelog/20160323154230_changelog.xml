@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   <changeSet author="michael (generated)" id="1458747752867-1">
+      <createTable tableName="ExternalPlugin">
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-2">
+      <createTable tableName="HostPlugin">
+         <column name="modules_path" type="VARCHAR(255)"/>
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-3">
+      <createTable tableName="HostedPlugin">
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="host_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-4">
+      <createTable tableName="StandalonePlugin">
+         <column name="installCommand" type="VARCHAR(255)"/>
+         <column name="path" type="VARCHAR(255)"/>
+         <column name="startcommand" type="VARCHAR(255)"/>
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-5">
+      <addPrimaryKey columnNames="id"
+                     constraintName="ExternalPluginPK"
+                     tableName="ExternalPlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-6">
+      <addPrimaryKey columnNames="id"
+                     constraintName="HostPluginPK"
+                     tableName="HostPlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-7">
+      <addPrimaryKey columnNames="id"
+                     constraintName="HostedPluginPK"
+                     tableName="HostedPlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-8">
+      <addPrimaryKey columnNames="id"
+                     constraintName="StandalonePluginPK"
+                     tableName="StandalonePlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-9">
+      <addForeignKeyConstraint baseColumnNames="host_id"
+                               baseTableName="HostedPlugin"
+                               constraintName="FK_41fsljjrrdr5way9ej94wotca"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="HostPlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-10">
+      <addForeignKeyConstraint baseColumnNames="id"
+                               baseTableName="HostPlugin"
+                               constraintName="FK_7k2giwdbtudcb2u4026r437u9"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="StandalonePlugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-11">
+      <addForeignKeyConstraint baseColumnNames="id"
+                               baseTableName="ExternalPlugin"
+                               constraintName="FK_80ek6bg6yjnha7i15ifnhqhjk"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="Plugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-12">
+      <addForeignKeyConstraint baseColumnNames="id"
+                               baseTableName="HostedPlugin"
+                               constraintName="FK_b5mey992p42rji0cigq81uy9"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="Plugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-13">
+      <addForeignKeyConstraint baseColumnNames="id"
+                               baseTableName="StandalonePlugin"
+                               constraintName="FK_co5y3e29tbhit6snj5n3w56rs"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="Plugin"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-14">
+      <dropForeignKeyConstraint baseTableName="EXTERNAL_PLUGIN"
+                                constraintName="FK_L35TXDWQ65N6GFHUD7LWPEYV1"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-15">
+      <dropForeignKeyConstraint baseTableName="HOST_PLUGIN"
+                                constraintName="FK_LTQDTX3SJWK061UDX3KYDCX00"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-16">
+      <dropForeignKeyConstraint baseTableName="HOSTED_PLUGIN"
+                                constraintName="FK_M60B4P5ONHEKG1PV1Y1XX1W9Q"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-17">
+      <dropForeignKeyConstraint baseTableName="OAUTH_ACCESS_TOKEN"
+                                constraintName="FK_OAUTH_ACCESS_TOKN_USER_NAME"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-18">
+      <dropForeignKeyConstraint baseTableName="OAUTH_CLIENT_TOKEN"
+                                constraintName="FK_OAUTH_CLIENT_TOKN_USER_NAME"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-19">
+      <dropForeignKeyConstraint baseTableName="HOSTED_PLUGIN"
+                                constraintName="FK_OWCM61KSCWT7KNP1EFKPFM1XY"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-20">
+      <dropForeignKeyConstraint baseTableName="STANDALONE_PLUGIN"
+                                constraintName="FK_YW2OYCQU4W6ODCTB1A41HXD7"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-21">
+      <dropTable tableName="EXTERNAL_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-22">
+      <dropTable tableName="HOSTED_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-23">
+      <dropTable tableName="HOST_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-24">
+      <dropTable tableName="OAUTH_ACCESS_TOKEN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-25">
+      <dropTable tableName="OAUTH_APPROVALS"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-26">
+      <dropTable tableName="OAUTH_CLIENT_DETAILS"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-27">
+      <dropTable tableName="OAUTH_CLIENT_TOKEN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-28">
+      <dropTable tableName="OAUTH_CODE"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-29">
+      <dropTable tableName="OAUTH_REFRESH_TOKEN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-30">
+      <dropTable tableName="STANDALONE_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458747752867-31">
+      <dropDefaultValue columnDataType="timestamp"
+                        columnName="created_date"
+                        tableName="jhi_user"/>
+   </changeSet>
+</databaseChangeLog>

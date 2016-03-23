@@ -1,10 +1,12 @@
 package eu.ownyourdata.pia.web.rest;
 
+import com.fasterxml.jackson.datatype.jsonorg.JSONObjectSerializer;
 import eu.ownyourdata.pia.domain.util.JSR310DateTimeSerializer;
 import eu.ownyourdata.pia.domain.util.JSR310LocalDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
@@ -44,6 +46,7 @@ public class TestUtil {
         module.addSerializer(LocalDateTime.class, JSR310DateTimeSerializer.INSTANCE);
         module.addSerializer(Instant.class, JSR310DateTimeSerializer.INSTANCE);
         module.addDeserializer(LocalDate.class, JSR310LocalDateDeserializer.INSTANCE);
+        module.addSerializer(JSONObject.class, JSONObjectSerializer.instance);
         mapper.registerModule(module);
 
         return mapper.writeValueAsBytes(object);

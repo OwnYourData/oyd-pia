@@ -1,0 +1,23 @@
+{
+    "piaApp": {
+        "item" : {
+            "home": {
+                "title": "Items",
+                "createLabel": "Create a new Item",
+                "createOrEditLabel": "Create or edit a Item",
+                "search": "Search for Item"
+            },
+            "created": "A new Item is created with identifier {{ param }}",
+            "updated": "A Item is updated with identifier {{ param }}",
+            "deleted": "A Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Item {{ id }}?"
+            },
+            "detail": {
+                "title": "Item"
+            },
+            "value": "Value",
+            "belongs": "Repo"
+        }
+    }
+}

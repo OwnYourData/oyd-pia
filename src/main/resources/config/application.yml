@@ -15,7 +15,7 @@ spring:
     jpa:
         open-in-view: false
         hibernate:
-            ddl-auto: update
+            ddl-auto: none
             naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
     messages:
         basename: classpath:/i18n/messages
