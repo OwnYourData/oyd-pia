@@ -77,9 +77,8 @@ public class ItemServiceImpl implements ItemService{
     public JSONObject findOne(Long id) {
         log.debug("Request to get Item : {}", id);
         Item item = itemRepository.findOne(id);
-        JSONObject itemDTO = itemMapper.itemToJson(item);
 
-        return itemDTO;
+        return item == null ? null : itemMapper.itemToJson(item);
     }
 
     @Override

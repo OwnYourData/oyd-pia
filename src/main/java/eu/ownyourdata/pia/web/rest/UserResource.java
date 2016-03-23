@@ -9,7 +9,6 @@ import eu.ownyourdata.pia.security.AuthoritiesConstants;
 import eu.ownyourdata.pia.service.MailService;
 import eu.ownyourdata.pia.service.UserService;
 import eu.ownyourdata.pia.web.rest.dto.ManagedUserDTO;
-import eu.ownyourdata.pia.web.rest.dto.UserDTO;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -25,10 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

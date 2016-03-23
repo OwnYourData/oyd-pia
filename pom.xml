@@ -11,7 +11,7 @@
 
     <groupId>eu.ownyourdata.pia</groupId>
     <artifactId>pia</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>pia</name>
 
@@ -59,7 +59,7 @@
         <run.addResources>false</run.addResources>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <spring-security-oauth2.version>2.0.8.RELEASE</spring-security-oauth2.version>
-        <springfox.version>2.0.3</springfox.version>
+        <springfox.version>2.4.0</springfox.version>
         <!-- Sonar properties -->
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>

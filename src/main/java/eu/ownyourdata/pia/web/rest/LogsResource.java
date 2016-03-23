@@ -1,10 +1,9 @@
 package eu.ownyourdata.pia.web.rest;
 
-import eu.ownyourdata.pia.web.rest.dto.LoggerDTO;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.annotation.Timed;
+import eu.ownyourdata.pia.web.rest.dto.LoggerDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

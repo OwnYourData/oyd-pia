@@ -1,6 +1,5 @@
 package eu.ownyourdata.pia.repository;
 
-import eu.ownyourdata.pia.domain.DatatypeCount;
 import eu.ownyourdata.pia.domain.Repo;
 import eu.ownyourdata.pia.domain.RepoItemCount;
 import org.springframework.data.jpa.repository.JpaRepository;

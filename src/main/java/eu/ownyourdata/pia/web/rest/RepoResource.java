@@ -1,13 +1,16 @@
 package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.ownyourdata.pia.domain.*;
+import eu.ownyourdata.pia.domain.Item;
+import eu.ownyourdata.pia.domain.Repo;
+import eu.ownyourdata.pia.domain.RepoItemCount;
 import eu.ownyourdata.pia.service.ItemService;
 import eu.ownyourdata.pia.service.RepoService;
 import eu.ownyourdata.pia.web.rest.mapper.ItemMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -152,6 +155,7 @@ public class RepoResource {
     /**
      * GET  /datas -> get all the datas.
      */
+    @ApiOperation(tags = "Plugins", value="Retrieve all items from a given repository.")
     @RequestMapping(value = "/repos/{identifier:.+}/items", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
@@ -175,6 +179,7 @@ public class RepoResource {
     /**
      * POST  /datas -> Create a new data.
      */
+    @ApiOperation(tags = "Plugins", value="Saves an item to a repository.")
     @RequestMapping(value = "/repos/{identifier:.+}/items", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
@@ -197,6 +202,7 @@ public class RepoResource {
     /**
      * PUT  /datas -> Updates an existing data.
      */
+    @ApiOperation(tags = "Plugins", value="Updates an item in a repository.")
     @RequestMapping(value = "/repos/{identifier:.+}/items", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
@@ -221,6 +227,7 @@ public class RepoResource {
     /**
      * DELETE  /datas/:id -> delete the "id" data.
      */
+    @ApiOperation(tags = "Plugins", value="Deletes an item from a repository.")
     @RequestMapping(value = "/repos/{identifier:.+}/items/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)

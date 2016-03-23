@@ -1,7 +1,6 @@
 package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.ownyourdata.pia.domain.Authority;
 import eu.ownyourdata.pia.domain.User;
 import eu.ownyourdata.pia.repository.UserRepository;
 import eu.ownyourdata.pia.security.SecurityUtils;
@@ -10,7 +9,6 @@ import eu.ownyourdata.pia.service.UserService;
 import eu.ownyourdata.pia.web.rest.dto.KeyAndPasswordDTO;
 import eu.ownyourdata.pia.web.rest.dto.UserDTO;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.

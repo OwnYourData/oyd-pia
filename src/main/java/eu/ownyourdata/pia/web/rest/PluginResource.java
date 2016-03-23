@@ -1,7 +1,7 @@
 package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.ownyourdata.pia.domain.*;
+import eu.ownyourdata.pia.domain.InvalidManifestException;
 import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;

@@ -46,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class ItemResourceIntTest {
 
-    private static final String DEFAULT_VALUE = "AAAAA";
-    private static final String UPDATED_VALUE = "BBBBB";
+    private static final String DEFAULT_VALUE = "{\"value\":5}";
+    private static final String UPDATED_VALUE = "{\"value\":8}";
 
     @Inject
     private ItemRepository itemRepository;
@@ -97,32 +97,13 @@ public class ItemResourceIntTest {
         restItemMockMvc.perform(post("/api/items")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(itemDTO)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         // Validate the Item in the database
         List<Item> items = itemRepository.findAll();
         assertThat(items).hasSize(databaseSizeBeforeCreate + 1);
         Item testItem = items.get(items.size() - 1);
         assertThat(testItem.getValue()).isEqualTo(DEFAULT_VALUE);
-    }
-
-    @Test
-    @Transactional
-    public void checkValueIsRequired() throws Exception {
-        int databaseSizeBeforeTest = itemRepository.findAll().size();
-        // set the field null
-        item.setValue(null);
-
-        // Create the Item, which fails.
-        JSONObject itemDTO = itemMapper.itemToJson(item);
-
-        restItemMockMvc.perform(post("/api/items")
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(itemDTO)))
-                .andExpect(status().isBadRequest());
-
-        List<Item> items = itemRepository.findAll();
-        assertThat(items).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -136,7 +117,7 @@ public class ItemResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(item.getId().intValue())))
-                .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
+                .andExpect(jsonPath("$.[*].value").value(5));
     }
 
     @Test
@@ -150,7 +131,7 @@ public class ItemResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(item.getId().intValue()))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()));
+            .andExpect(jsonPath("$.value").value(5));
     }
 
     @Test
