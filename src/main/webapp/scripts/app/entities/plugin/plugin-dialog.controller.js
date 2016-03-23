@@ -11,6 +11,12 @@ angular.module('piaApp').controller('PluginDialogController',
             });
         };
 
+        $scope.loadSecret = function(id) {
+            Plugin.secret({id: id}, function(result) {
+               $scope.plugin.secret = result.secret;
+            });
+        }
+
         var onSaveSuccess = function (result) {
             $scope.$emit('piaApp:pluginUpdate', result);
             $uibModalInstance.close(result);

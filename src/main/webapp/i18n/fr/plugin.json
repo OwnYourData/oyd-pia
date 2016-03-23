@@ -22,7 +22,8 @@
             "type": "Type",
             "state":"Statut",
             "start": "Début",
-            "stop": "Stop"
+            "stop": "Stop",
+            "secret": "Secret"
         }
     }
 }

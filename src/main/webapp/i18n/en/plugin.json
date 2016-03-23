@@ -24,6 +24,7 @@
             "state": "Status",
             "start": "Start",
             "stop": "Stop",
+            "secret": "Secret",
             "register": {
                 "title": "Register a new Plugin",
                 "instructions": "Paste Base64 Code",

@@ -55,6 +55,12 @@
                             <span translate="piaApp.plugin.stop">Stop</span>
                         </button>
                         <button type="submit"
+                                ui-sref="plugin.edit({id:plugin.id})"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                        </button>
+                        <button type="submit"
                                 ui-sref="plugin.delete({id:plugin.id})"
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>

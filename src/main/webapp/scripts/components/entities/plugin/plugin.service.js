@@ -15,5 +15,13 @@ angular.module('piaApp')
             'register': {method:'POST', url:'api/plugins/register'},
             'start' : { method:'GET', url:'api/plugins/:id/start'},
             'stop' : { method:'GET', url:'api/plugins/:id/stop'},
+            'secret': {
+                method:'GET',
+                url:'api/plugins/:id/secret',
+                transformResponse: function(data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            }
         });
     });
