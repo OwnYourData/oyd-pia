@@ -8,6 +8,7 @@ import eu.ownyourdata.pia.repository.DatatypeRepository;
 import eu.ownyourdata.pia.web.rest.mapper.DataMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,6 @@ public class DataResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @CrossOrigin
     public ResponseEntity<JSONObject> createData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
         log.debug("REST request to save Data : {}", json);
         if (!json.optString("id").equals("") || json.optString("type").equals("")) {
@@ -77,12 +77,16 @@ public class DataResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
-    @PreAuthorize("#oauth2.hasScope(#type+':write')")
-    public ResponseEntity<JSONObject> createData(@PathVariable String type, @Valid @RequestBody JSONObject json) throws URISyntaxException {
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':write')")
+    public ResponseEntity<JSONObject> createData(@PathVariable String type, @Valid @RequestBody JSONObject json) throws URISyntaxException, JSONException {
         log.debug("REST request to save Data : {}", json);
-        if (!json.optString("id").equals("") || !json.optString("type").equals(type)) {
+        json.remove("type");
+        json.put("type",type);
+
+        if (!json.optString("id").equals("")) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("data", "idexists", "A new data cannot already have an ID")).body(null);
         }
+
 
         Data data = dataMapper.jsonToData(json);
         data = dataRepository.save(data);
@@ -99,6 +103,8 @@ public class DataResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @CrossOrigin
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':update')")
     public ResponseEntity<JSONObject> updateData(@Valid @RequestBody JSONObject json) throws URISyntaxException {
         log.debug("REST request to update Data : {}", json);
         if (json.optString("id").equals("")) {
@@ -110,6 +116,46 @@ public class DataResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("data", result.optString("id")))
             .body(result);
+    }
+
+    /**
+     * GET  /datas -> get all the datas.
+     */
+    @RequestMapping(value = "/data/{type:.+}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    @CrossOrigin
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':read')")
+    public ResponseEntity<List<JSONObject>> getAllData(@PathVariable String type, Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get a page of Datas");
+        Optional<Datatype> datatype = datatypeRepository.findOneByName(type);
+        if (datatype.isPresent()) {
+            Page<Data> page = dataRepository.findAllByType(datatype.get(),pageable);
+
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/data/"+type);
+            return new ResponseEntity<>(page.getContent().stream()
+                .map(e -> dataMapper.dataToJson(e))
+                .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<JSONObject>>(HttpStatus.OK);
+        }
+    }
+
+    /**
+     * DELETE  /datas/:id -> delete the "id" data.
+     */
+    @RequestMapping(value = "/datas/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @CrossOrigin
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':delete')")
+    public ResponseEntity<Void> deleteData(@PathVariable Long id) {
+        log.debug("REST request to delete Data : {}", id);
+        dataRepository.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("data", id.toString())).build();
     }
 
     /**
@@ -131,30 +177,7 @@ public class DataResource {
     }
 
 
-    /**
-     * GET  /datas -> get all the datas.
-     */
-    @RequestMapping(value = "/data/{type:.+}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    @Transactional(readOnly = true)
-    @CrossOrigin
-    @PreAuthorize("#oauth2.hasScope(#type+':read')")
-    public ResponseEntity<List<JSONObject>> getAllData(@PathVariable String type, Pageable pageable) throws URISyntaxException {
-        log.debug("REST request to get a page of Datas");
-        Optional<Datatype> datatype = datatypeRepository.findOneByName(type);
-        if (datatype.isPresent()) {
-            Page<Data> page = dataRepository.findAllByType(datatype.get(),pageable);
 
-            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/data/"+type);
-            return new ResponseEntity<>(page.getContent().stream()
-                .map(e -> dataMapper.dataToJson(e))
-                .collect(Collectors.toCollection(LinkedList::new)), headers, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<List<JSONObject>>(HttpStatus.OK);
-        }
-    }
 
     /**
      * GET  /datas/:id -> get the "id" data.
@@ -174,16 +197,5 @@ public class DataResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    /**
-     * DELETE  /datas/:id -> delete the "id" data.
-     */
-    @RequestMapping(value = "/datas/{id}",
-        method = RequestMethod.DELETE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<Void> deleteData(@PathVariable Long id) {
-        log.debug("REST request to delete Data : {}", id);
-        dataRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("data", id.toString())).build();
-    }
+
 }
