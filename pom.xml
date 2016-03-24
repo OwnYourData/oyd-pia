@@ -575,6 +575,11 @@
                     <username>pia</username>
                     <password></password>
                     <referenceUrl>hibernate:spring:eu.ownyourdata.pia.domain?dialect=org.hibernate.dialect.H2Dialect</referenceUrl>
+                    <!--
+                    <referenceDriver>org.h2.Driver</referenceDriver>
+                    <referenceUsername>pia</referenceUsername>
+                    <referenceUrl>jdbc:h2:file:./target/h2db/db/piamig</referenceUrl>
+                    -->
                     <verbose>true</verbose>
                     <logging>debug</logging>
                     <diffExcludeObjects>oauth_access_token, oauth_approvals, oauth_client_details, oauth_client_token, oauth_code, oauth_refresh_token</diffExcludeObjects>

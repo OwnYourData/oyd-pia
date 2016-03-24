@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   <changeSet author="michael (generated)" id="1458847338581-1">
+      <createTable tableName="EXTERNAL_PLUGIN">
+         <column name="ID" type="BIGINT(19)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-2">
+      <createTable tableName="HOSTED_PLUGIN">
+         <column name="ID" type="BIGINT(19)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="HOST_ID" type="BIGINT(19)"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-3">
+      <createTable tableName="HOST_PLUGIN">
+         <column name="MODULES_PATH" type="VARCHAR(255)"/>
+         <column name="ID" type="BIGINT(19)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-4">
+      <createTable tableName="ITEM">
+         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+            <constraints primaryKey="true" primaryKeyName="CONSTRAINT_2"/>
+         </column>
+         <column name="VALUE" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="BELONGS_ID" type="BIGINT(19)"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-5">
+      <createTable tableName="PERMISSIONS">
+         <column name="PLUGIN_ID" type="BIGINT(19)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="PERMISSION" type="VARCHAR(255)"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-6">
+      <createTable tableName="PLUGIN">
+         <column name="PLUGIN_TYPE" type="VARCHAR(31)">
+            <constraints nullable="false"/>
+         </column>
+         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+            <constraints primaryKey="true" primaryKeyName="CONSTRAINT_8"/>
+         </column>
+         <column name="IDENTIFIER" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="NAME" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-7">
+      <createTable tableName="REPO">
+         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+            <constraints primaryKey="true" primaryKeyName="CONSTRAINT_26"/>
+         </column>
+         <column name="CREATOR" type="VARCHAR(255)"/>
+         <column name="DESCRIPTION" type="VARCHAR(255)"/>
+         <column name="IDENTIFIER" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-8">
+      <createTable tableName="STANDALONE_PLUGIN">
+         <column name="INSTALL_COMMAND" type="VARCHAR(255)"/>
+         <column name="PATH" type="VARCHAR(255)"/>
+         <column name="STARTCOMMAND" type="VARCHAR(255)"/>
+         <column name="ID" type="BIGINT(19)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-9">
+      <addPrimaryKey columnNames="ID"
+                     constraintName="CONSTRAINT_9"
+                     tableName="HOST_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-10">
+      <addPrimaryKey columnNames="ID"
+                     constraintName="CONSTRAINT_9F"
+                     tableName="HOSTED_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-11">
+      <addPrimaryKey columnNames="ID"
+                     constraintName="CONSTRAINT_D"
+                     tableName="STANDALONE_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-12">
+      <addPrimaryKey columnNames="ID"
+                     constraintName="CONSTRAINT_FC"
+                     tableName="EXTERNAL_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-13">
+      <addUniqueConstraint columnNames="IDENTIFIER"
+                           constraintName="UK_D8MCX5T9ACKUHYEN678GB6NNA"
+                           tableName="PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-14">
+      <createIndex indexName="FK_LHK4YHIOBHRG02122MGY5JILG_INDEX_2" tableName="ITEM">
+         <column name="BELONGS_ID"/>
+      </createIndex>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-15">
+      <createIndex indexName="FK_LOE00NBKSJ072E515G4OFIDWB_INDEX_C"
+                   tableName="PERMISSIONS">
+         <column name="PLUGIN_ID"/>
+      </createIndex>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-16">
+      <createIndex indexName="FK_M60B4P5ONHEKG1PV1Y1XX1W9Q_INDEX_9"
+                   tableName="HOSTED_PLUGIN">
+         <column name="HOST_ID"/>
+      </createIndex>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-17">
+      <addForeignKeyConstraint baseColumnNames="ID"
+                               baseTableName="EXTERNAL_PLUGIN"
+                               constraintName="FK_L35TXDWQ65N6GFHUD7LWPEYV1"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-18">
+      <addForeignKeyConstraint baseColumnNames="BELONGS_ID"
+                               baseTableName="ITEM"
+                               constraintName="FK_LHK4YHIOBHRG02122MGY5JILG"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="REPO"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-19">
+      <addForeignKeyConstraint baseColumnNames="PLUGIN_ID"
+                               baseTableName="PERMISSIONS"
+                               constraintName="FK_LOE00NBKSJ072E515G4OFIDWB"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-20">
+      <addForeignKeyConstraint baseColumnNames="ID"
+                               baseTableName="HOST_PLUGIN"
+                               constraintName="FK_LTQDTX3SJWK061UDX3KYDCX00"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="STANDALONE_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-21">
+      <addForeignKeyConstraint baseColumnNames="HOST_ID"
+                               baseTableName="HOSTED_PLUGIN"
+                               constraintName="FK_M60B4P5ONHEKG1PV1Y1XX1W9Q"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="HOST_PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-22">
+      <addForeignKeyConstraint baseColumnNames="ID"
+                               baseTableName="HOSTED_PLUGIN"
+                               constraintName="FK_OWCM61KSCWT7KNP1EFKPFM1XY"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-23">
+      <addForeignKeyConstraint baseColumnNames="ID"
+                               baseTableName="STANDALONE_PLUGIN"
+                               constraintName="FK_YW2OYCQU4W6ODCTB1A41HXD7"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               onDelete="RESTRICT"
+                               onUpdate="RESTRICT"
+                               referencedColumnNames="ID"
+                               referencedTableName="PLUGIN"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-24">
+      <dropUniqueConstraint constraintName="CONSTRAINT_6" tableName="JHI_USER"/>
+      <addUniqueConstraint columnNames="LOGIN"
+                           constraintName="CONSTRAINT_6"
+                           tableName="JHI_USER"/>
+   </changeSet>
+   <changeSet author="michael (generated)" id="1458847338581-25">
+      <dropUniqueConstraint constraintName="CONSTRAINT_69" tableName="JHI_USER"/>
+      <addUniqueConstraint columnNames="EMAIL"
+                           constraintName="CONSTRAINT_69"
+                           tableName="JHI_USER"/>
+   </changeSet>
+</databaseChangeLog>
