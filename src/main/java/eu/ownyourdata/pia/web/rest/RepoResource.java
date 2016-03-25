@@ -160,7 +160,7 @@ public class RepoResource {
     @Timed
     @Transactional(readOnly = true)
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':read')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#identifier+':read')")
     public ResponseEntity<List<JSONObject>> getAllItems(@PathVariable String identifier, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Datas");
         Optional<Repo> repo = repoService.findOneByIdentifier(identifier);
@@ -233,7 +233,7 @@ public class RepoResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#type+':delete')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR #oauth2.hasScope(#identifier+':delete')")
     public ResponseEntity<Void> deleteData(@PathVariable String identifier, @PathVariable Long id) {
         log.debug("REST request to delete Data : {}", id);
 
