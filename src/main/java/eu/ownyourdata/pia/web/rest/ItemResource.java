@@ -3,7 +3,7 @@ package eu.ownyourdata.pia.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.Item;
 import eu.ownyourdata.pia.service.ItemService;
-import eu.ownyourdata.pia.web.rest.mapper.ItemMapper;
+import eu.ownyourdata.pia.web.rest.mapper.ItemMapperPia;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
 import org.json.JSONObject;
@@ -39,7 +39,7 @@ public class ItemResource {
     private ItemService itemService;
 
     @Inject
-    private ItemMapper itemMapper;
+    private ItemMapperPia itemMapper;
 
     /**
      * POST  /items -> Create a new item.
@@ -53,8 +53,9 @@ public class ItemResource {
         if (json.optLong("id") != 0) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("item", "idexists", "A new item cannot already have an ID")).body(null);
         }
-        JSONObject result = itemService.save(json);
-        return ResponseEntity.ok().body(result);
+
+        Item item = itemService.save(itemMapper.jsonToItem(json));
+        return ResponseEntity.ok().body(itemMapper.itemToJson(item));
     }
 
     /**
@@ -69,8 +70,9 @@ public class ItemResource {
         if (json.optLong("id") == 0) {
             return createItem(json);
         }
-        JSONObject result = itemService.save(json);
-        return ResponseEntity.ok().body(result);
+
+        Item item = itemService.save(itemMapper.jsonToItem(json));
+        return ResponseEntity.ok().body(itemMapper.itemToJson(item));
     }
 
     /**
@@ -100,10 +102,10 @@ public class ItemResource {
     @Timed
     public ResponseEntity<JSONObject> getItem(@PathVariable Long id) {
         log.debug("REST request to get Item : {}", id);
-        JSONObject json = itemService.findOne(id);
-        return Optional.ofNullable(json)
+        Item item = itemService.findOne(id);
+        return Optional.ofNullable(item)
             .map(result -> new ResponseEntity<>(
-                result,
+                itemMapper.itemToJson(result),
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

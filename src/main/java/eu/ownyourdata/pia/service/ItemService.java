@@ -11,11 +11,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface ItemService {
 
-    /**
-     * Save a item.
-     * @return the persisted entity
-     */
-    public JSONObject save(JSONObject json);
 
 
     public boolean belongs(Long id, String repoIdentifier);
@@ -39,7 +34,7 @@ public interface ItemService {
      *  get the "id" item.
      *  @return the entity
      */
-    public JSONObject findOne(Long id);
+    public Item findOne(Long id);
 
     /**
      *  delete the "id" item.

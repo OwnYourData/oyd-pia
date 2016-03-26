@@ -74,11 +74,9 @@ public class ItemServiceImpl implements ItemService{
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public JSONObject findOne(Long id) {
+    public Item findOne(Long id) {
         log.debug("Request to get Item : {}", id);
-        Item item = itemRepository.findOne(id);
-
-        return item == null ? null : itemMapper.itemToJson(item);
+        return itemRepository.findOne(id);
     }
 
     @Override
