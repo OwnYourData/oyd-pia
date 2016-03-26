@@ -4,10 +4,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -23,9 +21,9 @@ public class Item implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "value", nullable = false)
+    @Column(name = "value", nullable = false, length = 10000)
     private String value;
-    
+
     @ManyToOne
     @JoinColumn(name = "belongs_id")
     private Repo belongs;
@@ -41,7 +39,7 @@ public class Item implements Serializable {
     public String getValue() {
         return value;
     }
-    
+
     public void setValue(String value) {
         this.value = value;
     }
