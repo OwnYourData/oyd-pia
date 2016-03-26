@@ -41,8 +41,10 @@ public abstract class ItemMapperPia {
         }
 
         json.remove("id");
+        json.remove("belongsId");
+        json.remove("belongsIdentifier");
 
-        result.setValue(json.toString());
+        result.setValue(json.optString("value"));
         return result;
     }
 

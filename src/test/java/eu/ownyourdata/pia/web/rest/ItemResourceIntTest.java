@@ -2,11 +2,14 @@ package eu.ownyourdata.pia.web.rest;
 
 import eu.ownyourdata.pia.Application;
 import eu.ownyourdata.pia.domain.Item;
+import eu.ownyourdata.pia.domain.Repo;
 import eu.ownyourdata.pia.repository.ItemRepository;
+import eu.ownyourdata.pia.repository.RepoRepository;
 import eu.ownyourdata.pia.service.ItemService;
 import eu.ownyourdata.pia.web.rest.dto.ItemDTO;
 import eu.ownyourdata.pia.web.rest.mapper.ItemMapper;
 
+import eu.ownyourdata.pia.web.rest.mapper.ItemMapperPia;
 import io.gatling.core.json.JSON;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -53,7 +56,10 @@ public class ItemResourceIntTest {
     private ItemRepository itemRepository;
 
     @Inject
-    private ItemMapper itemMapper;
+    private RepoRepository repoRepository;
+
+    @Inject
+    private ItemMapperPia itemMapper;
 
     @Inject
     private ItemService itemService;
@@ -82,8 +88,13 @@ public class ItemResourceIntTest {
 
     @Before
     public void initTest() {
+        Repo repo = new Repo();
+        repo.setIdentifier("test");
+        repoRepository.save(repo);
+
         item = new Item();
         item.setValue(DEFAULT_VALUE);
+        item.setBelongs(repo);
     }
 
     @Test
@@ -103,7 +114,7 @@ public class ItemResourceIntTest {
         List<Item> items = itemRepository.findAll();
         assertThat(items).hasSize(databaseSizeBeforeCreate + 1);
         Item testItem = items.get(items.size() - 1);
-        assertThat(testItem.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(new JSONObject(testItem.getValue()).toString()).isEqualTo(DEFAULT_VALUE);
     }
 
     @Test
@@ -117,7 +128,7 @@ public class ItemResourceIntTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(item.getId().intValue())))
-                .andExpect(jsonPath("$.[*].value").value(5));
+                .andExpect(jsonPath("$.[*].value").value(DEFAULT_VALUE));
     }
 
     @Test
@@ -131,7 +142,7 @@ public class ItemResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(item.getId().intValue()))
-            .andExpect(jsonPath("$.value").value(5));
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE));
     }
 
     @Test
@@ -163,7 +174,7 @@ public class ItemResourceIntTest {
         List<Item> items = itemRepository.findAll();
         assertThat(items).hasSize(databaseSizeBeforeUpdate);
         Item testItem = items.get(items.size() - 1);
-        assertThat(testItem.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(new JSONObject(testItem.getValue()).toString()).isEqualTo(UPDATED_VALUE);
     }
 
     @Test
