@@ -1,5 +1,16 @@
-# pia
+# Personal Information Archive (PIA)
 
+## Security
+
+Before building your pia make sure you adapt the security settings in:
+
+* `application.yml`
+* `application-dev.yml`
+* `application-prod.yml`
+    
+_clientId_ and _secret_ in `application.yml` must be in sync with `auth.ouath2.service.js`
+
+## Developers
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -26,7 +37,7 @@ Bower is used to manage CSS and JavaScript dependencies used in this application
 specifying a newer version in `bower.json`. You can also run `bower update` and `bower install` to manage dependencies.
 Add the `-h` flag on any command to see how you can use it. For example, `bower update -h`.
 
-# Building for production
+### Building for production
 
 To optimize the pia client for production, run:
 
@@ -41,7 +52,7 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-# Testing
+### Testing
 
 Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in `src/test/javascript` and can be run with:
 
@@ -49,7 +60,7 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
 
 
-# Continuous Integration
+### Continuous Integration
 
 To setup this project in Jenkins, use the following configuration:
 
