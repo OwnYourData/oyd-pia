@@ -1,4 +1,6 @@
-# Personal Information Archive (PIA)
+# Personal Information Archive (PIA) 
+[![Build Status](https://travis-ci.org/OwnYourData/oyd-pia.svg?branch=master)](https://travis-ci.org/OwnYourData/oyd-pia)
+
 
 ## Security
 
