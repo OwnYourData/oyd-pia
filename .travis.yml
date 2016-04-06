@@ -1,4 +1,4 @@
-language: java
+language: node_js
 node_js:
   - "0.12"
 jdk: oraclejdk8
@@ -10,6 +10,7 @@ install:
 before_script: grunt build
 script:
   - npm test
+  - jdk_switcher use oraclejdk8
   - mvn test
 notifications:
   webhooks:
