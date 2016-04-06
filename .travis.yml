@@ -10,6 +10,7 @@ install:
 before_script: grunt build
 script:
   - sudo apt-get update && sudo apt-get install oracle-java8-installer
+  - sudo update-java-alternatives -s java-8-oracle
   - java -version
   - npm test
   - mvn test
