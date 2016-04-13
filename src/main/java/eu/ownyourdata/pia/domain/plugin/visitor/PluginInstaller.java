@@ -4,6 +4,7 @@ import eu.ownyourdata.pia.domain.plugin.*;
 import eu.ownyourdata.pia.domain.util.UnzipUtils;
 import eu.ownyourdata.pia.repository.PluginInstallationException;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,16 +51,18 @@ public class PluginInstaller implements PluginVisitor {
 
         String installCommand = plugin.getInstallCommand();
         if (installCommand != null) try {
-            File log = new File(FilenameUtils.concat(plugin.getPath(), "installation.log"));
+            String[] commands = StringUtils.split(installCommand, "&&");
+            for (String command : commands) {
+                File log = new File(FilenameUtils.concat(plugin.getPath(), "installation.log"));
+                ProcessBuilder processBuilder = new ProcessBuilder(command.trim().split(" "));
+                processBuilder.directory(new File(plugin.getPath()));
+                processBuilder.redirectError(log);
+                processBuilder.redirectOutput(log);
 
-            ProcessBuilder processBuilder = new ProcessBuilder(installCommand.split(" "));
-            processBuilder.directory(new File(plugin.getPath()));
-            processBuilder.redirectError(log);
-            processBuilder.redirectOutput(log);
+                Process process = processBuilder.start();
 
-            Process process = processBuilder.start();
-
-            process.waitFor(30, TimeUnit.SECONDS);
+                process.waitFor(30, TimeUnit.MINUTES);
+            }
         } catch (IOException | InterruptedException e) {
             throw new PluginInstallationException("Could not install plugin " + plugin.getIdentifier(), e);
         }
