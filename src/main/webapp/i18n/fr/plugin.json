@@ -3,6 +3,7 @@
         "plugin" : {
             "home": {
                 "title": "Plugins",
+                "installLabel": "Install Plugin",
                 "createLabel": "Créer un nouveau Plugin",
                 "createOrEditLabel": "Créer ou éditer un Plugin",
                 "search": "Search for Plugin"
@@ -23,7 +24,10 @@
             "state":"Statut",
             "start": "Début",
             "stop": "Stop",
-            "secret": "Secret"
+            "secret": "Secret",
+            "install": {
+                "title": "Install Plugin"
+            },
         }
     }
 }

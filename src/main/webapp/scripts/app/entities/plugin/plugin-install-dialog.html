@@ -1,0 +1,30 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
+        <h4 class="modal-title" translate="piaApp.plugin.install.title">Install Plugin</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+
+        <div ng-repeat="store in stores" >
+            <div class="panel panel-primary">
+                <div class="panel-heading">{{store.name}}</div>
+                <div class="panel-body">
+                    <div class="list-group">
+                            <div ng-repeat="plugin in store.plugins" href="#" class="list-group-item">
+                                <span class="badge">{{plugin.downloads}} Downloads</span>
+                                <h4 class="list-group-item-heading">{{plugin.identifier}}</h4>
+                                <p class="list-group-item-text">
+                                    {{plugin.description}}
+                                    <button type="button" class="pull-right btn btn-success btn-xs" ng-click="install(store,plugin)">Install</button>
+                                </p>
+
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

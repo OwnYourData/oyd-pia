@@ -105,5 +105,18 @@ angular.module('piaApp')
                         $state.go('plugin', null, { reload: true });
                     })
                 }]
-            });
+            })
+        .state('plugin.install', {
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'scripts/app/entities/plugin/plugin-install-dialog.html',
+                    controller: 'PluginInstallDialogController',
+                    size: 'lg',
+                }).result.then(function(result) {
+                    $state.go('plugin', null, { reload: true });
+                }, function() {
+                    $state.go('plugin', null, { reload: true });
+                })
+            }]
+        });
     });

@@ -12,6 +12,7 @@
                 "plugin": "Plugin",
                 "repo": "Repo",
                 "item": "Item",
+                "store": "Store",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

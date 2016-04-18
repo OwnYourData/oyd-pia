@@ -6,6 +6,7 @@ import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
 import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
+import eu.ownyourdata.pia.domain.sam.Store;
 import eu.ownyourdata.pia.repository.*;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import eu.ownyourdata.pia.web.rest.dto.PluginSecret;
@@ -13,6 +14,7 @@ import eu.ownyourdata.pia.web.rest.mapper.PluginMapper;
 import eu.ownyourdata.pia.web.rest.util.HeaderUtil;
 import eu.ownyourdata.pia.web.rest.util.PaginationUtil;
 import eu.ownyourdata.pia.web.utils.Files;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -27,16 +29,20 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.zip.ZipFile;
 
 /**
  * REST controller for managing Plugin.
@@ -54,10 +60,15 @@ public class PluginResource {
     private PluginRepository pluginRepository;
 
     @Inject
+    private StoreRepository storeRepository;
+
+    @Inject
     private ProcessRepository processRepository;
 
     @Inject
     private ClientDetailsService clientDetailsService;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     /**
      * GET  /plugins -> get all the plugins.
@@ -158,25 +169,6 @@ public class PluginResource {
         }
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(method = RequestMethod.POST, value = "/plugins/upload")
-    public void upload(@RequestPart("name") String name, @RequestPart("file") MultipartFile file) throws IOException, JSONException {
-        try {
-            Plugin plugin = pluginRepository.install(Files.toZipFile(file));
-            pluginRepository.activate(plugin);
-            pluginRepository.save(plugin);
-        } catch (ManifestNotFoundException e) {
-            e.printStackTrace();
-        } catch (PluginAlreadyInstalledException e) {
-            e.printStackTrace();
-        } catch (InvalidManifestException invalidManifestException) {
-            invalidManifestException.printStackTrace();
-        } catch (PluginInstallationException e) {
-            e.printStackTrace();
-        } catch (PluginActivationException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * GET  /plugins/:id -> get the "id" plugin.
@@ -227,5 +219,38 @@ public class PluginResource {
         }
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.POST, value = "/plugins/install")
+    public ResponseEntity<Void> install(@RequestBody JSONObject object) throws IOException, JSONException {
+        File zip = File.createTempFile("pia-plugin", "zip");
+        Store store = storeRepository.findOne(object.getLong("id"));
+        FileUtils.copyURLToFile(new URL(store.getUrl()+"/api/plugins/"+object.getLong("plugin")+"/download"),zip);
 
+        install(new ZipFile(zip));
+        return ResponseEntity.ok().build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = RequestMethod.POST, value = "/plugins/upload")
+    public void upload(@RequestPart("name") String name, @RequestPart("file") MultipartFile file) throws IOException, JSONException {
+        install(Files.toZipFile(file));
+    }
+
+    private void install(ZipFile file) throws IOException {
+        try {
+            Plugin plugin = pluginRepository.install(file);
+            pluginRepository.activate(plugin);
+            pluginRepository.save(plugin);
+        } catch (ManifestNotFoundException e) {
+            e.printStackTrace();
+        } catch (PluginAlreadyInstalledException e) {
+            e.printStackTrace();
+        } catch (InvalidManifestException invalidManifestException) {
+            invalidManifestException.printStackTrace();
+        } catch (PluginInstallationException e) {
+            e.printStackTrace();
+        } catch (PluginActivationException e) {
+            e.printStackTrace();
+        }
+    }
 }

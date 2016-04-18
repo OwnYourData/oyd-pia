@@ -4,6 +4,7 @@
             "home": {
                 "title": "Plugins",
                 "createLabel": "Upload a new Plugin",
+                "installLabel": "Install Plugin",
                 "registerLabel": "Register a new Plugin",
                 "createOrEditLabel": "Create or edit a Plugin",
                 "search": "Search for Plugin"
@@ -25,6 +26,9 @@
             "start": "Start",
             "stop": "Stop",
             "secret": "Secret",
+            "install": {
+                "title": "Install Plugin"
+            },
             "register": {
                 "title": "Register a new Plugin",
                 "instructions": "Paste Base64 Code",
