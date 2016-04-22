@@ -44,7 +44,7 @@
             <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
             <tr ng-repeat="plugin in plugins track by plugin.id">
                 <td><a ui-sref="plugin.detail({id:plugin.id})">{{plugin.id}}</a></td>
-                <td>{{plugin.name}}</td>
+                <td><a ng-href="{{plugin.url}}" ng-if="plugin.url">{{plugin.name}}</a><div ng-if="plugin.url == null">{{plugin.name}}</div></td>
                 <td>{{plugin.identifier}}</td>
                 <td>{{plugin.type}}</td>
                 <td>{{plugin.state}}</td>

@@ -33,8 +33,9 @@ public abstract class PluginMapper {
         target.setState(processRepository.isRunning(plugin) ? "Running" : "Stopped");
 
         try {
-            plugin.accept(new PluginRunningSetter(processRepository,target));
             plugin.accept(new PluginTypeSetter(target));
+            plugin.accept(new PluginRunningSetter(processRepository,target));
+            plugin.accept(new PluginUrlSetter(processRepository,target));
         } catch (Exception e) {
             assert false;
         }
@@ -105,6 +106,44 @@ public abstract class PluginMapper {
         @Override
         public void visit(ExternalPlugin plugin) throws Exception {
             pluginDTO.setState("n/a");
+        }
+    }
+
+    private static class PluginUrlSetter implements PluginVisitor {
+        private ProcessRepository processRepository;
+
+        private PluginDTO pluginDTO;
+
+        public PluginUrlSetter(ProcessRepository processRepository, PluginDTO pluginDTO) {
+            this.processRepository = processRepository;
+            this.pluginDTO = pluginDTO;
+        }
+
+
+        @Override
+        public void visit(HostPlugin hostPlugin) throws Exception {
+            visit((StandalonePlugin) hostPlugin);
+        }
+
+        @Override
+        public void visit(HostedPlugin hostedPlugin) throws Exception {
+            int port = processRepository.getProcessPort(hostedPlugin.getHost());
+            if (port > 0) {
+                pluginDTO.setUrl("http://localhost:"+port+"/"+hostedPlugin.getIdentifier());
+            }
+        }
+
+        @Override
+        public void visit(StandalonePlugin standalonePlugin) throws Exception {
+            int port = processRepository.getProcessPort(standalonePlugin);
+            if (port > 0) {
+                pluginDTO.setUrl("http://localhost:"+port);
+            }
+        }
+
+        @Override
+        public void visit(ExternalPlugin externalPlugin) throws Exception {
+            // do nothing
         }
     }
 }

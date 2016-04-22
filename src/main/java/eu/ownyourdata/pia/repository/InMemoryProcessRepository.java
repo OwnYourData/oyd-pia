@@ -2,6 +2,8 @@ package eu.ownyourdata.pia.repository;
 
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
+import eu.ownyourdata.pia.domain.process.PluginProcess;
+import eu.ownyourdata.pia.domain.process.PluginProcessBuilder;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
@@ -24,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class InMemoryProcessRepository implements ProcessRepository {
 
-    private Map<Plugin,Process> processes = new ConcurrentHashMap<>();
+    private Map<Plugin,PluginProcess> processes = new ConcurrentHashMap<>();
 
     @Inject
     private ClientDetailsService clientDetailsService;
@@ -35,7 +37,7 @@ public class InMemoryProcessRepository implements ProcessRepository {
     @PostConstruct
     protected void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(()->{
-            for(Process process : processes.values()) {
+            for(PluginProcess process : processes.values()) {
                 process.destroy();
             }
             processes.clear();
@@ -43,8 +45,17 @@ public class InMemoryProcessRepository implements ProcessRepository {
     }
 
     @Override
+    public int getProcessPort(Plugin plugin) {
+       if (isRunning(plugin)) {
+           return processes.get(plugin).getPort();
+       } else {
+           return -1;
+       }
+    }
+
+    @Override
     public boolean isRunning(Plugin plugin) {
-        Optional<Process> process = Optional.ofNullable(processes.get(plugin));
+        Optional<PluginProcess> process = Optional.ofNullable(processes.get(plugin));
         if (process.isPresent()) {
             if (process.get().isAlive()) {
                 return true;
@@ -57,7 +68,7 @@ public class InMemoryProcessRepository implements ProcessRepository {
     }
 
     @Override
-    public Process create(StandalonePlugin plugin) throws IOException {
+    public PluginProcess create(StandalonePlugin plugin) throws IOException {
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(plugin.getIdentifier());
         String clientId = clientDetails.getClientId();
         String clientSecret = clientDetails.getClientSecret();
@@ -65,16 +76,16 @@ public class InMemoryProcessRepository implements ProcessRepository {
 
         Environment env = applicationContext.getEnvironment();
 
-        ProcessBuilder processBuilder = new ProcessBuilder(plugin.getStartCommand().split(" "));
-        processBuilder.directory(new File(plugin.getPath()));
-        processBuilder.environment().put("NODE_ENV","production");
-        processBuilder.environment().put("ID",clientId);
-        processBuilder.environment().put("SECRET",clientSecret);
-        processBuilder.environment().put("PIA_IP", InetAddress.getLocalHost().getHostAddress());
-        processBuilder.environment().put("PIA_PORT",env.getProperty("server.port"));
-        processBuilder.redirectError(log);
-        processBuilder.redirectOutput(log);
-        Process process = processBuilder.start();
+        PluginProcess process = new PluginProcessBuilder(plugin.getStartCommand().split(" "))
+            .directory(new File(plugin.getPath()))
+            .withNodeProductionEnvironment()
+            .clientIdentifier(clientId)
+            .clientSecret(clientSecret)
+            .piaInetAddress(InetAddress.getLocalHost())
+            .piaPort(env.getProperty("server.port"))
+            .anyPluginPort()
+            .redirectError(log)
+            .redirectOutput(log).start();
 
         processes.put(plugin,process);
 
@@ -83,7 +94,7 @@ public class InMemoryProcessRepository implements ProcessRepository {
 
     @Override
     public boolean stop(StandalonePlugin plugin) {
-        Optional<Process> process = Optional.ofNullable(processes.get(plugin));
+        Optional<PluginProcess> process = Optional.ofNullable(processes.get(plugin));
         if (process.isPresent()) {
             process.get().destroy();
             processes.remove(plugin);
