@@ -7,7 +7,10 @@ import org.mapstruct.Mapper;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Mapper for the entity Plugin and its DTO PluginDTO.
@@ -15,11 +18,18 @@ import javax.inject.Inject;
 @Mapper(componentModel = "spring", uses = {})
 public abstract class PluginMapper {
 
+    private String ip;
+
     @Inject
     private ClientDetailsService clientDetailsService;
 
     @Inject
     private ProcessRepository processRepository;
+
+    @PostConstruct
+    public void init() throws UnknownHostException {
+        ip = InetAddress.getLocalHost().getHostAddress();
+    }
 
     public PluginDTO pluginToPluginDTO(Plugin plugin) {
         if (plugin == null) {
@@ -35,7 +45,7 @@ public abstract class PluginMapper {
         try {
             plugin.accept(new PluginTypeSetter(target));
             plugin.accept(new PluginRunningSetter(processRepository,target));
-            plugin.accept(new PluginUrlSetter(processRepository,target));
+            plugin.accept(new PluginUrlSetter(ip,processRepository,target));
         } catch (Exception e) {
             assert false;
         }
@@ -114,7 +124,10 @@ public abstract class PluginMapper {
 
         private PluginDTO pluginDTO;
 
-        public PluginUrlSetter(ProcessRepository processRepository, PluginDTO pluginDTO) {
+        private String ip;
+
+        public PluginUrlSetter(String ip,ProcessRepository processRepository, PluginDTO pluginDTO) {
+            this.ip = ip;
             this.processRepository = processRepository;
             this.pluginDTO = pluginDTO;
         }
@@ -129,7 +142,7 @@ public abstract class PluginMapper {
         public void visit(HostedPlugin hostedPlugin) throws Exception {
             int port = processRepository.getProcessPort(hostedPlugin.getHost());
             if (port > 0) {
-                pluginDTO.setUrl("http://localhost:"+port+"/"+hostedPlugin.getIdentifier());
+                pluginDTO.setUrl("http://"+ip+":"+port+"/"+hostedPlugin.getIdentifier());
             }
         }
 
@@ -137,7 +150,7 @@ public abstract class PluginMapper {
         public void visit(StandalonePlugin standalonePlugin) throws Exception {
             int port = processRepository.getProcessPort(standalonePlugin);
             if (port > 0) {
-                pluginDTO.setUrl("http://localhost:"+port);
+                pluginDTO.setUrl("http://"+ip+":"+port);
             }
         }
 
