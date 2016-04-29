@@ -1,0 +1,9 @@
+{
+  "name": "PIA",
+  "description": "Personal Information Archive Implementierung von OwnYourData.eu",
+  "repository": "https://github.com/ownyourdata/oyd-pia",
+  "keywords": ["ownyourdata", "speicher", "pia"],
+  "website": "https://www.ownyourdata.eu",
+  "buildpacks": [{ "url": "https://github.com/heroku/heroku-buildpack-jvm-common" }],
+  "addons": ["heroku-postgresql:hobby-dev"]
+}
