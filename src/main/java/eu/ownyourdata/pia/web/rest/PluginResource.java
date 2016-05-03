@@ -2,10 +2,7 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.InvalidManifestException;
-import eu.ownyourdata.pia.domain.plugin.Manifest;
-import eu.ownyourdata.pia.domain.plugin.Plugin;
-import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
-import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
+import eu.ownyourdata.pia.domain.plugin.*;
 import eu.ownyourdata.pia.domain.sam.Store;
 import eu.ownyourdata.pia.repository.*;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
@@ -33,7 +30,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -196,12 +192,18 @@ public class PluginResource {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST, value = "/plugins/register")
-    public ResponseEntity<JSONObject> register(@Valid @RequestBody String base64) throws IOException, JSONException {
+    public ResponseEntity<JSONObject> register(@RequestBody JSONObject object) throws IOException, JSONException {
+        String base64 = object.getString("base64");
+        String link = object.optString("url");
+
         byte[] decode = Base64.getDecoder().decode(base64);
         try {
             Manifest manifest = new Manifest.ManifestBuilder().withJSON(new String(decode,"UTF-8")).build();
 
             Plugin plugin = pluginRepository.get(manifest);
+            if (plugin instanceof ExternalPlugin) {
+                ((ExternalPlugin) plugin).setUrl(link);
+            }
             ClientDetails clientDetails = pluginRepository.activate(plugin);
             pluginRepository.save(plugin);
 

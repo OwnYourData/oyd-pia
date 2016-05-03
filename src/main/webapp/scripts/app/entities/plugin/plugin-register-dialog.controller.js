@@ -18,7 +18,7 @@ angular.module('piaApp')
         };
 
         $scope.grant = function() {
-            Plugin.register($scope.base64, function(result) {
+            Plugin.register({base64: $scope.base64, url: $scope.application.url}, function(result) {
                 if (result) {
                     var clientDetails = {};
                     clientDetails.client_id = result.client_id;

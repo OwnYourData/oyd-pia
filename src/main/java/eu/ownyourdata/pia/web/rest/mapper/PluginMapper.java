@@ -156,7 +156,7 @@ public abstract class PluginMapper {
 
         @Override
         public void visit(ExternalPlugin externalPlugin) throws Exception {
-            // do nothing
+           pluginDTO.setUrl(externalPlugin.getUrl());
         }
     }
 }
