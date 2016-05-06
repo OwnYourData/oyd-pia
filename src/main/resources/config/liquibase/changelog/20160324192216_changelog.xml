@@ -3,43 +3,53 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-   <changeSet author="michael (generated)" id="1458847338581-1">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle"/>
+
+    <changeSet author="michael (generated)" id="1458847338581-1">
       <createTable tableName="EXTERNAL_PLUGIN">
-         <column name="ID" type="BIGINT(19)">
+         <column name="ID" type="bigint">
             <constraints nullable="false"/>
          </column>
       </createTable>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-2">
       <createTable tableName="HOSTED_PLUGIN">
-         <column name="ID" type="BIGINT(19)">
+         <column name="ID" type="bigint">
             <constraints nullable="false"/>
          </column>
-         <column name="HOST_ID" type="BIGINT(19)"/>
+         <column name="HOST_ID" type="bigint"/>
       </createTable>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-3">
       <createTable tableName="HOST_PLUGIN">
          <column name="MODULES_PATH" type="VARCHAR(255)"/>
-         <column name="ID" type="BIGINT(19)">
+         <column name="ID" type="bigint">
             <constraints nullable="false"/>
          </column>
       </createTable>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-4">
       <createTable tableName="ITEM">
-         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+         <column autoIncrement="true" name="ID" type="bigint">
             <constraints primaryKey="true" primaryKeyName="CONSTRAINT_2"/>
          </column>
          <column name="VALUE" type="VARCHAR(255)">
             <constraints nullable="false"/>
          </column>
-         <column name="BELONGS_ID" type="BIGINT(19)"/>
+         <column name="BELONGS_ID" type="bigint"/>
       </createTable>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-5">
       <createTable tableName="PERMISSIONS">
-         <column name="PLUGIN_ID" type="BIGINT(19)">
+         <column name="PLUGIN_ID" type="bigint">
             <constraints nullable="false"/>
          </column>
          <column name="PERMISSION" type="VARCHAR(255)"/>
@@ -50,7 +60,7 @@
          <column name="PLUGIN_TYPE" type="VARCHAR(31)">
             <constraints nullable="false"/>
          </column>
-         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+         <column autoIncrement="true" name="ID" type="bigint">
             <constraints primaryKey="true" primaryKeyName="CONSTRAINT_8"/>
          </column>
          <column name="IDENTIFIER" type="VARCHAR(255)">
@@ -63,7 +73,7 @@
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-7">
       <createTable tableName="REPO">
-         <column autoIncrement="true" name="ID" type="BIGINT(19)">
+         <column autoIncrement="true" name="ID" type="bigint">
             <constraints primaryKey="true" primaryKeyName="CONSTRAINT_26"/>
          </column>
          <column name="CREATOR" type="VARCHAR(255)"/>
@@ -78,7 +88,7 @@
          <column name="INSTALL_COMMAND" type="VARCHAR(255)"/>
          <column name="PATH" type="VARCHAR(255)"/>
          <column name="STARTCOMMAND" type="VARCHAR(255)"/>
-         <column name="ID" type="BIGINT(19)">
+         <column name="ID" type="bigint" autoIncrement="${autoIncrement}">
             <constraints nullable="false"/>
          </column>
       </createTable>
@@ -203,13 +213,11 @@
                                referencedTableName="PLUGIN"/>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-24">
-      <dropUniqueConstraint constraintName="CONSTRAINT_6" tableName="JHI_USER"/>
       <addUniqueConstraint columnNames="LOGIN"
                            constraintName="CONSTRAINT_6"
                            tableName="JHI_USER"/>
    </changeSet>
    <changeSet author="michael (generated)" id="1458847338581-25">
-      <dropUniqueConstraint constraintName="CONSTRAINT_69" tableName="JHI_USER"/>
       <addUniqueConstraint columnNames="EMAIL"
                            constraintName="CONSTRAINT_69"
                            tableName="JHI_USER"/>
