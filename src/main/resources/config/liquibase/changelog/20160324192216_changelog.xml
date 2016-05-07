@@ -212,12 +212,20 @@
                                referencedColumnNames="ID"
                                referencedTableName="PLUGIN"/>
    </changeSet>
-   <changeSet author="michael (generated)" id="1458847338581-24">
+
+    <changeSet author="michael (generated)" id="1458847338581-24" context="test,dev">
+        <dropUniqueConstraint constraintName="CONSTRAINT_6" tableName="JHI_USER"/>
+    </changeSet>
+    <changeSet author="michael (generated)" id="1458847338581-25" context="test,dev">
+        <dropUniqueConstraint constraintName="CONSTRAINT_69" tableName="JHI_USER"/>
+    </changeSet>
+
+   <changeSet author="michael (generated)" id="1458847338581-26">
       <addUniqueConstraint columnNames="LOGIN"
                            constraintName="CONSTRAINT_6"
                            tableName="JHI_USER"/>
    </changeSet>
-   <changeSet author="michael (generated)" id="1458847338581-25">
+   <changeSet author="michael (generated)" id="1458847338581-27">
       <addUniqueConstraint columnNames="EMAIL"
                            constraintName="CONSTRAINT_69"
                            tableName="JHI_USER"/>
