@@ -7,8 +7,6 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
-                "datatype": "Datatype",
-                "data": "Data",
                 "plugin": "Plugin",
                 "repo": "Repo",
                 "item": "Item",
