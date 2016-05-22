@@ -225,6 +225,11 @@ ul#strengthBar {
 }
 
 /* Align text in td verifically (top aligned by Bootstrap) */
+.jh-table {
+        table-layout: fixed;
+        overflow-wrap: break-word;
+}
+
 .jh-table > tbody > tr > td {
     vertical-align: middle;
 }
