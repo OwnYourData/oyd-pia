@@ -1,0 +1,23 @@
+{
+    "piaApp": {
+        "store" : {
+            "home": {
+                "title": "Stores",
+                "createLabel": "Konfiguriere einen neuen Store",
+                "createOrEditLabel": "Konfiguriere oder bearbeite einen Store",
+                "search": "Suche nach einem Store"
+            },
+            "created": "Ein neuer Store mit der id {{ param }} wurde erstellt",
+            "updated": "Ein Store mit der id {{ param }} wurde aktualisiert",
+            "deleted": "Ein Store mit der id {{ param }} wurde gelöscht",
+            "delete": {
+                "question": "Sicher, dass sie Store {{ id }} löschen wollen?"
+            },
+            "detail": {
+                "title": "Store"
+            },
+            "name": "Name",
+            "url": "Url"
+        }
+    }
+}

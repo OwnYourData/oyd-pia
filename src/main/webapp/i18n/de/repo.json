@@ -1,0 +1,25 @@
+{
+    "piaApp": {
+        "repo" : {
+            "home": {
+                "title": "Repos",
+                "createLabel": "Erstelle ein neues Repo",
+                "createOrEditLabel": "Erstelle oder bearbeite ein Repo",
+                "search": "Suche nach einem Repo"
+            },
+            "created": "Ein neues Repo mit der id {{ param }} wurde erstellt",
+            "updated": "Ein Repo mit der id {{ param }} wurde aktualisiert",
+            "deleted": "Ein Repo mit der id {{ param }} wurde gelöscht",
+            "delete": {
+                "question": "Sicher, dass sie Repo {{ id }} löschen wollen?"
+            },
+            "detail": {
+                "title": "Repo"
+            },
+            "identifier": "ID",
+            "description": "Beschreibung",
+            "creator": "Erstellt von",
+            "count" : "# Items"
+        }
+    }
+}
