@@ -37,6 +37,9 @@ module.exports = function (config) {
             'main/webapp/bower_components/stomp-websocket/lib/stomp.min.js',
             'main/webapp/bower_components/ng-dialog/js/ngDialog.js',
             'main/webapp/bower_components/jszip/dist/jszip.js',
+            'main/webapp/bower_components/qrcode-generator/js/qrcode.js',
+            'main/webapp/bower_components/qrcode-generator/js/qrcode_UTF8.js',
+            'main/webapp/bower_components/angular-qrcode/angular-qrcode.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

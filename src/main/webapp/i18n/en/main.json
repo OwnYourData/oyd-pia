@@ -3,7 +3,7 @@
         "title": "Welcome!",
         "subtitle": "I am your Personal Information Archive",
         "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
+            "message": "You are logged in. You can use the QR Code below to login via the OwnYourData App."
         }
     },
     "login": {

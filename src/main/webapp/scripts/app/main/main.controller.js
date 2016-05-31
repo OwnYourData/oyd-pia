@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('piaApp')
-    .controller('MainController', function ($rootScope, $scope, Principal,$state, $timeout, Auth) {
+    .controller('MainController', function ($rootScope, $scope, Principal,$state, $timeout, Auth,AuthServerProvider) {
         Principal.identity().then(function(account) {
             $scope.account = account;
             $scope.isAuthenticated = Principal.isAuthenticated;
@@ -9,6 +9,7 @@ angular.module('piaApp')
 
         $scope.user = {};
         $scope.errors = {};
+        $scope.qr = JSON.stringify({id: AuthServerProvider.getClientId(), secret: AuthServerProvider.getClientSecret()});
 
         $scope.rememberMe = true;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
