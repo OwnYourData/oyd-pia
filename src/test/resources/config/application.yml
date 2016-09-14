@@ -58,6 +58,8 @@ jhipster:
         corePoolSize: 2
         maxPoolSize: 50
         queueCapacity: 10000
+    auditing:
+        enabled: true
     security:
         authentication:
             oauth:

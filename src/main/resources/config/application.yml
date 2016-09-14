@@ -49,6 +49,8 @@ jhipster:
         #max-age: 1800
     mail:
         from: pia@localhost
+    auditing:
+        enabled: false
     security:
         authentication:
             oauth:

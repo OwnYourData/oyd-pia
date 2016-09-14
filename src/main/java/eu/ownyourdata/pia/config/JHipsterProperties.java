@@ -1,9 +1,9 @@
 package eu.ownyourdata.pia.config;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.cors.CorsConfiguration;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Properties specific to JHipster.
@@ -33,6 +33,7 @@ public class JHipsterProperties {
 
     private final CorsConfiguration cors = new CorsConfiguration();
 
+    private final Auditing auditing = new Auditing();
 
 
     public Async getAsync() {
@@ -71,6 +72,9 @@ public class JHipsterProperties {
         return cors;
     }
 
+    public Auditing getAuditing() {
+        return auditing;
+    }
 
     public static class Async {
 
@@ -465,6 +469,18 @@ public class JHipsterProperties {
             public void setPrefix(String prefix) {
                 this.prefix = prefix;
             }
+        }
+    }
+
+    public static class Auditing {
+        private boolean enabled = false;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
         }
     }
 }
