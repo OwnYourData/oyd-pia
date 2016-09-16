@@ -88,7 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
-
+    
     @Configuration
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public static class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {

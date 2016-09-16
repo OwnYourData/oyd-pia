@@ -1,15 +1,23 @@
 package eu.ownyourdata.pia.web.rest.mapper;
 
-import eu.ownyourdata.pia.domain.plugin.*;
+import eu.ownyourdata.pia.config.ServerDetection;
+import eu.ownyourdata.pia.domain.plugin.ExternalPlugin;
+import eu.ownyourdata.pia.domain.plugin.HostPlugin;
+import eu.ownyourdata.pia.domain.plugin.HostedPlugin;
+import eu.ownyourdata.pia.domain.plugin.Plugin;
+import eu.ownyourdata.pia.domain.plugin.PluginVisitor;
+import eu.ownyourdata.pia.domain.plugin.StandalonePlugin;
 import eu.ownyourdata.pia.repository.ProcessRepository;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import org.mapstruct.Mapper;
+import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
 /**
@@ -25,6 +33,9 @@ public abstract class PluginMapper {
 
     @Inject
     private ProcessRepository processRepository;
+
+    @Inject
+    private  ServerDetection serverDetection;
 
     @PostConstruct
     public void init() throws UnknownHostException {
@@ -45,7 +56,7 @@ public abstract class PluginMapper {
         try {
             plugin.accept(new PluginTypeSetter(target));
             plugin.accept(new PluginRunningSetter(processRepository,target));
-            plugin.accept(new PluginUrlSetter(ip,processRepository,target));
+            plugin.accept(new PluginUrlSetter(serverDetection,processRepository, clientDetailsService,target));
         } catch (Exception e) {
             assert false;
         }
@@ -122,13 +133,19 @@ public abstract class PluginMapper {
     private static class PluginUrlSetter implements PluginVisitor {
         private ProcessRepository processRepository;
 
+        private ClientDetailsService clientDetailsService;
+
+        private ServerDetection serverDetection;
+
         private PluginDTO pluginDTO;
 
         private String ip;
 
-        public PluginUrlSetter(String ip,ProcessRepository processRepository, PluginDTO pluginDTO) {
-            this.ip = ip;
+        public PluginUrlSetter(ServerDetection detection, ProcessRepository processRepository,ClientDetailsService clientDetailsService,PluginDTO pluginDTO) {
+            this.serverDetection = detection;
             this.processRepository = processRepository;
+            this.clientDetailsService = clientDetailsService;
+
             this.pluginDTO = pluginDTO;
         }
 
@@ -142,7 +159,9 @@ public abstract class PluginMapper {
         public void visit(HostedPlugin hostedPlugin) throws Exception {
             int port = processRepository.getProcessPort(hostedPlugin.getHost());
             if (port > 0) {
-                pluginDTO.setUrl("http://"+ip+":"+port+"/"+hostedPlugin.getIdentifier());
+                if (serverDetection.getHost() != null) {
+                    pluginDTO.setUrl(serverDetection.getHost()+"/"+hostedPlugin.getIdentifier());
+                }
             }
         }
 
@@ -156,7 +175,20 @@ public abstract class PluginMapper {
 
         @Override
         public void visit(ExternalPlugin externalPlugin) throws Exception {
-           pluginDTO.setUrl(externalPlugin.getUrl());
+            String url = externalPlugin.getUrl();
+            if (externalPlugin.getUrl().startsWith("https")) {
+                if (serverDetection.getHost() != null) {
+                    ClientDetails clientDetails = clientDetailsService.loadClientByClientId(externalPlugin.getIdentifier());
+                    if (!url.endsWith("/")) {
+                        url += "/";
+                    }
+                    url += "?PIA_URL"+ URLEncoder.encode(serverDetection.getHost(),"utf-8");
+                    url += "&APP_KEY="+clientDetails.getClientId()+"&APP_SECRET="+clientDetails.getClientSecret();
+
+                }
+
+            }
+            pluginDTO.setUrl(url);
         }
     }
 }
