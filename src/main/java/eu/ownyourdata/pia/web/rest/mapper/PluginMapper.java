@@ -182,7 +182,7 @@ public abstract class PluginMapper {
                     if (!url.endsWith("/")) {
                         url += "/";
                     }
-                    url += "?PIA_URL"+ URLEncoder.encode(serverDetection.getHost(),"utf-8");
+                    url += "?PIA_URL="+ URLEncoder.encode(serverDetection.getHost(),"utf-8");
                     url += "&APP_KEY="+clientDetails.getClientId()+"&APP_SECRET="+clientDetails.getClientSecret();
 
                 }
