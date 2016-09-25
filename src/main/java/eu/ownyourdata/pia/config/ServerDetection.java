@@ -28,7 +28,7 @@ public class ServerDetection implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         InetAddress address = InetAddress.getByName(request.getLocalAddr());
         if (!address.isAnyLocalAddress() && !address.isLoopbackAddress()) {
-            host.compareAndSet(null, request.getScheme() + "://" + request.getServerName(); # + ":" + request.getLocalPort());
+            host.compareAndSet(null, request.getScheme() + "://" + request.getServerName()); /* + ":" + request.getLocalPort()); */
         }
         chain.doFilter(request,response);
     }
