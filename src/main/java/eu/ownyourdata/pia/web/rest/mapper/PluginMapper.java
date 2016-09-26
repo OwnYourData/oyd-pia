@@ -176,7 +176,8 @@ public abstract class PluginMapper {
         @Override
         public void visit(ExternalPlugin externalPlugin) throws Exception {
             String url = externalPlugin.getUrl();
-            if (externalPlugin.getUrl().startsWith("https")) {
+            if (externalPlugin.getUrl().startsWith("https://") ||
+                externalPlugin.getUrl().startsWith("http://192.168")) {  //also allow for private address spaces in class C networks
                 if (serverDetection.getHost() != null) {
                     ClientDetails clientDetails = clientDetailsService.loadClientByClientId(externalPlugin.getIdentifier());
                     if (!url.endsWith("/")) {
