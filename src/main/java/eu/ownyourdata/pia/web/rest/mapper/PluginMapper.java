@@ -176,15 +176,16 @@ public abstract class PluginMapper {
         @Override
         public void visit(ExternalPlugin externalPlugin) throws Exception {
             String url = externalPlugin.getUrl();
-            if (externalPlugin.getUrl().startsWith("https://") ||
-                externalPlugin.getUrl().startsWith("http://192.168")) {  //also allow for private address spaces in class C networks
+            if (url.startsWith("https") ||
+                url.startsWith("http://192.168")) {  //also allow for private address spaces in class C networks
                 if (serverDetection.getHost() != null) {
                     ClientDetails clientDetails = clientDetailsService.loadClientByClientId(externalPlugin.getIdentifier());
                     if (!url.endsWith("/")) {
                         url += "/";
                     }
-                    url += "?PIA_URL="+ URLEncoder.encode(serverDetection.getHost(),"utf-8");
-                    url += "&APP_KEY="+clientDetails.getClientId()+"&APP_SECRET="+clientDetails.getClientSecret();
+                    url += "?PIA_URL=" + URLEncoder.encode(serverDetection.getHost(),"utf-8");
+                    url += "&APP_KEY=" + clientDetails.getClientId();
+                    url += "&APP_SECRET=" + clientDetails.getClientSecret();
 
                 }
 
