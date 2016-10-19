@@ -11,7 +11,7 @@
                     You are logged in. In order to use the OYD App please scan the QR Code below.
                 </div>
                 <div ng-switch-when="true">
-                    <qrcode data="{{qr}}"></qrcode>
+                    <qrcode version="32" data="{{qr}}"></qrcode>
                 </div>
 
                 <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
