@@ -160,7 +160,7 @@ public class RepoResource {
     @Timed
     @Transactional(readOnly = true)
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#identifier+':read')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#oauth2,#identifier+':read')")
     public ResponseEntity<List<JSONObject>> getAllItems(@PathVariable String identifier, Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Datas");
         Optional<Repo> repo = repoService.findOneByIdentifier(identifier);
@@ -183,7 +183,7 @@ public class RepoResource {
     @RequestMapping(value = "/repos/{identifier:.+}/items", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#identifier+':write')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#oauth2,#identifier+':write')")
     public ResponseEntity<JSONObject> createItem(@PathVariable String identifier, @Valid @RequestBody JSONObject json) throws URISyntaxException, JSONException {
         Repo defaultValue = new Repo();
         defaultValue.setIdentifier(identifier);
@@ -206,7 +206,7 @@ public class RepoResource {
     @RequestMapping(value = "/repos/{identifier:.+}/items", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#identifier+':update')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#oauth2,#identifier+':update')")
     public ResponseEntity<JSONObject> updateItem(@PathVariable String identifier, @Valid @RequestBody JSONObject json) throws URISyntaxException, JSONException {
         log.debug("REST request to update Item : {}", json);
         if (json.optString("id").equals("")) {
@@ -233,7 +233,7 @@ public class RepoResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @CrossOrigin
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#identifier+':delete')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR @repoSecurityService.hasPermission(#oauth2,#identifier+':delete')")
     public ResponseEntity<Void> deleteData(@PathVariable String identifier, @PathVariable Long id) {
         log.debug("REST request to delete Data : {}", id);
 
