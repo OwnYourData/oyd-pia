@@ -12,7 +12,7 @@
             "password": "Passwort",
             "password.placeholder": "Dein Passwort",
             "rememberme": "angemeldet bleiben",
-            "button": "Authentifiziere"
+            "button": "Anmelden"
         },
         "messages": {
             "error": {
