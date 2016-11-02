@@ -29,7 +29,7 @@ public class ServerDetection implements Filter {
         InetAddress address = InetAddress.getByName(request.getLocalAddr());
         if (!address.isAnyLocalAddress() && !address.isLoopbackAddress()) {
             if (request.getServerName().indexOf("datentresor.org") == -1) {
-                host.compareAndSet(null, request.getScheme() + "://" + request.getServerName()) + ":" + request.getLocalPort()); 
+                host.compareAndSet(null, request.getScheme() + "://" + request.getServerName() + ":" + request.getLocalPort()); 
             } else {
                 host.compareAndSet(null, "https://" + request.getServerName()); 
             }
