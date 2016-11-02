@@ -123,7 +123,9 @@ public class StoreResource {
         log.debug("REST request to get plugins from Store : {}", id);
         Store store = storeRepository.findOne(id);
         String url = store.getUrl();
-        return restTemplate.getForEntity(url+"/api/plugins",StorePlugin[].class);
+        ResponseEntity<StorePlugin[]> response = restTemplate.getForEntity(url + "/api/plugins", StorePlugin[].class);
+
+        return ResponseEntity.ok().body(response.getBody());
     }
 
 }
