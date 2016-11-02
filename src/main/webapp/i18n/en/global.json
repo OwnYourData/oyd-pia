@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "pia",
+        "title": "Data Vault | OwnYourData",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
@@ -49,7 +49,7 @@
         },
         "messages": {
             "info": {
-                "login" : "Please authenticate yourself with your username and password.",
+                "login" : "Please authenticate yourself with your username and password.<br/>default user: admin<br/>default password: admin",
                 "authenticated": "If you want to <a class=\"alert-link\" href=\"#/login\">sign in</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
                 "register": "You don't have an account yet? <a class=\"alert-link\" href=\"#/register\">Register a new account</a>"
             },

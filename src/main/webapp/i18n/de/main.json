@@ -1,7 +1,7 @@
 {
     "main": {
         "title": "Willkommen!",
-        "subtitle": "Ich bin Ihr Persönliches Informations Archive",
+        "subtitle": "Das ist dein Datentresor.",
         "logged": {
             "message": "Sie sind angemeldet. Du kannst den QR Code verwenden um die mit der OwnYourData App einzuloggen."
         }

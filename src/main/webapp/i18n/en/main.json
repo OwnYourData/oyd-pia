@@ -1,7 +1,7 @@
 {
     "main": {
         "title": "Welcome!",
-        "subtitle": "I am your Personal Information Archive",
+        "subtitle": "This is your data vault.",
         "logged": {
             "message": "You are logged in. You can use the QR Code below to login via the OwnYourData App."
         }

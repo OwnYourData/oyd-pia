@@ -3,7 +3,7 @@
         "title": "Anmeldung",
         "form": {
             "password": "Passwort",
-            "password.placeholder": "Ihr Passwort",
+            "password.placeholder": "Dein Passwort",
             "rememberme": "Automatische Anmeldung",
             "button": "Anmelden"
         },
