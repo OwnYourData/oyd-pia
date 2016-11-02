@@ -2,7 +2,6 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.InvalidManifestException;
-import eu.ownyourdata.pia.domain.plugin.ExternalPlugin;
 import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
@@ -48,6 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Base64;
@@ -209,17 +209,35 @@ public class PluginResource {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST, value = "/plugins/register")
     public ResponseEntity<JSONObject> register(@RequestBody JSONObject object) throws IOException, JSONException {
+        if (object.has("base64")) {
+            return registerBase64(object);
+        } else {
+            try {
+                Manifest manifest = new Manifest.ManifestBuilder().with(object).build();
+                return register(manifest);
+            } catch (InvalidManifestException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
+    private ResponseEntity<JSONObject> registerBase64(@RequestBody JSONObject object) throws JSONException, UnsupportedEncodingException {
         String base64 = object.getString("base64");
-        String link = object.optString("url");
 
         byte[] decode = Base64.getDecoder().decode(base64);
         try {
             Manifest manifest = new Manifest.ManifestBuilder().withJSON(new String(decode,"UTF-8")).build();
 
+            return register(manifest);
+        } catch (InvalidManifestException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private ResponseEntity<JSONObject> register(Manifest manifest) throws JSONException, UnsupportedEncodingException {
+        try {
             Plugin plugin = pluginRepository.get(manifest);
-            if (plugin instanceof ExternalPlugin) {
-                ((ExternalPlugin) plugin).setUrl(link);
-            }
+
             ClientDetails clientDetails = pluginRepository.activate(plugin);
             pluginRepository.save(plugin);
 
@@ -236,6 +254,7 @@ public class PluginResource {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.POST, value = "/plugins/install")

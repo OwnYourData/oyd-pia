@@ -28,6 +28,10 @@ public class Manifest {
 
     private String modules;
 
+    private String url;
+
+    private String mobileUrl;
+
     private List<String> permissions = new ArrayList<>();
 
     private List<String> requires = new ArrayList<>();
@@ -72,6 +76,14 @@ public class Manifest {
         return requires;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public String getMobileUrl() {
+        return mobileUrl;
+    }
+
     public static class ManifestBuilder {
 
         private Manifest manifest = new Manifest();
@@ -90,11 +102,13 @@ public class Manifest {
         public ManifestBuilder with(JSONObject jsonObject) {
             manifest.identifier = jsonObject.optString("identifier");
             manifest.name = jsonObject.optString("name");
-            manifest.type = jsonObject.optString("type");
+            manifest.type = jsonObject.optString("type","external");
             manifest.description = jsonObject.optString("description");
             manifest.startCommand = jsonObject.optString("startCommand");
             manifest.installCommand = jsonObject.optString("installCommand");
             manifest.modules = jsonObject.optString("modules");
+            manifest.url = jsonObject.optString("url");
+            manifest.mobileUrl = jsonObject.optString("mobileUrl");
 
             withPermissions(jsonObject.optJSONArray("permissions"));
             withRequirements(jsonObject.optJSONArray("requires"));

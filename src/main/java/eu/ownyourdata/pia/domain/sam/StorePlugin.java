@@ -1,20 +1,17 @@
 package eu.ownyourdata.pia.domain.sam;
 
 
+import eu.ownyourdata.pia.domain.plugin.ExternalPlugin;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 
 /**
  * A DTO for the Plugin entity.
  */
-public class StorePlugin implements Serializable {
+public class StorePlugin extends ExternalPlugin implements Serializable {
 
-    private Long id;
-
-    @NotNull
-    private String identifier;
 
     @NotNull
     private String version;
@@ -22,10 +19,10 @@ public class StorePlugin implements Serializable {
     @NotNull
     private Integer versionNumber;
 
+
     private String description;
 
     private Integer downloads;
-
 
     private Double ratings;
 
@@ -33,20 +30,6 @@ public class StorePlugin implements Serializable {
 
     private String uploadedByName;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
     public String getVersion() {
         return version;
     }
@@ -100,37 +83,4 @@ public class StorePlugin implements Serializable {
         this.uploadedByName = userLogin;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        StorePlugin pluginDTO = (StorePlugin) o;
-
-        if ( ! Objects.equals(id, pluginDTO.id)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
-        return "PluginDTO{" +
-            "id=" + id +
-            ", identifier='" + identifier + "'" +
-            ", version='" + version + "'" +
-            ", versionNumber='" + versionNumber + "'" +
-            ", description='" + description + "'" +
-            ", downloads='" + downloads + "'" +
-            ", ratings='" + ratings + "'" +
-            '}';
-    }
 }

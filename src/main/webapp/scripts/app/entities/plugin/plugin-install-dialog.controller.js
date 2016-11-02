@@ -25,7 +25,8 @@ angular.module('piaApp')
         };
 
         $scope.install = function(store,plugin) {
-            Plugin.install({id: store.id, plugin:plugin.id});
+            Plugin.register(plugin);
+            //Plugin.install({id: store.id, plugin:plugin.id});
             $uibModalInstance.dismiss('install');
         };
 
