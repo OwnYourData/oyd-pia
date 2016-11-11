@@ -39,17 +39,17 @@
         },
         "form": {
             "username": "Benutzername",
-            "username.placeholder": "Dein Benutzername",
+            "username.placeholder": "Ihr Benutzername",
             "newpassword": "Neues Passwort",
             "newpassword.placeholder": "Neues Passwort",
             "confirmpassword": "Neues Passwort bestätigen",
-            "confirmpassword.placeholder": "Bestätige Dein neues Passwort",
+            "confirmpassword.placeholder": "Bestätigen Sie Ihr neues Passwort",
             "email": "E-Mail Adresse",
-            "email.placeholder": "Deine E-Mail Adresse"
+            "email.placeholder": "Ihre E-Mail Adresse"
         },
         "messages": {
             "info": {
-                "login" : "Bitte melde dich mit deinem Benutzernamen und Passwort an.",
+                "login" : "Bitte authentifiziere dich im Demo-Datentresor mit Benutzername=\"demo\" und Passwort=\"ownyourdata\".",
                 "authenticated": "Wenn Sie sich <a class=\"alert-link\" href=\"#/login\">anmelden</a> möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\").",
                 "register": "Sie haben noch keinen Zugang? <a class=\"alert-link\" href=\"#/register\">Registrieren Sie sich</a>"
             },
