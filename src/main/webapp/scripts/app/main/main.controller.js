@@ -9,7 +9,7 @@ angular.module('piaApp')
 
         $scope.user = {};
         $scope.errors = {};
-        $scope.qr = JSON.stringify({id: AuthServerProvider.getClientId(), secret: AuthServerProvider.getClientSecret(), host: location.host});
+        $scope.qr = JSON.stringify({id: AuthServerProvider.getClientId(), secret: AuthServerProvider.getClientSecret(), protocol: location.protocol, host: location.host});
 
         $scope.rememberMe = true;
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
