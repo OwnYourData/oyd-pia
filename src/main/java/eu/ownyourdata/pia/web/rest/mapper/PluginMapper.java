@@ -51,6 +51,8 @@ public abstract class PluginMapper {
         target.setId(plugin.getId());
         target.setIdentifier(plugin.getIdentifier());
         target.setName(plugin.getName());
+        target.setInfourl(plugin.getInfourl());
+        target.setPicture(plugin.getPicture());
         target.setState(processRepository.isRunning(plugin) ? "Running" : "Stopped");
 
         try {

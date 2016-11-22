@@ -81,6 +81,8 @@ public class PluginFactory {
     private <T extends Plugin> T setGeneralProperties(T plugin, Manifest manifest) {
         plugin.setIdentifier(manifest.getIdentifier());
         plugin.setName(manifest.getName());
+        plugin.setInfourl(manifest.getInfourl());
+        plugin.setPicture(manifest.getPicture());
         plugin.setPermissions(manifest.getPermissions());
 
         return plugin;

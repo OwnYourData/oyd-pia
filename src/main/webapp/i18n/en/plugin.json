@@ -20,6 +20,8 @@
             },
             "name": "Name",
             "identifier": "Identifier",
+            "infourl": "Info",
+            "picture": "Picture",
             "path": "Path",
             "type": "Type",
             "state": "Status",

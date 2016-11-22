@@ -34,10 +34,15 @@
                     class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="identifier"><span translate="piaApp.plugin.identifier">Identifier</span> <span
                     class="glyphicon glyphicon-sort"></span></th>
+                <th jh-sort-by="infourl"><span translate="piaApp.plugin.infourl">Info</span> <span
+                    class="glyphicon glyphicon-sort"></span></th>
+                <th><span translate="piaApp.plugin.picture">Picture</span></th>
+<!--
                 <th jh-sort-by="path"><span translate="piaApp.plugin.type">Type</span> <span
                     class="glyphicon glyphicon-sort"></span></th>
                 <th jh-sort-by="running"><span translate="piaApp.plugin.state">State</span><span
                     class="glyphicon glyphicon-sort"></span></th>
+-->
                 <th></th>
             </tr>
             </thead>
@@ -46,8 +51,8 @@
                 <td><a ui-sref="plugin.detail({id:plugin.id})">{{plugin.id}}</a></td>
                 <td><a ng-href="{{plugin.url}}" ng-if="plugin.url">{{plugin.name}}</a><div ng-if="plugin.url == null">{{plugin.name}}</div></td>
                 <td>{{plugin.identifier}}</td>
-                <td>{{plugin.type}}</td>
-                <td>{{plugin.state}}</td>
+                <td><a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a><div ng-if="plugin.infourl == null">keine Details</div></td>
+                <td><img width="64" height="64" src="{{plugin.picture}}"></td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button ng-if="plugin.state == 'Stopped' && plugin.type == 'Host'" ng-click="start(plugin)"

@@ -10,6 +10,10 @@ public class PluginDTO {
 
     private String identifier;
 
+    private String infourl;
+
+    private String picture;
+
     private String path;
 
     private Set<String> permissions;
@@ -42,6 +46,22 @@ public class PluginDTO {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getInfourl() {
+        return infourl;
+    }
+
+    public void setInfourl(String infourl) {
+        this.infourl = infourl;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getPath() {

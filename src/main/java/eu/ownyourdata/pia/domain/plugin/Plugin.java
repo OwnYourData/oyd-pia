@@ -34,6 +34,12 @@ public abstract class Plugin implements Serializable {
     @Column(name = "identifier", nullable = false, unique = true)
     private String identifier;
 
+    @Column(name = "infourl")
+    private String infourl;
+
+    @Column(name = "picture")
+    private String picture;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="Permissions", joinColumns=@JoinColumn(name="plugin_id"))
@@ -62,6 +68,22 @@ public abstract class Plugin implements Serializable {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getInfourl() {
+        return infourl;
+    }
+
+    public void setInfourl(String infourl) {
+        this.infourl = infourl;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public List<String> getPermissions() {

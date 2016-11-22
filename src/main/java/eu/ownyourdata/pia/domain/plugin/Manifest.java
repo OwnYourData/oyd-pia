@@ -32,6 +32,10 @@ public class Manifest {
 
     private String mobileUrl;
 
+    private String infourl;
+
+    private String picture;
+
     private List<String> permissions = new ArrayList<>();
 
     private List<String> requires = new ArrayList<>();
@@ -84,6 +88,14 @@ public class Manifest {
         return mobileUrl;
     }
 
+    public String getInfourl() {
+        return infourl;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
     public static class ManifestBuilder {
 
         private Manifest manifest = new Manifest();
@@ -109,6 +121,8 @@ public class Manifest {
             manifest.modules = jsonObject.optString("modules");
             manifest.url = jsonObject.optString("url");
             manifest.mobileUrl = jsonObject.optString("mobileUrl");
+            manifest.infourl = jsonObject.optString("infourl");
+            manifest.picture = jsonObject.optString("picture");
 
             withPermissions(jsonObject.optJSONArray("permissions"));
             withRequirements(jsonObject.optJSONArray("requires"));
@@ -155,6 +169,16 @@ public class Manifest {
 
         public ManifestBuilder withDescription(String description) {
             manifest.description = description;
+            return this;
+        }
+
+        public ManifestBuilder withInfourl(String infourl) {
+            manifest.infourl = infourl;
+            return this;
+        }
+
+        public ManifestBuilder withPicture(String picture) {
+            manifest.picture = picture;
             return this;
         }
 
