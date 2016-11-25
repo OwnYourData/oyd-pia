@@ -5,12 +5,32 @@ package eu.ownyourdata.pia.domain;
  */
 public class RepoItemCount {
 
+    private Long id;
+    private String description;
     private String type;
     private Long count;
 
-    public RepoItemCount(String type, Long count) {
+    public RepoItemCount(Long id, String description, String type, Long count) {
+        this.id = id;
+        this.description = description;
         this.type = type;
         this.count = count;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {
@@ -36,15 +56,11 @@ public class RepoItemCount {
 
         RepoItemCount that = (RepoItemCount) o;
 
-        if (!type.equals(that.type)) return false;
-        return count.equals(that.count);
-
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override
     public int hashCode() {
-        int result = type.hashCode();
-        result = 31 * result + count.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 }

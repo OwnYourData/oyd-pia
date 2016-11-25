@@ -2,6 +2,7 @@ package eu.ownyourdata.pia.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.ownyourdata.pia.domain.InvalidManifestException;
+import eu.ownyourdata.pia.domain.RepoItemCount;
 import eu.ownyourdata.pia.domain.plugin.Manifest;
 import eu.ownyourdata.pia.domain.plugin.Plugin;
 import eu.ownyourdata.pia.domain.plugin.RequirementManifestException;
@@ -13,6 +14,7 @@ import eu.ownyourdata.pia.repository.PluginAlreadyInstalledException;
 import eu.ownyourdata.pia.repository.PluginInstallationException;
 import eu.ownyourdata.pia.repository.PluginRepository;
 import eu.ownyourdata.pia.repository.ProcessRepository;
+import eu.ownyourdata.pia.repository.RepoRepository;
 import eu.ownyourdata.pia.repository.StoreRepository;
 import eu.ownyourdata.pia.web.rest.dto.PluginDTO;
 import eu.ownyourdata.pia.web.rest.dto.PluginSecret;
@@ -51,8 +53,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
@@ -76,6 +81,9 @@ public class PluginResource {
 
     @Inject
     private ProcessRepository processRepository;
+
+    @Inject
+    private RepoRepository repoRepository;
 
     @Inject
     private ClientDetailsService clientDetailsService;
@@ -135,6 +143,41 @@ public class PluginResource {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    /**
+     * GET  /plugins/:id -> get the "id" plugin.
+     */
+    @RequestMapping(value = "/plugins/{id}/stats",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Collection<RepoItemCount>> getPluginStats(@PathVariable Long id) {
+        log.debug("REST request to get Plugin : {}", id);
+        Plugin plugin = pluginRepository.findOne(id);
+
+
+        if (plugin == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            Collection<RepoItemCount> repositoryItemCount = getRepositoryItemCount(plugin);
+            return ResponseEntity.ok(repositoryItemCount);
+        }
+    }
+
+
+    private Collection<RepoItemCount> getRepositoryItemCount(Plugin plugin) {
+        Set<RepoItemCount> result = new HashSet<>();
+        for(String permission : plugin.permissions) {
+            if(permission.contains(".*:read") || permission.contains(".*:write") || permission.contains(".*:update") || permission.contains(".*:delete")) {
+                String wildcards = permission.substring(0, permission.lastIndexOf("*:"));
+                result.addAll(repoRepository.getRepoItemCounts(wildcards));
+            } else {
+                String repository = permission.substring(0, permission.lastIndexOf(":"));
+                result.addAll(repoRepository.getRepoItemCounts(repository));
+            }
+        }
+        return result;
     }
 
     /**

@@ -187,7 +187,9 @@ public class RepoResource {
     public ResponseEntity<JSONObject> createItem(@PathVariable String identifier, @Valid @RequestBody JSONObject json) throws URISyntaxException, JSONException {
         Repo defaultValue = new Repo();
         defaultValue.setIdentifier(identifier);
-        defaultValue.setDescription("n/a");
+        defaultValue.setDescription(json.optString("_oydRepoName",identifier));
+
+        json.remove("_oydRepoName");
 
         Repo repo = repoService.getByIdentifier(identifier, defaultValue);
 
