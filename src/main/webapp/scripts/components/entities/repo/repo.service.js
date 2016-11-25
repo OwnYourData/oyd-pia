@@ -11,6 +11,11 @@ angular.module('piaApp')
                     return data;
                 }
             },
+            'items' : {
+                method: 'GET',
+                isArray: true,
+                url:'api/repos/:identifier/items'
+            },
             'counts': { method: 'GET', url: 'api/repos/counts',
                 transformResponse: function(data) {
                     var result = {};

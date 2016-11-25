@@ -23,6 +23,11 @@ angular.module('piaApp')
                     data = angular.fromJson(data);
                     return data;
                 }
+            },
+            'stats': {
+                method:'GET',
+                isArray: true,
+                url:'api/plugins/:id/stats'
             }
-        });
+        })
     });
