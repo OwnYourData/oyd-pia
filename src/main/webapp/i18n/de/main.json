@@ -19,7 +19,7 @@
                 "authentication": "<strong>Authentifizierung fehlgeschlagen!</strong> Bitte überprüfe deine Eingaben."
             }
         },
-        "password" : {
+        "password": {
             "forgot": "Passwort vergessen?"
         }
     }

@@ -1,0 +1,20 @@
+{
+    "accessdata": {
+        "main": {
+            "title": "Title",
+            "description": "Description",
+            "alternative": "Alternative"
+        },
+        "defaultData": {
+            "ip-address": "IP-Address:",
+            "identifier": "Identifier:",
+            "secret": "Secret:"
+        },
+        "defaultValue": {
+            "ip-address": "192.168.1.206:8080",
+            "identifier": "datentresorapp",
+            "secret": "1234567890"
+        },
+        "mobileDataVault": "Get your mobile data vault!"
+    }
+}

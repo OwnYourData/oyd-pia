@@ -1,6 +1,6 @@
 {
     "piaApp": {
-        "item" : {
+        "item": {
             "home": {
                 "title": "Items",
                 "createLabel": "Erstelle ein neues Item",
@@ -16,7 +16,7 @@
             "detail": {
                 "title": "Item"
             },
-            "value": "Value",
+            "value": "Wert",
             "belongs": "Repo"
         }
     }

@@ -1,0 +1,8 @@
+{
+    "app": {
+        "title": "Willkommen in Deinem eigenen Datentresor!",
+        "subtitle": "Hier kannst Du all Deine Daten sicher verwahren und mithilfe verschiedener Apps (Algorithmen)  auswerten. Für den schnellen Zugriff unterwegs, hol Dir gleich noch Deinen",
+        "installed": "Installierte Apps",
+        "description": "Installiere eine App, gib Deine Daten ein und schau Dir die Auswertungen an!"
+    }
+}

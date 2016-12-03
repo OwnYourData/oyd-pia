@@ -1,0 +1,24 @@
+<p class="font-size-medium statisticsText" translate="data.statisticsText" translate-values="{pluginCount: pluginCount, itemCount: itemCount}"></p>
+<button class="btn custom-btn" ui-sref="data.new" >
+    <span
+        translate="piaApp.repo.home.createLabel">Create new Repo
+    </span>
+</button>
+<div>
+    <table id="data-table" class="table table-striped">
+        <thead>
+            <tr jh-sort="predicate" ascending="reverse" callback="reset()">
+                <th><span class="font-size-medium" translate="data.app">App</span></th>
+                <th><span class="font-size-medium" translate="data.datalists">Datenlisten</span></th>
+                <th class="statCount"><span class="font-size-medium" translate="data.records">Datensätze</span></th>
+            </tr>
+        </thead>
+        <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+            <tr ng-repeat="(id, plugindata) in plugins track by id">
+                <td class="col-md-5">{{plugindata.plugin.name}}</td>
+                <td class="col-md-5"><ul><li ng-repeat="stat in plugindata.stat">{{stat.type}}</li></ul></td>
+                <td class="col-md-5 statCount"><ul><li ng-repeat="stat in plugindata.stat"><a ui-sref="data.item({repositoryId:stat.id})">{{stat.count}}</a></li></ul></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

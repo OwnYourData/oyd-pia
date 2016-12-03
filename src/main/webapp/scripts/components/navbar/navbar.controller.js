@@ -8,6 +8,6 @@ angular.module('piaApp')
 
         $scope.logout = function () {
             Auth.logout();
-            $state.go('home');
+            $state.go('app');
         };
     });
