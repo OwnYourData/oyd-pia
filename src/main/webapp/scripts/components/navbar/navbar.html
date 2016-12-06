@@ -7,102 +7,123 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/"><span translate="global.title">jhipster</span> <span class="navbar-version">v{{VERSION}}</span></a>
+            <a class="navbar-brand" href="#/"><div class="pia-logo"></div><div class="logo-txt"><span class="font-size-large" translate="global.title">jhipster</span> <span class="navbar-version">&nbsp;v{{VERSION}}</span></div></a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
-                <li ui-sref-active="active">
-                    <a ui-sref="home" data-toggle="collapse" data-target=".navbar-collapse.in">
-                        <span class="glyphicon glyphicon-home"></span>
-                        <span class="hidden-sm" translate="global.menu.home">Home</span>
-                    </a>
-                </li>
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                        <span>
-                            <span class="glyphicon glyphicon-th-list"></span>
-                            <span class="hidden-sm" translate="global.menu.entities.main">
-                                Entities
-                            </span>
-                            <b class="caret"></b>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li ui-sref-active="active" ><a ui-sref="plugin" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span translate="global.menu.entities.plugin">Plugin</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="repo" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span translate="global.menu.entities.repo">Repo</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="item" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span translate="global.menu.entities.item">Item</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="store" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
-                        &#xA0;<span translate="global.menu.entities.store">Store</span></a></li>
-                        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-                    </ul>
-                </li>
-                <li ng-class="{active: $state.includes('account')}" ng-switch-when="true" class="dropdown pointer">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">
-                        <span>
-                            <span class="glyphicon glyphicon-user"></span>
-                            <span class="hidden-sm" translate="global.menu.account.main">
-                                Account
-                            </span>
-                            <b class="caret"></b>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li ui-sref-active="active" ><a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>
-                            &#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>
-                        <li ui-sref-active="active" ><a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>
-                            &#xA0;<span translate="global.menu.account.password">Password</span></a></li>
-                        <li ui-sref-active="active" ><a href="" ng-click="logout()" id="logout" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-out"></span>
-                            &#xA0;<span translate="global.menu.account.logout">Sign out</span></a></li>
-                    </ul>
-                </li>
-                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" class="dropdown pointer">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="" id="admin-menu">
-                        <span>
-                            <span class="glyphicon glyphicon-tower"></span>
-                            <span class="hidden-sm" translate="global.menu.admin.main">Administration</span>
-                            <b class="caret"></b>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
-                            &#xA0;<span translate="global.menu.admin.user-management">User management</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="tracker" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-eye-open"></span>
-                                &nbsp;<span translate="global.menu.admin.tracker">User tracker</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>
-                            &#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>
-                            &#xA0;<span translate="global.menu.admin.health">Health</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>
-                            &#xA0;<span translate="global.menu.admin.configuration">Configuration</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>
-                            &#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>
-                        <li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>
-                            &#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>
-                        <li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>
-                            &#xA0;<span translate="global.menu.admin.apidocs">API</span></a></li>
-                        <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
-                        <li ng-hide="inProduction"><a href='/h2-console' target="_tab" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-hdd"></span>
-                            &#xA0;<span translate="global.menu.admin.database">Database</span></a></li>
-                    </ul>
-                </li>
-                <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                        <span>
-                            <span class="glyphicon glyphicon-flag"></span>
-                            <span class="hidden-sm" translate="global.menu.language">Language</span>
-                            <b class="caret"></b>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li active-menu="{{language}}" ng-repeat="language in languages">
-                            <a href="" ng-click="changeLanguage(language)" data-toggle="collapse" data-target=".navbar-collapse.in">{{language | findLanguageFromKey}}</a>
-                        </li>
-                    </ul>
-                </li>
+                <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="app" data-toggle="collapse" data-target=".navbar-collapse.in">
+                        &#xA0;<span class="font-size-large" translate="global.menu.myApps.main">MyApps</span></a></li>
+                <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="data" data-toggle="collapse" data-target=".navbar-collapse.in">
+                        &#xA0;<span class="font-size-large" translate="global.menu.myData.main">MyData</span></a></li>
+                <li ng-class="{
+                            active: $state.includes('account')
+                        }" ng-switch-when="true"><a ui-sref="accessdata" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
+                        &#xA0;<span class="font-size-large hidden-sm" translate="global.menu.account.main">
+                            Account
+                        </span></a></li>
+                <li ui-sref-active="active" ><a href="" ng-click="logout()" id="logout" ng-switch-when="true" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-out"></span>
+                        &#xA0;<span class="font-size-large hidden-sm" translate="global.menu.account.logout">Sign out</span></a></li>
+                <!--                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                        <span>
+                                            <span class="glyphicon glyphicon-th-list"></span>
+                                            <span class="hidden-sm" translate="global.menu.myApps.main">
+                                                My Apps
+                                            </span>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li ui-sref-active="active" ><a ui-sref="app" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                                                &#xA0;<span translate="global.menu.myApps.plugin">Plugin</span></a></li>
+                                        <li ui-sref-active="active" ><a ui-sref="store" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                                                &#xA0;<span translate="global.menu.myApps.store">Store</span></a></li>
+                                         jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here
+                                    </ul>
+                                </li>-->
+                <!--                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                        <span>
+                                            <span class="glyphicon glyphicon-th-list"></span>
+                                            <span class="hidden-sm" translate="global.menu.myData.main">
+                                                My Data
+                                            </span>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li ui-sref-active="active" ><a ui-sref="repo" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                                                &#xA0;<span translate="global.menu.myData.repo">Repo</span></a></li>
+                                        <li ui-sref-active="active" ><a ui-sref="item" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-asterisk"></span>
+                                                &#xA0;<span translate="global.menu.myData.item">Item</span></a></li>
+                                         jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here
+                                    </ul>
+                                </li>-->
+                <!--                <li ng-class="{active: $state.includes('account')}" ng-switch-when="true" class="dropdown pointer">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="" id="account-menu">
+                                        <span>
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            <span class="hidden-sm" translate="global.menu.account.main">
+                                                Account
+                                            </span>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li ui-sref-active="active" ><a ui-sref="settings" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-wrench"></span>
+                                                &#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>
+                                        <li ui-sref-active="active" ><a ui-sref="password" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-lock"></span>
+                                                &#xA0;<span translate="global.menu.account.password">Password</span></a></li>
+                                                                <li ui-sref-active="active" ><a href="" ng-click="logout()" id="logout" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-log-out"></span>
+                                                                        &#xA0;<span translate="global.menu.account.logout">Sign out</span></a></li>
+                                    </ul>
+                                </li>-->
+                <!--                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-authority="ROLE_ADMIN" class="dropdown pointer">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="" id="admin-menu">
+                                        <span>
+                                            <span class="glyphicon glyphicon-tower"></span>
+                                            <span class="hidden-sm" translate="global.menu.admin.main">Administration</span>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li ui-sref-active="active"><a ui-sref="user-management" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-user"></span>
+                                                &#xA0;<span translate="global.menu.admin.user-management">User management</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="tracker" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-eye-open"></span>
+                                                &nbsp;<span translate="global.menu.admin.tracker">User tracker</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="metrics" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-dashboard"></span>
+                                                &#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="health" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-heart"></span>
+                                                &#xA0;<span translate="global.menu.admin.health">Health</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="configuration" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-list-alt"></span>
+                                                &#xA0;<span translate="global.menu.admin.configuration">Configuration</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="audits" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-bell"></span>
+                                                &#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>
+                                        <li ui-sref-active="active"><a ui-sref="logs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-tasks"></span>
+                                                &#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>
+                                        <li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-book"></span>
+                                                &#xA0;<span translate="global.menu.admin.apidocs">API</span></a></li>
+                                         jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here
+                                        <li ng-hide="inProduction"><a href='/h2-console' target="_tab" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="glyphicon glyphicon-hdd"></span>
+                                                &#xA0;<span translate="global.menu.admin.database">Database</span></a></li>
+                                    </ul>
+                                </li>-->
+
+                <!--				<li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                        <span>
+                                            <span class="glyphicon glyphicon-flag"></span>
+                                            <span class="hidden-sm" translate="global.menu.language">Language</span>
+                                            <b class="caret"></b>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li active-menu="{{language}}" ng-repeat="language in languages">
+                                            <a href="" ng-click="changeLanguage(language)" data-toggle="collapse" data-target=".navbar-collapse.in">{{language| findLanguageFromKey}}</a>
+                                        </li>
+                                    </ul>
+                                </li>-->
             </ul>
         </div>
     </div>

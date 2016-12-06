@@ -1,28 +1,29 @@
 'use strict';
 
 angular.module('piaApp')
-    .controller('PasswordController', function ($scope, Auth, Principal) {
-        Principal.identity().then(function(account) {
-            $scope.account = account;
-        });
+        .controller('PasswordController', function ($scope, Auth, Principal, AuthServerProvider) {
+            Principal.identity().then(function (account) {
+                $scope.account = account;
+            });
 
-        $scope.success = null;
-        $scope.error = null;
-        $scope.doNotMatch = null;
-        $scope.changePassword = function () {
-            if ($scope.password !== $scope.confirmPassword) {
-                $scope.error = null;
-                $scope.success = null;
-                $scope.doNotMatch = 'ERROR';
-            } else {
-                $scope.doNotMatch = null;
-                Auth.changePassword($scope.password).then(function () {
+            $scope.success = null;
+            $scope.error = null;
+            $scope.doNotMatch = null;
+            $scope.qr = JSON.stringify({id: AuthServerProvider.getClientId(), secret: AuthServerProvider.getClientSecret(), protocol: location.protocol, host: location.host});
+            $scope.changePassword = function () {
+                if ($scope.password !== $scope.confirmPassword) {
                     $scope.error = null;
-                    $scope.success = 'OK';
-                }).catch(function () {
                     $scope.success = null;
-                    $scope.error = 'ERROR';
-                });
-            }
-        };
-    });
+                    $scope.doNotMatch = 'ERROR';
+                } else {
+                    $scope.doNotMatch = null;
+                    Auth.changePassword($scope.password).then(function () {
+                        $scope.error = null;
+                        $scope.success = 'OK';
+                    }).catch(function () {
+                        $scope.success = null;
+                        $scope.error = 'ERROR';
+                    });
+                }
+            };
+        });

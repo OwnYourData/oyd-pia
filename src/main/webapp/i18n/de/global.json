@@ -5,12 +5,16 @@
         "menu": {
             "home": "Startseite",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-            "entities": {
-                "main": "Entitäten",
+            "myApps": {
+                "main": "Meine Apps",
                 "plugin": "Plugin",
+                "store": "Store",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "myData": {
+                "main": "Meine Daten",
                 "repo": "Repo",
                 "item": "Item",
-                "store": "Store",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -35,7 +39,8 @@
                 "database": "Datenbank",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Sprache"
+            "language": "Sprache",
+            "devinfo": "Infos für App-Entwickler"
         },
         "form": {
             "username": "Benutzername",
@@ -49,7 +54,7 @@
         },
         "messages": {
             "info": {
-                "login" : "Bitte melde dich mit deinem Benutzernamen und Passwort an.",
+                "login": "Bitte melde dich mit deinem Benutzernamen und Passwort an.",
                 "authenticated": "Wenn Sie sich <a class=\"alert-link\" href=\"#/login\">anmelden</a> möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\").",
                 "register": "Sie haben noch keinen Zugang? <a class=\"alert-link\" href=\"#/register\">Registrieren Sie sich</a>"
             },
@@ -77,7 +82,7 @@
             }
         },
         "field": {
-            "id" : "ID"
+            "id": "ID"
         }
     },
     "entity": {
@@ -89,7 +94,8 @@
             "delete": "Löschen",
             "edit": "Bearbeiten",
             "save": "Speichern",
-            "view": "Details"
+            "view": "Details",
+            "open": "Öffnen"
         },
         "detail": {
             "field": "Feld",

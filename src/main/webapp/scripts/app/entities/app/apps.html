@@ -1,0 +1,118 @@
+<div>
+    <div ng-switch="isAuthenticated()">
+        <div ng-switch-when="true">
+            <div class="main-heading" translate="app.title">Welcome!</div>
+            <div class="font-size-large" translate="app.subtitle">This is your Data Vault</div>
+            <div class="row">
+                <div class="app-heading" translate="app.installed">Installed Apps</div>
+                <div class="font-size-large app-heading-description" translate="app.description" ng-show="description"></div>
+                <div ng-repeat="plugin in installedPlugins track by plugin.id">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
+                        <div class="app-wrapper">
+                            <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
+                            <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div><div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
+                            <div class="app-item"><a class="button custom-btn" ng-href="{{plugin.url}}" ng-if="plugin.url"><span translate="entity.action.open">öffnen</span></a></div>
+                            <div class="app-item btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        ui-sref="edit({id:plugin.id})"
+                                        class="btn btn-action btn-sm">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                                </button>
+                                <button type="submit"
+                                        ui-sref="delete({id:plugin.id})"
+                                        class="btn btn-action btn-sm">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-repeat="store in stores">
+                <div class="row">
+                    <div class="panel-heading app-heading">{{store.name}}
+                        <div id="cog-dropdown" class="dropdown pointer navbar-right">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    <b class="cog-caret"></b>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a ui-sref="app.detail({id:store.id})">
+                                        <span translate="entity.action.view"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a ui-sref="app.edit({id:store.id})">
+                                        <span translate="entity.action.edit"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a ui-sref="app.delete({id:store.id})">
+                                        <span translate="entity.action.delete"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="plugin in store.plugins" href="#">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
+                            <div class="app-wrapper store-wrapper">
+                                <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
+                                <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div>
+                                <div class="app-item appInfo">
+                                    {{plugin.description}}
+                                    <a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a>
+                                </div>
+                                <div class="app-item" ng-if="plugin.id"><button class="custom-btn" ng-click="install(store, plugin)">Install</button></div>
+                                <div class="app-item" ng-if="plugin.showAvailableSoon"><div class="showAvailableSoon">Bald verfügbar</button></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button class="btn custom-btn newStore-btn" ui-sref="app.new" >
+                <span
+                    translate="piaApp.store.home.createLabel">Create new Store
+                </span>
+            </button>
+        </div>
+        <div ng-switch-when="false" >
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <span class="pia img-responsive img-rounded"></span>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-danger" ng-show="authenticationError" translate="login.messages.error.authentication">
+                        <strong>Failed to sign in!</strong> Please check your credentials and try again.
+                    </div>
+
+                    <div class="alert alert-info" translate="global.messages.info.login">
+                        Please authenticate yourself with your username and password.
+                    </div>
+
+                    <form class="form" role="form" ng-submit="login($event)">
+                        <div class="form-group">
+                            <label for="username" translate="global.form.username">Login</label>
+                            <input type="text" class="form-control" id="username" placeholder="{{'global.form.username.placeholder'| translate}}" ng-model="$parent.username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" translate="login.form.password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="{{'login.form.password.placeholder'| translate}}" ng-model="$parent.password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" translate="login.form.button">Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

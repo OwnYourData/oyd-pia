@@ -1,9 +1,37 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
 body {
-    background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
+    margin-bottom: 51px; /* Footer height = 35, padding = 15, border = 1 */
+}
+footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 51px; /* Footer height = 35, padding = 15, border = 1 */
+    width: 100%;
 }
 
+footer .container{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+footer .navbar{
+    margin-bottom: 0px;
+    border-top-color: #777;
+    border-bottom-color: #ffffff;
+    height:35px;
+}
+
+footer .navbar-nav {
+        margin:0px;
+}
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
@@ -216,18 +244,18 @@ ul#strengthBar {
 /* Makes toolbar not wrap on smaller screens
  http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row;
-   flex-direction: row;
-   -webkit-justify-content: flex-end;
-   justify-content: flex-end;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 /* Align text in td verifically (top aligned by Bootstrap) */
 .jh-table {
-        table-layout: fixed;
-        overflow-wrap: break-word;
+    table-layout: fixed;
+    overflow-wrap: break-word;
 }
 
 .jh-table > tbody > tr > td {
@@ -238,3 +266,292 @@ ul#strengthBar {
 /* jhipster-needle-scss-add-main JHipster will add new css style */
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+
+/* ==========================================================================
+Content container
+========================================================================== */
+.well{
+    background-color: #ffffff;
+    border: none;
+    box-shadow: none;
+}
+/* ==========================================================================
+Navigation
+========================================================================== */
+
+nav {
+    padding-bottom:5px;
+}
+.navbar-default{
+    background-color: #ffffff;
+}
+.navbar{
+    border-bottom-color: #777;
+}
+.navbar-brand {
+    padding: 0px 0px 0px 15px;
+}
+.navbar-header{
+    padding-left: 20px;
+}
+.logo-txt{
+    display: flex;
+    padding-top: 35px;
+}
+.pia-logo{
+    background: url("../images/pia_logo.png") no-repeat center top;
+    height: 50px;
+    width: 59px;
+    float: left;
+    background-size: cover;
+    margin-right: 10px;
+}
+.navbar-default .navbar-nav .active a{
+    font-weight: bold;
+    color: #000000;
+    background-color: transparent;
+}
+.navbar-default .navbar-nav .active a:focus{
+    font-weight: bold;
+    color: #000000;
+    background-color: transparent;
+}
+.navbar-default .navbar-nav .active a:hover{
+    font-weight: bold;
+    color: #000000;
+    background-color: transparent;
+}
+
+#navbar-collapse ul {
+    padding-top:20px;
+}
+.navbar-default .navbar-nav li a{
+    color: #000000;
+}
+#languageDropup {
+    display: block !important;
+    float: right;
+}
+#languageDropup .dropdown-menu{
+    position: absolute;
+    z-index: 1000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    right: 0;
+    left: auto;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a{
+    background-color: #ffffff;
+}
+@media (max-width: 783px){
+    #languageDropup{
+        padding-right: 30px;
+    }
+    #languageDropup .hidden-sm{
+        display: none !important;
+    }
+    .store-wrapper{
+        height: auto !important;
+    }
+}
+/* ==========================================================================
+Myapps
+========================================================================== */
+.main-heading{
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.plugin-picture-wrapper{
+    padding: 8px;
+    text-align: center;
+}
+.plugin-picture-wrapper img{
+    height: 160px;
+    margin-bottom: 10px;
+}
+.app-wrapper{
+    background-color: #ffffff;
+    border: 1px solid #777;
+    margin: 0px 20px 20px 0px;
+    padding: 20px 30px 20px 30px;
+    width: 100%;
+}
+.store-wrapper{
+    height: 430px;
+}
+.app-item{
+    padding: 8px;
+    display: flex;
+}
+.app-item a:hover{
+    color: #ffffff;
+    text-decoration: none;
+}
+.custom-btn{
+    padding: 10px 50px 10px 50px;
+    border: none;
+    background-color: #878787;
+    color: #ffffff;
+    margin: 0 auto;
+    border-radius: 0px;
+}
+.btn-action{
+    background-color: #ffffff;
+    border: none;
+    color: #000000;
+}
+.font-size-large{
+    font-size: 15px;
+}
+.font-size-medium{
+    font-size: 14px;
+}
+.app-heading{
+    font-size: 20px;
+    margin-top: 20px;
+    padding: 10px 15px 10px 15px;
+}
+.app-heading-description{
+    padding-left: 15px;
+}
+.flex-btn-group-container{
+    justify-content: center;
+}
+.appInfo{
+    display: block;
+    max-height: 116px;
+    min-height: 116px;
+}
+.appInfo a{
+    color: #000000;
+    text-decoration: underline;
+}
+.appInfo a:hover{
+    color: #000000;
+    text-decoration: underline;
+}
+.cog-caret{
+    display: inline-block;
+    width: 0;
+    vertical-align: middle;
+    height: 10px;
+    border-top: 6px dashed;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+}
+#cog-dropdown{
+    float: right
+}
+#cog-dropdown .dropdown-menu{
+    left: auto;
+    right: 0;
+}
+.dropdown a:hover{
+    text-decoration: none;
+}
+.dropdown a:focus{
+    text-decoration: none;
+}
+.showAvailableSoon{
+    padding: 10px 0px 10px;
+    margin: 0 auto;
+}
+.col-wrapper{
+    padding-right: 0px;
+}
+.newStore-btn{
+    margin-top: 20px;
+}
+/* ==========================================================================
+Account
+========================================================================== */
+.password-container{
+    padding-right: 150px;
+    margin-bottom: 20px;
+}
+.password-container .font-size-large{
+    margin-bottom: 10px
+}
+.password-container input{
+    border-radius: 0px;
+    border-color: #878787;
+}
+.accessdata-container{
+    padding: 30px;
+    background-color: #E9E9E9;
+}
+.accessdata-container strong .font-size-medium{
+    margin-bottom: 10px;
+}
+.accessdata-default{
+    margin: 15px 0px 15px 0px;
+    display: flex;
+}
+.accessdata-defaultvalue{
+    margin-left: 10px;
+}
+.qrcode{
+    margin: 30px 0px 30px 0px;
+}
+.mobile-datavault{
+    margin-top: 30px;
+}
+.mobile-datavault-btn{
+    background-image: url('../images/placeholder.png');
+    height: 40px;
+    width: 130px;
+    border-radius: 4px;
+    margin: 10px 10px 0px 0px;
+}
+@media (max-width: 990px){
+    .password-container{
+        padding-right: 19px !important;
+    }
+    #items-table thead >tr > th:last-child{
+        text-align: center;
+    }
+}
+/* ==========================================================================
+Data
+========================================================================== */
+.table-responsive{
+    border: none;
+}
+.table > thead > tr > th{
+    border-bottom: 2px solid #777;
+}
+.table > tbody > tr {
+    border: none;
+}
+.table{
+    border-bottom: 2px solid #777;
+    margin-top: 40px;
+}
+#data-table tbody > tr > td:not(:first-child){
+    vertical-align: middle;
+    border-color: #777;
+}
+#data-table tbody > tr > td ul{
+    margin-bottom: 0px;
+}
+#items-table tbody > tr > td{
+    vertical-align: middle;
+    border: none;
+}
+tbody > tr > td ul{
+    list-style-type: none;
+    padding: 0px;
+}
+.more-btn{
+    display: none;
+    padding: 10px;
+}
+.statCount{
+    text-align: right;
+    padding-right: 50px !important;
+}
+.statisticsText{
+    margin-bottom: 40px;
+}
