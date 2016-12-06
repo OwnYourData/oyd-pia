@@ -28,6 +28,10 @@ footer .navbar{
     border-bottom-color: #ffffff;
     height:35px;
 }
+
+footer .navbar-nav {
+        margin:0px;
+}
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
