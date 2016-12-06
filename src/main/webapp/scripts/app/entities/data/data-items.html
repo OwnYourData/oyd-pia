@@ -1,4 +1,3 @@
-<!--TODO: create new item for repo-->
 <button class="btn custom-btn" ui-sref="data.item.detail({itemId:item.id})">
     <span
         translate="piaApp.item.home.createLabel">Create new Item
@@ -8,9 +7,9 @@
     <table id="items-table" class="table table-striped">
         <thead>
             <tr jh-sort="predicate" ascending="reverse" callback="reset()">
-                <th jh-sort-by="id"><span class="font-size-medium" translate="data.recordID">ID</span></th>
-                <th jh-sort-by="value"><span class="font-size-medium" translate="piaApp.item.value">Value</span></th>
-                <th><span class="font-size-medium" translate="data.actions">Actions</span></th>
+                <th jh-sort-by="id"><span class="font-size-large" translate="data.recordID">ID</span></th>
+                <th jh-sort-by="value"><span class="font-size-large" translate="piaApp.item.value">Value</span></th>
+                <th><span class="font-size-large" translate="data.actions">Actions</span></th>
             </tr>
         </thead>
         <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">

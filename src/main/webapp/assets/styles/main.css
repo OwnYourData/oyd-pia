@@ -274,31 +274,33 @@ Content container
 /* ==========================================================================
 Navigation
 ========================================================================== */
+
+nav {
+    padding-bottom:5px;
+}
 .navbar-default{
     background-color: #ffffff;
-    padding: 15px 15px 0px 15px;
 }
 .navbar{
     border-bottom-color: #777;
-    height: 80px;
 }
-.navbar-brand{
-    margin-left: 0px;
-    padding-bottom: 0px;
-    position: absolute;
-    bottom: 0;
+.navbar-brand {
+    padding: 0px 0px 0px 15px;
 }
 .navbar-header{
     padding-left: 20px;
-    margin: 0px !important;
+}
+.logo-txt{
+    display: flex;
+    padding-top: 35px;
 }
 .pia-logo{
-    background: url("../images/placeholder.png") no-repeat center top;
+    background: url("../images/pia_logo.png") no-repeat center top;
     height: 50px;
-    width: 50px;
-    display: inline-block;
+    width: 59px;
     float: left;
-    margin: 0px 15px 15px 0px;
+    background-size: cover;
+    margin-right: 10px;
 }
 .navbar-default .navbar-nav .active a{
     font-weight: bold;
@@ -315,17 +317,12 @@ Navigation
     color: #000000;
     background-color: transparent;
 }
+
+#navbar-collapse ul {
+    padding-top:20px;
+}
 .navbar-default .navbar-nav li a{
     color: #000000;
-}
-#navbar-collapse{
-    position: relative;
-}
-#navbar-collapse ul{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding-right: 15px;
 }
 #languageDropup {
     display: block !important;
@@ -357,6 +354,11 @@ Navigation
 /* ==========================================================================
 Myapps
 ========================================================================== */
+.main-heading{
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
 .plugin-picture-wrapper{
     padding: 8px;
     text-align: center;
@@ -373,7 +375,7 @@ Myapps
     width: 100%;
 }
 .store-wrapper{
-    height: 450px;
+    height: 430px;
 }
 .app-item{
     padding: 8px;
@@ -397,13 +399,13 @@ Myapps
     color: #000000;
 }
 .font-size-large{
-    font-size: large;
+    font-size: 15px;
 }
 .font-size-medium{
-    font-size: medium;
+    font-size: 14px;
 }
 .app-heading{
-    font-size: x-large;
+    font-size: 20px;
     margin-top: 20px;
     padding: 10px 15px 10px 15px;
 }
@@ -415,6 +417,8 @@ Myapps
 }
 .appInfo{
     display: block;
+    max-height: 116px;
+    min-height: 116px;
 }
 .appInfo a{
     color: #000000;
@@ -428,10 +432,10 @@ Myapps
     display: inline-block;
     width: 0;
     vertical-align: middle;
-    height: 20px;
-    border-top: 8px dashed;
-    border-right: 8px solid transparent;
-    border-left: 8px solid transparent;
+    height: 10px;
+    border-top: 6px dashed;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
 }
 #cog-dropdown{
     float: right
@@ -445,6 +449,16 @@ Myapps
 }
 .dropdown a:focus{
     text-decoration: none;
+}
+.showAvailableSoon{
+    padding: 10px 0px 10px;
+    margin: 0 auto;
+}
+.col-wrapper{
+    padding-right: 0px;
+}
+.newStore-btn{
+    margin-top: 20px;
 }
 /* ==========================================================================
 Account
@@ -491,7 +505,9 @@ Account
     .password-container{
         padding-right: 19px !important;
     }
-
+    #items-table thead >tr > th:last-child{
+        text-align: center;
+    }
 }
 /* ==========================================================================
 Data
@@ -509,9 +525,12 @@ Data
     border-bottom: 2px solid #777;
     margin-top: 40px;
 }
-#data-table tbody > tr > td{
+#data-table tbody > tr > td:not(:first-child){
     vertical-align: middle;
     border-color: #777;
+}
+#data-table tbody > tr > td ul{
+    margin-bottom: 0px;
 }
 #items-table tbody > tr > td{
     vertical-align: middle;

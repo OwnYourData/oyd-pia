@@ -1,16 +1,16 @@
 <div>
     <div ng-switch="isAuthenticated()">
         <div ng-switch-when="true">
-            <h1 translate="app.title">Welcome!</h1>
+            <div class="main-heading" translate="app.title">Welcome!</div>
             <div class="font-size-large" translate="app.subtitle">This is your Data Vault</div>
             <div class="row">
                 <div class="app-heading" translate="app.installed">Installed Apps</div>
                 <div class="font-size-large app-heading-description" translate="app.description" ng-show="description"></div>
                 <div ng-repeat="plugin in installedPlugins track by plugin.id">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
                         <div class="app-wrapper">
                             <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
-                            <div class="app-item font-size-medium"><strong>{{plugin.name}}</strong></div><div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
+                            <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div><div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
                             <div class="app-item"><a class="button custom-btn" ng-href="{{plugin.url}}" ng-if="plugin.url"><span translate="entity.action.open">öffnen</span></a></div>
                             <div class="app-item btn-group flex-btn-group-container">
                                 <button type="submit"
@@ -30,12 +30,6 @@
                     </div>
                 </div>
             </div>
-
-            <button class="btn custom-btn" ui-sref="app.new" >
-                <span
-                    translate="piaApp.store.home.createLabel">Create new Store
-                </span>
-            </button>
 
             <div ng-repeat="store in stores">
                 <div class="row">
@@ -68,23 +62,28 @@
                     </div>
 
                     <div ng-repeat="plugin in store.plugins" href="#">
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
                             <div class="app-wrapper store-wrapper">
                                 <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
-                                <div class="app-item font-size-medium"><strong>{{plugin.name}}</strong></div>
+                                <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div>
                                 <div class="app-item appInfo">
                                     {{plugin.description}}
-                                    <a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a><div ng-if="plugin.infourl == null">keine Details</div>
+                                    <a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a>
                                 </div>
-                                <div class="app-item"><button class="custom-btn" ng-click="install(store, plugin)">Install</button></div>
+                                <div class="app-item" ng-if="plugin.id"><button class="custom-btn" ng-click="install(store, plugin)">Install</button></div>
+                                <div class="app-item" ng-if="plugin.showAvailableSoon"><div class="showAvailableSoon">Bald verfügbar</button></div></div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-
+            <button class="btn custom-btn newStore-btn" ui-sref="app.new" >
+                <span
+                    translate="piaApp.store.home.createLabel">Create new Store
+                </span>
+            </button>
         </div>
-
         <div ng-switch-when="false" >
 
             <div class="row">
