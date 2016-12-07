@@ -408,6 +408,11 @@ Myapps
 .font-size-medium{
     font-size: 14px;
 }
+
+.font-weight-light {
+    font-weight: 300;
+}
+
 .app-heading{
     font-size: 20px;
     margin-top: 20px;
