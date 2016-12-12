@@ -2,19 +2,19 @@
     "piaApp": {
         "store" : {
             "home": {
-                "title": "Stores",
-                "createLabel": "Konfiguriere einen neuen Store",
-                "createOrEditLabel": "Konfiguriere oder bearbeite einen Store",
-                "search": "Suche nach einem Store"
+                "title": "App-Anbieter",
+                "createLabel": "App-Anbieter hinzufügen",
+                "createOrEditLabel": "Konfiguriere oder bearbeite einen App-Anbieter",
+                "search": "Suche nach einem App-Anbieter"
             },
-            "created": "Ein neuer Store mit der id {{ param }} wurde erstellt",
-            "updated": "Ein Store mit der id {{ param }} wurde aktualisiert",
-            "deleted": "Ein Store mit der id {{ param }} wurde gelöscht",
+            "created": "Ein neuer App-Anbieter mit der id {{ param }} wurde erstellt",
+            "updated": "Ein App-Anbieter mit der id {{ param }} wurde aktualisiert",
+            "deleted": "Ein App-Anbieter mit der id {{ param }} wurde gelöscht",
             "delete": {
-                "question": "Sicher, dass sie Store {{ id }} löschen wollen?"
+                "question": "Sicher, dass sie App-Anbieter {{ id }} löschen wollen?"
             },
             "detail": {
-                "title": "Store"
+                "title": "App-Anbieter"
             },
             "name": "Name",
             "url": "Url"

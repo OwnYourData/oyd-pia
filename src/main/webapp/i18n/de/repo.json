@@ -3,7 +3,7 @@
         "repo" : {
             "home": {
                 "title": "Repos",
-                "createLabel": "Erstelle ein neues Repo",
+                "createLabel": "Liste hinzufügen",
                 "createOrEditLabel": "Erstelle oder bearbeite ein Repo",
                 "search": "Suche nach einem Repo"
             },

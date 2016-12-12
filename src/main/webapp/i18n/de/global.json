@@ -1,6 +1,7 @@
 {
     "global": {
         "title": "Datentresor | OwnYourData",
+        "header": "Mein Datentresor",
         "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
         "menu": {
             "home": "Startseite",
@@ -18,7 +19,7 @@
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
-                "main": "Zugang",
+                "main": "Mein Account",
                 "settings": "Einstellungen",
                 "password": "Passwort",
                 "sessions": "Sitzungen",
@@ -40,6 +41,9 @@
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
             "language": "Sprache",
+            "about_oyd": "Über OwnYourData.eu",
+            "mobile_vault": "Mobiler Datentresor",
+            "feedback": "Feedback senden",
             "devinfo": "Infos für App-Entwickler"
         },
         "form": {

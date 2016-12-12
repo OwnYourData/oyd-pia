@@ -1,9 +1,4 @@
 <p class="font-size-large statisticsText" translate="data.statisticsText" translate-values="{pluginCount: pluginCount, itemCount: itemCount}"></p>
-<button class="btn custom-btn" ui-sref="data.new" >
-    <span
-        translate="piaApp.repo.home.createLabel">Create new Repo
-    </span>
-</button>
 <div>
     <table id="data-table" class="table table-striped">
         <thead>
@@ -16,9 +11,14 @@
         <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
             <tr ng-repeat="(id, plugindata) in plugins track by id">
                 <td class="col-md-5 font-size-large">{{plugindata.plugin.name}}</td>
-                <td class="col-md-5 font-size-large"><ul><li ng-repeat="stat in plugindata.stat">{{stat.type}}</li></ul></td>
+                <td class="col-md-5 font-size-large"><ul><li ng-repeat="stat in plugindata.stat">{{stat.description}}</li></ul></td>
                 <td class="col-md-5 statCount font-size-large"><ul><li ng-repeat="stat in plugindata.stat"><a ui-sref="data.item({repositoryId:stat.id})">{{stat.count}}</a></li></ul></td>
             </tr>
         </tbody>
     </table>
 </div>
+<button class="btn custom-btn" ui-sref="data.new" >
+    <span
+        translate="piaApp.repo.home.createLabel">Create new Repo
+    </span>
+</button>

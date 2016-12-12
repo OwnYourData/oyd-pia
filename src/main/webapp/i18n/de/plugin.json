@@ -2,24 +2,24 @@
     "piaApp": {
         "plugin" : {
             "home": {
-                "title": "Plugins",
-                "createLabel": "Plugin hochladen",
-                "installLabel": "Plugin installieren",
-                "registerLabel": "Plugin registrieren",
-                "createOrEditLabel": "Erstelle oder bearbeite ein Plugin",
-                "search": "Suche nach einem Plugin"
+                "title": "Apps",
+                "createLabel": "App hochladen",
+                "installLabel": "App installieren",
+                "registerLabel": "App registrieren",
+                "createOrEditLabel": "App Details",
+                "search": "Suche nach einer App"
             },
-            "created": "Ein neues Plugin mit der id {{ param }} wurde erstellt",
-            "updated": "Ein Plugin mit der id {{ param }} wurde aktualisiert",
-            "deleted": "Ein Plugin mit der id {{ param }} wurde gelöscht",
+            "created": "Eine neue App wurde erstellt",
+            "updated": "Eine App mit der id {{ param }} wurde aktualisiert",
+            "deleted": "Die App mit der id {{ param }} wurde gelöscht",
             "delete": {
-                "question": "Sicher, dass sie Plugin {{ id }} löschen wollen?"
+                "question": "Bist du sicher, dass du die App {{ name }} löschen möchtest?"
             },
             "detail": {
-                "title": "Plugin"
+                "title": "App"
             },
             "name": "Name",
-            "identifier": "Identifier",
+            "identifier": "Kennung",
             "infourl": "Info",
             "picture": "Bild",
             "path": "Path",
@@ -27,7 +27,7 @@
             "state": "Status",
             "start": "Start",
             "stop": "Stop",
-            "secret": "Secret",
+            "secret": "Passwort",
             "install": {
                 "title": "Installiere Plugin"
             },
