@@ -2,18 +2,13 @@
     "accessdata": {
         "main": {
             "title": "Zugangsdaten für Deinen Mobilen Datentresor",
-            "description": "Lade Dir die OYD-App herunter und scanne den QR Code, um Deinen Datentresor zu synchronisieren.",
-            "alternative": "Alternativ kannst Du Deine Zugangsdaten auch manuell in die App eingeben:"
+            "description": "Lade dir die OwnYourData-App herunter und scanne den QR Code, um dich mit deinem Datentresor zu verbinden.",
+            "alternative": "Alternativ kannst Du Deine Zugangsdaten auch manuell in die OwnYourData-App eingeben:"
         },
         "defaultData": {
             "ip-address": "IP-Adresse:",
             "identifier": "Identifier:",
             "secret": "Secret:"
-        },
-        "defaultValue": {
-            "ip-address": "192.168.1.206:8080",
-            "identifier": "datentresorapp",
-            "secret": "1234567890"
         },
         "mobileDataVault": "Hol Dir Deine Mobilen Datentresor!"
     }

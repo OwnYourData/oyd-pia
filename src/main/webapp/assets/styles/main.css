@@ -416,6 +416,9 @@ Myapps
 .font-size-medium{
     font-size: 14px;
 }
+.font-weight-light {
+    font-weight: 300;
+}
 .app-heading{
     font-size: 20px;
     margin-top: 20px;
@@ -505,6 +508,23 @@ Account
 }
 .mobile-datavault{
     margin-top: 30px;
+}
+.mobile-datavault-stores{
+    display: flex;
+}
+.mobile-datavault-ios{
+    background-image: url('../images/ios.png');
+    background-size: cover;
+    height: 40px;
+    width: 134px;
+    margin: 5px;
+}
+.mobile-datavault-android{
+    background-image: url('../images/android.png');
+    background-size: cover;
+    height: 40px;
+    width: 134px;
+    margin: 5px;
 }
 .mobile-datavault-btn{
     background-image: url('../images/placeholder.png');

@@ -1,16 +1,21 @@
 {
     "global": {
         "title": "Data Vault | OwnYourData",
+        "header": "My Data Vault",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-            "entities": {
-                "main": "Entities",
+            "myApps": {
+                "main": "My Apps",
                 "plugin": "Plugin",
+                "store": "Store",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "myData": {
+                "main": "My Data",
                 "repo": "Repo",
                 "item": "Item",
-                "store": "Store",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -35,7 +40,8 @@
                 "database": "Database",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Language"
+            "language": "Language",
+            "devinfo": "Infos für App-Entwickler"
         },
         "form": {
             "username": "Username",
@@ -49,7 +55,7 @@
         },
         "messages": {
             "info": {
-                "login" : "Please log into this demo with username=\"demo\" and password=\"ownyourdata\".",
+                "login": "Please log into this demo with username=\"demo\" and password=\"ownyourdata\".",
                 "authenticated": "If you want to <a class=\"alert-link\" href=\"#/login\">sign in</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
                 "register": "You don't have an account yet? <a class=\"alert-link\" href=\"#/register\">Register a new account</a>"
             },
@@ -89,7 +95,8 @@
             "delete": "Delete",
             "edit": "Edit",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "open": "Open"
         },
         "detail": {
             "field": "Field",

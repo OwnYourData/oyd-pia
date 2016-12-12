@@ -72,15 +72,17 @@
                         <div class="font-size-medium" translate="accessdata.defaultData.secret"></div>
                     </div>
                     <div class="accessdata-defaultvalue">
-                        <div class="font-size-medium accessdata-defaultvalue" translate="accessdata.defaultValue.ip-address"></div>
-                        <div class="font-size-medium accessdata-defaultvalue" translate="accessdata.defaultValue.identifier"></div>
-                        <div class="font-size-medium accessdata-defaultvalue" translate="accessdata.defaultValue.secret"></div>
+                       <div class="font-size-medium font-weight-light accessdata-defaultvalue">{{clientProtocol}}//{{clientHost}}</div>
+                       <div class="font-size-medium font-weight-light accessdata-defaultvalue">{{clientId}}</div>
+                       <div class="font-size-medium font-weight-light accessdata-defaultvalue">{{clientSecret}}</div>
                     </div>
                 </div>
                 <div class="mobile-datavault">
                     <div class="font-size-medium" translate="accessdata.mobileDataVault"></div>
-                    <button class="btn mobile-datavault-btn"></button>
-                    <button class="btn mobile-datavault-btn"></button>
+                    <div class="mobile-datavault-stores">
+                        <a href="#"><div class="mobile-datavault-ios"></div></a>
+                        <a href="#"><div class="mobile-datavault-android"></div></a>
+                    </div>
                 </div>
             </div>
         </div>

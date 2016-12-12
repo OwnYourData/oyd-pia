@@ -9,6 +9,10 @@ angular.module('piaApp')
             $scope.success = null;
             $scope.error = null;
             $scope.doNotMatch = null;
+            $scope.clientProtocol = location.protocol;
+            $scope.clientHost = location.host;
+            $scope.clientSecret = AuthServerProvider.getClientSecret();
+            $scope.clientId = AuthServerProvider.getClientId();
             $scope.qr = JSON.stringify({id: AuthServerProvider.getClientId(), secret: AuthServerProvider.getClientSecret(), protocol: location.protocol, host: location.host});
             $scope.changePassword = function () {
                 if ($scope.password !== $scope.confirmPassword) {

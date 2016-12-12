@@ -13,22 +13,22 @@ angular.module('piaApp')
                     Repo.items({identifier: $scope.repo.identifier}, function (result) {
                         result.forEach(function (item) {
                             $scope.items.push(item);
-                            if (item.value !== null && item.value !== "undefined") {
-                                var valueLength = JSON.stringify(item.value);
+                            if (item !== null && item !== "undefined") {
+                                var valueLength = JSON.stringify(item);
                                 var maxLength = 120;
                                 if (valueLength.length > maxLength) {
-                                    item.value = valueLength.substring(0, maxLength);
+                                    item = valueLength.substring(0, maxLength);
 
                                     $scope.morebtn = {
                                         "display": "inline"
                                     }
 
                                 } else {
-                                    item.value = valueLength;
+                                    item = valueLength;
                                 }
 
                                 $scope.readMore = function () {
-                                    item.value = valueLength;
+                                    item = valueLength;
                                 }
                             }
                         })

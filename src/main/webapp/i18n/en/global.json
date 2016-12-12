@@ -55,7 +55,7 @@
         },
         "messages": {
             "info": {
-                "login" : "Please log into this demo with username=\"demo\" and password=\"ownyourdata\".",
+                "login" : "Please authenticate yourself with your username and password.",
                 "authenticated": "If you want to <a class=\"alert-link\" href=\"#/login\">sign in</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
                 "register": "You don't have an account yet? <a class=\"alert-link\" href=\"#/register\">Register a new account</a>"
             },

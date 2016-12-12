@@ -2,22 +2,22 @@
     "piaApp": {
         "item": {
             "home": {
-                "title": "Items",
-                "createLabel": "Erstelle ein neues Item",
-                "createOrEditLabel": "Erstelle oder editiere ein Item",
-                "search": "Suche nach einem Item"
+                "title": "Datensätze",
+                "createLabel": "Datensatz hinzufügen",
+                "createOrEditLabel": "Erstelle oder editiere einen Datensatz",
+                "search": "Suche nach einem Datensatz"
             },
-            "created": "Ein neues Item mit der ID {{ param }} wurde erstellt",
-            "updated": "Ein Item mit der ID  {{ param }} wurde erstellt",
-            "deleted": "Ein Item mit der ID {{ param }} wurde gelöscht",
+            "created": "Ein neuer Datensatz mit der ID {{ param }} wurde erstellt",
+            "updated": "Der Datensatz mit der ID  {{ param }} wurde geändert",
+            "deleted": "Der Datensatz mit der ID {{ param }} wurde gelöscht",
             "delete": {
-                "question": "Sicher, dass sie folgendes Item {{ id }} löschen wollen?"
+                "question": "Bist du sicher, dass du den Datensatz mit der ID {{ id }} löschen möchtest?"
             },
             "detail": {
-                "title": "Item"
+                "title": "Datensatz"
             },
             "value": "Wert",
-            "belongs": "Repo"
+            "belongs": "Liste"
         }
     }
 }
