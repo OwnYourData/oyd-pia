@@ -142,4 +142,9 @@ angular.module('piaApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprec
                     },
                     pattern: /bool|true|0|1/
                 });
+            }])
+        .filter("trust", ['$sce', function ($sce) {
+                return function (htmlCode) {
+                    return $sce.trustAsHtml(htmlCode);
+                }
             }]);

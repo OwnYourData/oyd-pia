@@ -30,7 +30,7 @@ footer .navbar{
 }
 
 footer .navbar-nav {
-        margin:0px;
+    margin:0px;
 }
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
@@ -536,6 +536,8 @@ Data
 }
 #data-table tbody > tr > td:not(:first-child){
     vertical-align: middle;
+}
+#data-table tbody > tr > td{
     border-color: #777;
 }
 #data-table tbody > tr > td ul{

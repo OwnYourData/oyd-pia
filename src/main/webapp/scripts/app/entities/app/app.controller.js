@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('piaApp')
-        .controller('AppController', function ($rootScope, $scope, Principal, $state, $timeout, $location, Auth, AuthServerProvider, Plugin, Store, ParseLinks, Upload, ngDialog) {
+        .controller('AppController', function ($rootScope, $scope, $sce, Principal, $state, $timeout, $location, Auth, AuthServerProvider, Plugin, Store, ParseLinks, Upload, ngDialog) {
 
             // Taken from old Main controller
 
