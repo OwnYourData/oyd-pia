@@ -70,7 +70,7 @@
                                 <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
                                 <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div>
                                 <div class="app-item appInfo">
-                                    {{plugin.description}}
+                                    <span ng-bind-html="plugin.description | trust"></span>
                                     <a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a>
                                 </div>
                                 <div class="app-item" ng-if="plugin.id"><button class="custom-btn" ng-click="install(store, plugin)">Install</button></div>

@@ -5,6 +5,7 @@ angular.module('piaApp')
 
             $scope.repo = null;
             $scope.items = [];
+            $scope.page = 0;
 
             $scope.load = function (id) {
                 Repo.get({id: id}, function (result) {
@@ -35,8 +36,25 @@ angular.module('piaApp')
                     });
                 });
             };
-
+            $scope.reset = function () {
+                $scope.page = 0;
+                $scope.items = [];
+                $scope.load($stateParams.repositoryId);
+            };
+            $scope.loadPage = function (page) {
+                $scope.page = page;
+                $scope.load($stateParams.repositoryId);
+            };
             $scope.load($stateParams.repositoryId);
-
+            $scope.refresh = function () {
+                $scope.reset();
+                $scope.clear();
+            };
+            $scope.clear = function () {
+                $scope.item = {
+                    value: null,
+                    id: null
+                };
+            };
         });
 

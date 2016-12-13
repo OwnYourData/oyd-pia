@@ -559,6 +559,8 @@ Data
 }
 #data-table tbody > tr > td:not(:first-child){
     vertical-align: middle;
+}
+#data-table tbody > tr > td{
     border-color: #777;
 }
 #data-table tbody > tr > td ul{
