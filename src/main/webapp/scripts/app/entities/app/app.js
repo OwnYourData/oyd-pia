@@ -8,7 +8,7 @@ angular.module('piaApp')
                         url: '/',
                         data: {
                             authorities: [],
-                            pageTitle: 'main.title'
+                            pageTitle: 'global.title'
                         },
                         views: {
                             'content@': {
