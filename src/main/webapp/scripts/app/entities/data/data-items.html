@@ -1,3 +1,4 @@
+<jh-alert></jh-alert>
 <button class="btn custom-btn" ui-sref="data.item.detail({itemId:item.id})">
     <span
         translate="piaApp.item.home.createLabel">Create new Item
@@ -12,7 +13,7 @@
                 <th><span class="font-size-large" translate="data.actions">Actions</span></th>
             </tr>
         </thead>
-        <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+        <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="loadInProgress || links['last'] == page">
             <tr ng-repeat="item in items track by item.id">
                 <td class="col-md-5"><a ui-sref="data.item.detail({itemId:item.id})">{{item.id}}</a></td>
                 <td class="col-md-5">{{item.value}}<a class="more-btn" href="" ng-click="$event.preventDefault(); readMore()" ng-style="morebtn"><span translate="data.showall">Read more</span></a></td>
