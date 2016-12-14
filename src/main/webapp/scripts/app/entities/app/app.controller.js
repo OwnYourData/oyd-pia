@@ -83,6 +83,7 @@ angular.module('piaApp')
                 $scope.loadAll();
             };
 
+            $scope.loadAll();
 
             $scope.refresh = function () {
                 $scope.reset();
@@ -187,7 +188,5 @@ angular.module('piaApp')
                 });
 
             };
-
-            $scope.loadAll();
 
         });
