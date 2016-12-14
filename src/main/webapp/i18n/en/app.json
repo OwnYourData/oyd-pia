@@ -2,6 +2,7 @@
     "app": {
         "title": "Welcome to your own Data Vault",
         "subtitle": "",
+        "mobile_vault": "mobile vault",
         "installed": "Installed Apps",
         "description": ""
     }

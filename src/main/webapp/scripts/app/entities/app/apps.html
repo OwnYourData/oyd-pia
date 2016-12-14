@@ -1,13 +1,16 @@
 <div>
     <div ng-switch="isAuthenticated()">
         <div ng-switch-when="true">
-            <div class="main-heading" translate="app.title">Welcome!</div>
-            <div class="font-size-large" translate="app.subtitle">This is your Data Vault</div>
+            <div class="main-heading" translate="app.title" ng-show="description">Welcome!</div>
+            <div class="font-size-large" ng-show="description">
+                <span translate="app.subtitle">This is your Data Vault</span>
+                <a ui-sref="accessdata" data-toggle="collapse" data-target=".navbar-collapse.in"><span class="font-size-large" translate="app.mobile_vault">mobilen Datentresor</span></a>.
+            </div>
             <div class="row">
                 <div class="app-heading" translate="app.installed">Installed Apps</div>
                 <div class="font-size-large app-heading-description" translate="app.description" ng-show="description"></div>
                 <div ng-repeat="plugin in installedPlugins track by plugin.id">
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
+                    <div class="col-lg-5ths col-md-3 col-sm-4 col-xs-6 col-wrapper">
                         <div class="app-wrapper">
                             <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
                             <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div><div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
@@ -16,8 +19,8 @@
                                 <button type="submit"
                                         ui-sref="edit({id:plugin.id})"
                                         class="btn btn-action btn-sm">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                                    <span class="glyphicon glyphicon-search"></span>
+                                    <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
                                 </button>
                                 <button type="submit"
                                         ui-sref="delete({id:plugin.id})"
@@ -62,7 +65,7 @@
                     </div>
 
                     <div ng-repeat="plugin in store.plugins" href="#">
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-wrapper">
+                        <div class="col-lg-5ths col-md-3 col-sm-4 col-xs-6 col-wrapper">
                             <div class="app-wrapper store-wrapper">
                                 <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
                                 <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div>

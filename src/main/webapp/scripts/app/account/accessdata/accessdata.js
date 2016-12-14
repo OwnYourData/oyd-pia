@@ -8,7 +8,7 @@ angular.module('piaApp')
                         url: '/accessdata',
                         data: {
                             authorities: ['ROLE_USER'],
-                            pageTitle: 'global.menu.account.password'
+                            pageTitle: 'global.title'
                         },
                         views: {
                             'content@': {

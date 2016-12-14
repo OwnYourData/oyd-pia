@@ -9,6 +9,7 @@ angular.module('piaApp')
             $scope.success = null;
             $scope.error = null;
             $scope.doNotMatch = null;
+            $scope.clientProtocol = location.protocol;
             $scope.clientHost = location.host;
             $scope.clientSecret = AuthServerProvider.getClientSecret();
             $scope.clientId = AuthServerProvider.getClientId();

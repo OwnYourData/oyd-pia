@@ -7,6 +7,12 @@ body {
     color: #333;
     margin-bottom: 51px; /* Footer height = 35, padding = 15, border = 1 */
 }
+.navbar-nav > li > a {
+    padding-bottom: 5px;
+}
+.navbar-brand {
+    margin-bottom: 11px;
+}
 footer{
     position: absolute;
     left: 0;
@@ -30,7 +36,7 @@ footer .navbar{
 }
 
 footer .navbar-nav {
-    margin:0px;
+        margin:0px;
 }
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
@@ -300,10 +306,11 @@ nav {
 }
 .pia-logo{
     background: url("../images/pia_logo.png") no-repeat center top;
-    height: 50px;
+    height: 44px;
     width: 59px;
     float: left;
     background-size: cover;
+    margin-top: 7px;
     margin-right: 10px;
 }
 .navbar-default .navbar-nav .active a{
@@ -368,22 +375,23 @@ Myapps
     text-align: center;
 }
 .plugin-picture-wrapper img{
-    height: 160px;
+    height: 120px;
     margin-bottom: 10px;
 }
 .app-wrapper{
     background-color: #ffffff;
     border: 1px solid #777;
     margin: 0px 20px 20px 0px;
-    padding: 20px 30px 20px 30px;
+    padding: 20px 17px 20px 17px;
     width: 100%;
 }
 .store-wrapper{
-    height: 430px;
+    height: 380px;
 }
 .app-item{
-    padding: 8px;
+    padding: 5px;
     display: flex;
+    font-size: 13px;
 }
 .app-item a:hover{
     color: #ffffff;
@@ -408,11 +416,9 @@ Myapps
 .font-size-medium{
     font-size: 14px;
 }
-
 .font-weight-light {
     font-weight: 300;
 }
-
 .app-heading{
     font-size: 20px;
     margin-top: 20px;
@@ -503,6 +509,23 @@ Account
 .mobile-datavault{
     margin-top: 30px;
 }
+.mobile-datavault-stores{
+    display: flex;
+}
+.mobile-datavault-ios{
+    background-image: url('../images/ios.png');
+    background-size: cover;
+    height: 40px;
+    width: 134px;
+    margin: 5px;
+}
+.mobile-datavault-android{
+    background-image: url('../images/android.png');
+    background-size: cover;
+    height: 40px;
+    width: 134px;
+    margin: 5px;
+}
 .mobile-datavault-btn{
     background-image: url('../images/placeholder.png');
     height: 40px;
@@ -561,4 +584,20 @@ tbody > tr > td ul{
 }
 .statisticsText{
     margin-bottom: 40px;
+}
+
+/* ==========================================================================
+5 column layout
+========================================================================== */
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
 }

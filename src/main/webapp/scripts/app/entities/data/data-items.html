@@ -15,10 +15,10 @@
         </thead>
         <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="loadInProgress || links['last'] == page">
             <tr ng-repeat="item in items track by item.id">
-                <td class="col-md-5"><a ui-sref="data.item.detail({itemId:item.id})">{{item.id}}</a></td>
-                <td class="col-md-5">{{item.value}}<a class="more-btn" href="" ng-click="$event.preventDefault(); readMore()" ng-style="morebtn"><span translate="data.showall">Read more</span></a></td>
+                <td class="col-md-1"><a ui-sref="data.item.detail({itemId:item.id})">{{item.id}}</a></td>
+                <td class="col-md-8">{{item}}<a class="more-btn" href="" ng-click="$event.preventDefault(); readMore()" ng-style="morebtn"><span translate="data.showall">Read more</span></a></td>
 
-                <td class="text-right col-md-5">
+                <td class="text-right col-md-3">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 ui-sref="data.item.detail({itemId:item.id})"

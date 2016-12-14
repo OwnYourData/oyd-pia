@@ -1,20 +1,25 @@
 {
     "global": {
         "title": "Datentresor | OwnYourData",
+        "header": "Mein Datentresor",
         "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
         "menu": {
             "home": "Startseite",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-            "entities": {
-                "main": "Entitäten",
+            "myApps": {
+                "main": "Meine Apps",
                 "plugin": "Plugin",
-                "repo": "Repo",
-                "item": "Item",
                 "store": "Store",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
+            "myData": {
+                "main": "Meine Daten",
+                "repo": "Repo",
+                "item": "Item",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
             "account": {
-                "main": "Zugang",
+                "main": "Mein Account",
                 "settings": "Einstellungen",
                 "password": "Passwort",
                 "sessions": "Sitzungen",
@@ -35,17 +40,21 @@
                 "database": "Datenbank",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Sprache"
+            "language": "Sprache",
+            "about_oyd": "Über OwnYourData.eu",
+            "mobile_vault": "Mobiler Datentresor",
+            "feedback": "Feedback senden",
+            "devinfo": "Infos für App-Entwickler"
         },
         "form": {
             "username": "Benutzername",
-            "username.placeholder": "Ihr Benutzername",
+            "username.placeholder": "Dein Benutzername",
             "newpassword": "Neues Passwort",
             "newpassword.placeholder": "Neues Passwort",
             "confirmpassword": "Neues Passwort bestätigen",
-            "confirmpassword.placeholder": "Bestätigen Sie Ihr neues Passwort",
+            "confirmpassword.placeholder": "Bestätige Dein neues Passwort",
             "email": "E-Mail Adresse",
-            "email.placeholder": "Ihre E-Mail Adresse"
+            "email.placeholder": "Deine E-Mail Adresse"
         },
         "messages": {
             "info": {
@@ -77,7 +86,7 @@
             }
         },
         "field": {
-            "id" : "ID"
+            "id": "ID"
         }
     },
     "entity": {
@@ -89,7 +98,8 @@
             "delete": "Löschen",
             "edit": "Bearbeiten",
             "save": "Speichern",
-            "view": "Details"
+            "view": "Details",
+            "open": "Öffnen"
         },
         "detail": {
             "field": "Feld",

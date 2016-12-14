@@ -1,10 +1,10 @@
 {
     "data": {
-        "statisticsText": "Aktuell befinden sich <strong>{{itemCount}}</strong> Datensätze in Deinem Datentresor. Analysiert werden sie von <strong>{{pluginCount}}</strong> Apps.",
+        "statisticsText": "Aktuell befinden sich {{itemCount}} Datensätze in Deinem Datentresor. Analysiert werden sie von {{pluginCount}} Apps.",
         "app": "App",
-        "datalists": "Datenlisten",
+        "datalists": "Listen",
         "records": "Datensätze",
-        "recordID": "Datensatz ID",
+        "recordID": "ID",
         "actions": "Aktionen",
         "showall": "Alles anzeigen"
     }

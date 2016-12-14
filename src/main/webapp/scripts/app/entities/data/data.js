@@ -8,7 +8,7 @@ angular.module('piaApp')
                         url: '/data',
                         data: {
                             authorities: ['ROLE_USER'],
-                            pageTitle: 'main.title'
+                            pageTitle: 'global.title'
                         },
                         views: {
                             'content@': {
