@@ -9,6 +9,7 @@ angular.module('piaApp')
             $scope.reverse = true;
             $scope.page = 0;
             $scope.loadInProgress = false;
+            $scope.MAX_DESCRIPTION_LENGTH = 120;
 
             $scope.loadAll = function ($page) {
                 $scope.loadInProgress = true;
@@ -29,30 +30,20 @@ angular.module('piaApp')
                     $scope.links = ParseLinks.parse(headers('link'));
                     result.forEach(function (item) {
                         $scope.items.push(item);
-                        if (item !== null && item !== "undefined") {
-                            var valueLength = JSON.stringify(item);
-                            var maxLength = 120;
-                            if (valueLength.length > maxLength) {
-                                item.disp = valueLength.substring(0, maxLength);
+                        var itemText = JSON.stringify(item);
+                        item.itemText = itemText;
+                        item.showAllLink = true;
 
-                                $scope.morebtn = {
-                                    "display": "inline"
-                                }
-
-                            } else {
-                                item.disp = valueLength;
-                            }
-
-                            $scope.readMore = function () {
-                                item.disp = valueLength;
-                            }
+                        if (itemText.length > $scope.MAX_DESCRIPTION_LENGTH) {
+                            item.shortText = itemText.substring(0, $scope.MAX_DESCRIPTION_LENGTH);
+                        } else {
+                            item.shortText = null;
                         }
                     });
                     $scope.loadInProgress = false;
 
                 });
             }
-
 
             $scope.reset = function () {
                 $scope.page = 0;
