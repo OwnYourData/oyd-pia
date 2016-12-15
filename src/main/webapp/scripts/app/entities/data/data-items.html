@@ -1,9 +1,43 @@
 <jh-alert></jh-alert>
-<button class="btn custom-btn" ui-sref="data.item.detail({itemId:item.id})">
+<div class="row">
+    <div class="panel-heading app-heading">{{repo.description}}    
+        <div id="cog-dropdown" class="dropdown pointer navbar-right">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                <span>
+                    <span class="glyphicon glyphicon-cog"></span>
+                    <b class="cog-caret"></b>
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a ui-sref="data.item.detail({itemId:item.id})">
+                        <span translate="piaApp.item.home.createLabel"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="repo.detail({id:repo.id})">
+                        <span translate="entity.action.view"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="repo.edit({id:repo.id})">
+                        <span translate="entity.action.edit"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="repo.delete({id:repo.id})">
+                        <span translate="entity.action.delete"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--<button class="btn custom-btn" ui-sref="data.item.detail({itemId:item.id})">
     <span
         translate="piaApp.item.home.createLabel">Create new Item
     </span>
-</button>
+</button>-->
 <div class="table-responsive">
     <table id="items-table" class="table table-striped">
         <thead>
