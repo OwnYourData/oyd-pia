@@ -26,6 +26,34 @@ angular.module('piaApp')
                                 }]
                         }
                     })
+                    .state('data.new', {
+                        parent: 'data',
+                        url: '/new',
+                        data: {
+                            authorities: ['ROLE_USER'],
+                        },
+                        onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                                $uibModal.open({
+                                    templateUrl: 'scripts/app/entities/repo/repo-dialog.html',
+                                    controller: 'RepoDialogController',
+                                    size: 'lg',
+                                    resolve: {
+                                        entity: function () {
+                                            return {
+                                                identifier: null,
+                                                description: null,
+                                                creator: null,
+                                                id: null
+                                            };
+                                        }
+                                    }
+                                }).result.then(function (result) {
+                                    $state.go('data', null, {reload: true});
+                                }, function () {
+                                    $state.go('data');
+                                })
+                            }]
+                    })
                     .state('data.item', {
                         parent: 'data',
                         url: '/{repositoryId}',
@@ -115,31 +143,29 @@ angular.module('piaApp')
                                 })
                             }]
                     })
-                    .state('data.new', {
-                        parent: 'data',
-                        url: '/new',
+                    .state('data.item.new', {
+                        parent: 'data.item',
+                        url: '/new/item',
                         data: {
                             authorities: ['ROLE_USER'],
                         },
                         onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                                 $uibModal.open({
-                                    templateUrl: 'scripts/app/entities/repo/repo-dialog.html',
-                                    controller: 'RepoDialogController',
+                                    templateUrl: 'scripts/app/entities/item/item-dialog.html',
+                                    controller: 'ItemDialogController',
                                     size: 'lg',
                                     resolve: {
                                         entity: function () {
                                             return {
-                                                identifier: null,
-                                                description: null,
-                                                creator: null,
+                                                value: null,
                                                 id: null
                                             };
                                         }
                                     }
                                 }).result.then(function (result) {
-                                    $state.go('data', null, {reload: true});
+                                    $state.go('data.item', {repositoryId: $stateParams.repositoryId}, {reload: true});
                                 }, function () {
-                                    $state.go('data');
+                                    $state.go('data.item', {repositoryId: $stateParams.repositoryId});
                                 })
                             }]
                     });

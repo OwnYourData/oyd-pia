@@ -1,6 +1,7 @@
 <div>
     <div ng-switch="isAuthenticated()">
         <div ng-switch-when="true">
+            <jh-alert></jh-alert>
             <div class="main-heading" translate="app.title" ng-show="description">Welcome!</div>
             <div class="font-size-large" ng-show="description">
                 <span translate="app.subtitle">This is your Data Vault</span>
