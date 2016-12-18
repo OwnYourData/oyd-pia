@@ -10,23 +10,23 @@
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a ui-sref="data.item.new">
-                        <span translate="piaApp.item.home.createLabel"></span>
-                    </a>
-                </li>
-                <li>
-                    <a ui-sref="repo.detail({id:repo.id})">
+                    <a ui-sref="data.item.repodetail">
                         <span translate="entity.action.view"></span>
                     </a>
                 </li>
                 <li>
-                    <a ui-sref="repo.edit({id:repo.id})">
+                    <a ui-sref="data.item.repoedit">
                         <span translate="entity.action.edit"></span>
                     </a>
                 </li>
                 <li>
-                    <a ui-sref="repo.delete({id:repo.id})">
+                    <a ui-sref="data.item.repodelete">
                         <span translate="entity.action.delete"></span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="data.item.new">
+                        <span translate="piaApp.item.home.createLabel"></span>
                     </a>
                 </li>
             </ul>

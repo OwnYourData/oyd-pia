@@ -168,5 +168,75 @@ angular.module('piaApp')
                                     $state.go('data.item', {repositoryId: $stateParams.repositoryId});
                                 })
                             }]
+                    })
+                    .state('data.item.repodetail', {
+                        parent: 'data.item',
+                        url: '/view',
+                        data: {
+                            authorities: ['ROLE_USER'],
+                            pageTitle: 'piaApp.repo.detail.title'
+                        },
+                        views: {
+                            'content@': {
+                                templateUrl: 'scripts/app/entities/repo/repo-detail.html',
+                                controller: 'RepoDetailController'
+                            }
+                        },
+                        resolve: {
+                            translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                                $translatePartialLoader.addPart('repo');
+                                return $translate.refresh();
+                            }],
+                            entity: ['$stateParams', 'Repo', function($stateParams, Repo) {
+                                return Repo.get({id : $stateParams.repositoryId});
+                            }]
+                        }                        
+                    })
+                    .state('data.item.repoedit', {
+                        parent: 'data.item',
+                        url: '/edit',
+                        data: {
+                            authorities: ['ROLE_USER'],
+                        },
+                        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                            $uibModal.open({
+                                templateUrl: 'scripts/app/entities/repo/repo-dialog.html',
+                                controller: 'RepoDialogController',
+                                size: 'lg',
+                                resolve: {
+                                    entity: ['Repo', function(Repo) {
+                                        return Repo.get({id : $stateParams.id});
+                                    }]
+                                }
+                            }).result.then(function (result) {
+                                $state.go('data.item', {repositoryId: $stateParams.repositoryId}, {reload: true});
+                            }, function () {
+                                $state.go('data.item', {repositoryId: $stateParams.repositoryId});
+                            })
+                        }]
+                    })
+                    .state('data.item.repodelete', {
+                        parent: 'data.item',
+                        url: '/delete',
+                        data: {
+                            authorities: ['ROLE_USER'],
+                        },
+                        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                            $uibModal.open({
+                                templateUrl: 'scripts/app/entities/repo/repo-delete-dialog.html',
+                                controller: 'RepoDeleteController',
+                                size: 'md',
+                                resolve: {
+                                    entity: ['Repo', function(Repo) {
+                                        return Repo.get({id : $stateParams.id});
+                                    }]
+                                }
+                            }).result.then(function (result) {
+                                $state.go('data.item', {repositoryId: $stateParams.repositoryId}, {reload: true});
+                            }, function () {
+                                $state.go('data.item', {repositoryId: $stateParams.repositoryId});
+                            })
+                        }]
                     });
+
         })
