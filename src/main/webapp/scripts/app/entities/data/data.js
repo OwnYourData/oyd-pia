@@ -171,7 +171,7 @@ angular.module('piaApp')
                     })
                     .state('data.item.repodetail', {
                         parent: 'data.item',
-                        url: '/view',
+                        url: '/repoview/{repositoryId}',
                         data: {
                             authorities: ['ROLE_USER'],
                             pageTitle: 'piaApp.repo.detail.title'
@@ -194,7 +194,7 @@ angular.module('piaApp')
                     })
                     .state('data.item.repoedit', {
                         parent: 'data.item',
-                        url: '/edit',
+                        url: '/repoedit/{repositoryId}',
                         data: {
                             authorities: ['ROLE_USER'],
                         },
@@ -205,7 +205,7 @@ angular.module('piaApp')
                                 size: 'lg',
                                 resolve: {
                                     entity: ['Repo', function(Repo) {
-                                        return Repo.get({id : $stateParams.id});
+                                        return Repo.get({id : $stateParams.repositoryId});
                                     }]
                                 }
                             }).result.then(function (result) {
@@ -217,7 +217,7 @@ angular.module('piaApp')
                     })
                     .state('data.item.repodelete', {
                         parent: 'data.item',
-                        url: '/delete',
+                        url: '/repodelete/{repositoryId}',
                         data: {
                             authorities: ['ROLE_USER'],
                         },
@@ -228,13 +228,13 @@ angular.module('piaApp')
                                 size: 'md',
                                 resolve: {
                                     entity: ['Repo', function(Repo) {
-                                        return Repo.get({id : $stateParams.id});
+                                        return Repo.get({id : $stateParams.repositoryId});
                                     }]
                                 }
                             }).result.then(function (result) {
-                                $state.go('data.item', {repositoryId: $stateParams.repositoryId}, {reload: true});
+                                $state.go('data');
                             }, function () {
-                                $state.go('data.item', {repositoryId: $stateParams.repositoryId});
+                                $state.go('data');
                             })
                         }]
                     });
