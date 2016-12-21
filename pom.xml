@@ -11,7 +11,7 @@
 
     <groupId>eu.ownyourdata.pia</groupId>
     <artifactId>pia</artifactId>
-    <version>0.8.7-SNAPSHOT</version>
+    <version>0.9.0</version>
     <packaging>war</packaging>
     <name>pia</name>
 
