@@ -50,7 +50,7 @@
         <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="loadInProgress || links['last'] == page">
             <tr ng-repeat="item in items track by item.id">
                 <td class="col-md-1"><a ui-sref="data.item.detail({itemId:item.id})">{{item.id}}</a></td>
-                <td class="col-md-8" ng-if="item.shortText">{{item.shortText}}<a class="more-btn" href="" ng-if="item.showAllLink" ng-click="item.shortText = item.itemText; item.showAllLink = false"><span translate="data.showall">Read more</span></a></td>
+                <td class="col-md-8" ng-if="item.shortText" style="word-wrap: break-word; max-width: 200px;">{{item.shortText}}<a class="more-btn" href="" ng-if="item.showAllLink" ng-click="item.shortText = item.itemText; item.showAllLink = false"><span translate="data.showall">Read more</span></a></td>
                 <td class="col-md-8" ng-if="!item.shortText">{{item.itemText}}</td>
 
                 <td class="text-right col-md-3">
