@@ -74,7 +74,7 @@ public class PluginFactory {
     private ExternalPlugin createExternalPlugin(Manifest manifest) {
         ExternalPlugin newPlugin = setGeneralProperties(new ExternalPlugin(),manifest);
         newPlugin.setUrl(manifest.getUrl());
-        newPlugin.setMobileUrl(manifest.getMobileUrl());
+        newPlugin.setMobileurl(manifest.getMobileurl());
         return newPlugin;
     }
 

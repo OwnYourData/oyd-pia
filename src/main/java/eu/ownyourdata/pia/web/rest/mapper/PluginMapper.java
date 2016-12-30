@@ -35,7 +35,7 @@ public abstract class PluginMapper {
     private ProcessRepository processRepository;
 
     @Inject
-    private  ServerDetection serverDetection;
+    private ServerDetection serverDetection;
 
     @PostConstruct
     public void init() throws UnknownHostException {
@@ -178,6 +178,7 @@ public abstract class PluginMapper {
         @Override
         public void visit(ExternalPlugin externalPlugin) throws Exception {
             String url = externalPlugin.getUrl();
+            String mobileurl = externalPlugin.getMobileurl();
             if (url.indexOf("?PIA_URL=") == -1){
                 if (url.startsWith("https") ||
                     url.startsWith("http://192.168")) {  //also allow for private address spaces in class C networks
@@ -185,10 +186,14 @@ public abstract class PluginMapper {
                         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(externalPlugin.getIdentifier());
                         if (!url.endsWith("/")) {
                             url += "/";
+                            mobileurl += "/";
                         }
                         url += "?PIA_URL=" + URLEncoder.encode(serverDetection.getHost(),"utf-8");
                         url += "&APP_KEY=" + clientDetails.getClientId();
                         url += "&APP_SECRET=" + clientDetails.getClientSecret();
+                        mobileurl += "?PIA_URL=" + URLEncoder.encode(serverDetection.getHost(),"utf-8");
+                        mobileurl += "&APP_KEY=" + clientDetails.getClientId();
+                        mobileurl += "&APP_SECRET=" + clientDetails.getClientSecret();
 
                     }
 
@@ -197,8 +202,11 @@ public abstract class PluginMapper {
                 ClientDetails clientDetails = clientDetailsService.loadClientByClientId(externalPlugin.getIdentifier());
                 url += "&APP_KEY=" + clientDetails.getClientId();
                 url += "&APP_SECRET=" + clientDetails.getClientSecret();
+                mobileurl += "&APP_KEY=" + clientDetails.getClientId();
+                mobileurl += "&APP_SECRET=" + clientDetails.getClientSecret();
             }
             pluginDTO.setUrl(url);
+            pluginDTO.setMobileurl(mobileurl);
         }
     }
 }

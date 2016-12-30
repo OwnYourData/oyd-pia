@@ -24,6 +24,8 @@ public class PluginDTO {
 
     private String url;
 
+    private String mobileurl;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +104,12 @@ public class PluginDTO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+    public String getMobileurl() {
+        return mobileurl;
+    }
+
+    public void setMobileurl(String mobileurl) {
+        this.mobileurl = mobileurl;
     }
 }

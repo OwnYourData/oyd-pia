@@ -14,7 +14,7 @@ public class ExternalPlugin extends Plugin {
     private String url;
 
     @Column(name = "mobileurl")
-    private String mobileUrl;
+    private String mobileurl;
 
     @Override
     public void accept(PluginVisitor visitor) throws Exception {
@@ -29,11 +29,11 @@ public class ExternalPlugin extends Plugin {
         this.url = link;
     }
 
-    public String getMobileUrl() {
-        return mobileUrl;
+    public String getMobileurl() {
+        return mobileurl;
     }
 
-    public void setMobileUrl(String mobileUrl) {
-        this.mobileUrl = mobileUrl;
+    public void setMobileurl(String mobileurl) {
+        this.mobileurl = mobileurl;
     }
 }

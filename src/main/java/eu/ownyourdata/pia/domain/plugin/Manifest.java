@@ -30,7 +30,7 @@ public class Manifest {
 
     private String url;
 
-    private String mobileUrl;
+    private String mobileurl;
 
     private String infourl;
 
@@ -84,8 +84,8 @@ public class Manifest {
         return url;
     }
 
-    public String getMobileUrl() {
-        return mobileUrl;
+    public String getMobileurl() {
+        return mobileurl;
     }
 
     public String getInfourl() {
@@ -120,7 +120,7 @@ public class Manifest {
             manifest.installCommand = jsonObject.optString("installCommand");
             manifest.modules = jsonObject.optString("modules");
             manifest.url = jsonObject.optString("url");
-            manifest.mobileUrl = jsonObject.optString("mobileUrl");
+            manifest.mobileurl = jsonObject.optString("mobileurl");
             manifest.infourl = jsonObject.optString("infourl");
             manifest.picture = jsonObject.optString("picture");
 
