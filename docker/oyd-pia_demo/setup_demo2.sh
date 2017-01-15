@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stop on error
-set -e
+#set -e
 
 if [ $# -eq 0 ]
   then
@@ -38,16 +38,16 @@ if [ $# -eq 0 ]
 fi
 
 # build Docker image
-docker build -t oydeu/oyd-pia_demo --build-arg PG_PWD=$PG_PWD .
+docker build --no-cache -t oydeu/oyd-pia_demo2 --build-arg PG_PWD=$PG_PWD --build-arg SCHEDULER_SECRET=$SCHEDULER_SECRET .
 
 # restart demo pia
-docker stop demo-pia
+docker stop demo2-pia
 docker rm $(docker ps -q -f status=exited)
-DEMO_ID=$(docker run -d --name demo-pia --expose 8080 -e VIRTUAL_HOST=demo.datentresor.org -e VIRTUAL_PORT=8080 oydeu/oyd-pia_demo)
+DEMO_ID=$(docker run -d --name demo2-pia --expose 8080 -e VIRTUAL_HOST=demo2.datentresor.org -e VIRTUAL_PORT=8080 -e MAILER_PASSWORD_DEFAULT='FG%K3!jWkXvBfqq' oydeu/oyd-pia_demo2)
 sleep 10
 
 # wait until demo pia is up and running
-until $(curl --output /dev/null --silent --head --fail https://demo.datentresor.org); do
+until $(curl --output /dev/null --silent --head --fail https://demo2.datentresor.org); do
     printf '.'
     sleep 5
 done
@@ -55,6 +55,7 @@ docker cp script/demo_credentials.sql $DEMO_ID:/
 docker cp script/store.sql $DEMO_ID:/
 docker cp script/apps.sql $DEMO_ID:/
 docker cp script/apps2.sql $DEMO_ID:/
+docker cp script/permissions.sql $DEMO_ID:/
 docker cp script/client_details.sql $DEMO_ID:/
 docker cp script/repo.sql $DEMO_ID:/
 docker cp script/item.sql $DEMO_ID:/
@@ -63,6 +64,14 @@ docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f demo_credenti
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f store.sql"
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f apps.sql"
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f apps2.sql"
+docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f permissions.sql"
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f client_details.sql"
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f repo.sql"
 docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f item.sql"
+
+SCHEDULER_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
+docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE external_plugin SET mobileurl = 'https://scheduler.datentresor.org', url = 'https://scheduler.datentresor.org' where id=1003;\""
+docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE oauth_client_details SET client_secret = '$SCHEDULER_SECRET' WHERE client_id = 'eu.ownyourdata.scheduler';\""
+
+docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET > output.txt"
+

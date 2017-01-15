@@ -1,0 +1,11 @@
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.info:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.info:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.info:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.scheduler:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.scheduler:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.scheduler:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.scheduler:delete');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.room.*:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.room.*:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.room.*:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.room.*:delete');
