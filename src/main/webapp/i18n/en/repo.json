@@ -19,7 +19,7 @@
             "identifier": "Identifier",
             "description": "Description",
             "creator": "Creator",
-            "count" : "# Items"
+            "count" : "# Records"
         }
     }
 }

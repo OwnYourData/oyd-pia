@@ -1,9 +1,9 @@
 {
     "data": {
-        "statisticsText": "Aktuell befinden sich <strong>{{itemCount}}</strong> Datensätze in Deinem Datentresor. Analysiert werden sie von <strong>{{pluginCount}}</strong> Apps.",
+        "statisticsText": "Currently, there are <strong>{{itemCount}}</strong> records in your data vault. That data is analyzed by <strong>{{pluginCount}}</strong> Apps.",
         "app": "App",
-        "datalists": "Datalists",
-        "records": "Datarecords",
+        "datalists": "Repos",
+        "records": "Records",
         "recordID": "ID",
         "actions": "Actions",
         "showall": "Show all"

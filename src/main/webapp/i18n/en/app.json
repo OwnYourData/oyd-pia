@@ -1,9 +1,9 @@
 {
     "app": {
-        "title": "Welcome to your own Data Vault",
-        "subtitle": "",
-        "mobile_vault": "mobile vault",
+        "title": "Welcome to your own Data Vault!",
+        "subtitle": "Store your data safely, and use Apps for data analysis. For quick access, get the",
+        "mobile_vault": "OwnYourData Mobile-App",
         "installed": "Installed Apps",
-        "description": ""
+        "description": "Install an app, collect data, and explore visualizations!"
     }
 }

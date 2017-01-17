@@ -1,12 +1,12 @@
 {
     "accessdata": {
         "main": {
-            "title": "Title",
-            "description": "Description",
-            "alternative": "Alternative"
+            "title": "Credentials for your mobile data vault",
+            "description": "Download the OwnYourData-App and scan the QR code, to access your data vault.",
+            "alternative": "You can also enter the credentials manually:"
         },
         "defaultData": {
-            "ip-address": "IP-Address:",
+            "ip-address": "IP Adress:",
             "identifier": "Identifier:",
             "secret": "Secret:"
         },

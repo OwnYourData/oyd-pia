@@ -7,8 +7,8 @@
         },
         "defaultData": {
             "ip-address": "IP-Adresse:",
-            "identifier": "Identifier:",
-            "secret": "Secret:"
+            "identifier": "Kennung:",
+            "secret": "Passwort:"
         },
         "mobileDataVault": "Hol Dir Deine Mobilen Datentresor!"
     }

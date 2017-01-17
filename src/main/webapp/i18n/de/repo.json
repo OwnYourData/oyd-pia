@@ -19,7 +19,7 @@
             "identifier": "ID",
             "description": "Beschreibung",
             "creator": "Erstellt von",
-            "count" : "# Items"
+            "count" : "# Datensätze"
         }
     }
 }

@@ -13,8 +13,14 @@
                 <div ng-repeat="plugin in installedPlugins track by plugin.id">
                     <div class="col-lg-5ths col-md-3 col-sm-4 col-xs-6 col-wrapper">
                         <div class="app-wrapper">
-                            <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
-                            <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div><div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
+                            <a ng-href="{{plugin.url}}" ng-if="plugin.url">
+                                <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
+                            </a>
+                            <div class="plugin-picture-wrapper" ng-if="plugin.url == null"><img src="{{plugin.picture}}"></div>
+                            <a class="app-title" ng-href="{{plugin.url}}" ng-if="plugin.url" style="text-decoration: none">
+                                <div class="app-item font-size-medium"><strong>{{plugin.name}}</strong></div>
+                            </a>
+                            <div class="font-size-medium" ng-if="plugin.url == null"><strong>{{plugin.name}}</strong></div>
                             <div class="app-item"><a class="button custom-btn" ng-href="{{plugin.url}}" ng-if="plugin.url"><span translate="entity.action.open">öffnen</span></a></div>
                             <div class="app-item btn-group flex-btn-group-container">
                                 <button type="submit"
@@ -38,7 +44,7 @@
             <div ng-repeat="store in stores">
                 <div class="row">
                     <div class="panel-heading app-heading">{{store.name}}
-                        <div id="cog-dropdown" class="dropdown pointer navbar-right">
+                        <div id="cog-dropdown" class="dropdown pointer">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">
                                 <span>
                                     <span class="glyphicon glyphicon-cog"></span>
@@ -69,7 +75,7 @@
                         <div class="col-lg-5ths col-md-3 col-sm-4 col-xs-6 col-wrapper">
                             <div class="app-wrapper store-wrapper">
                                 <div class="plugin-picture-wrapper"><img src="{{plugin.picture}}"></div>
-                                <div class="app-item font-size-large"><strong>{{plugin.name}}</strong></div>
+                                <div class="app-item font-size-medium"><strong>{{plugin.name}}</strong></div>
                                 <div class="app-item appInfo">
                                     <span ng-bind-html="plugin.description | trust"></span>
                                     <a ng-href="{{plugin.infourl}}" ng-if="plugin.infourl">Details</a>
@@ -88,7 +94,7 @@
                 </span>
             </button>
         </div>
-        <div ng-switch-when="false" >
+        <div ng-switch-when="false" style="margin-top:20px">
 
             <div class="row">
 

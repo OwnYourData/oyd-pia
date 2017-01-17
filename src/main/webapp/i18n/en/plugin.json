@@ -2,21 +2,21 @@
     "piaApp": {
         "plugin" : {
             "home": {
-                "title": "Plugins",
-                "createLabel": "Upload a new Plugin",
-                "installLabel": "Install Plugin",
-                "registerLabel": "Register a new Plugin",
-                "createOrEditLabel": "Create or edit a Plugin",
-                "search": "Search for Plugin"
+                "title": "Apps",
+                "createLabel": "Upload a new App",
+                "installLabel": "Install App",
+                "registerLabel": "Register a new App",
+                "createOrEditLabel": "Create or edit an App",
+                "search": "Search for App"
             },
-            "created": "A new Plugin is created with identifier {{ param }}",
-            "updated": "A Plugin is updated with identifier {{ param }}",
-            "deleted": "A Plugin is deleted with identifier {{ param }}",
+            "created": "A new App is created with identifier {{ param }}",
+            "updated": "An App is updated with identifier {{ param }}",
+            "deleted": "An App is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Plugin {{ id }}?"
+                "question": "Are you sure you want to delete App {{ id }}?"
             },
             "detail": {
-                "title": "Plugin"
+                "title": "App"
             },
             "name": "Name",
             "identifier": "Identifier",
@@ -29,10 +29,10 @@
             "stop": "Stop",
             "secret": "Secret",
             "install": {
-                "title": "Install Plugin"
+                "title": "Install App"
             },
             "register": {
-                "title": "Register a new Plugin",
+                "title": "Register a new App",
                 "instructions": "Paste Base64 Code",
                 "grant": "Grant",
                 "deny": "Deny"

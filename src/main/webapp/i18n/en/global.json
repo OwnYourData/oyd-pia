@@ -15,7 +15,7 @@
             "myData": {
                 "main": "My Data",
                 "repo": "Repo",
-                "item": "Item",
+                "item": "Datensatz",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -41,7 +41,10 @@
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
             "language": "Language",
-            "devinfo": "Infos für App-Entwickler"
+            "about_oyd": "About OwnYourData.eu",
+            "mobile_vault": "Mobile Data Vault",
+            "feedback": "Send feedback",
+            "devinfo": "Developer infos"
         },
         "form": {
             "username": "Username",

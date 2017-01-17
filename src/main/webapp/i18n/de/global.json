@@ -15,7 +15,7 @@
             "myData": {
                 "main": "Meine Daten",
                 "repo": "Repo",
-                "item": "Item",
+                "item": "Record",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

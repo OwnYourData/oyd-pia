@@ -3,8 +3,9 @@ html {
     min-height: 100%;
 }
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Arial, sans-serif;
     color: #333;
+    padding-top: 70px;
     margin-bottom: 51px; /* Footer height = 35, padding = 15, border = 1 */
 }
 .navbar-nav > li > a {
@@ -12,6 +13,15 @@ body {
 }
 .navbar-brand {
     margin-bottom: 11px;
+    white-space: nowrap;
+}
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 65px;
 }
 footer{
     position: absolute;
@@ -30,7 +40,7 @@ footer .container{
 
 footer .navbar{
     margin-bottom: 0px;
-    border-top-color: #777;
+    border-top-color: #ddd;
     border-bottom-color: #ffffff;
     height:35px;
 }
@@ -292,7 +302,7 @@ nav {
     background-color: #ffffff;
 }
 .navbar{
-    border-bottom-color: #777;
+    border-bottom-color: #ddd;
 }
 .navbar-brand {
     padding: 0px 0px 0px 15px;
@@ -362,6 +372,9 @@ nav {
         height: auto !important;
     }
 }
+.modal-dialog {
+    margin-top: 100px;
+}
 /* ==========================================================================
 Myapps
 ========================================================================== */
@@ -380,7 +393,7 @@ Myapps
 }
 .app-wrapper{
     background-color: #ffffff;
-    border: 1px solid #777;
+    border: 1px solid #ddd;
     margin: 0px 20px 20px 0px;
     padding: 20px 17px 20px 17px;
     width: 100%;
@@ -394,16 +407,27 @@ Myapps
     font-size: 13px;
 }
 .app-item a:hover{
-    color: #ffffff;
+    color: #333;
+    background-color: #ddd;
+    text-decoration: none;
+}
+.app-title{
+    text-decoration: none;
+    color: #333;
+}
+.app-title a:hover{
     text-decoration: none;
 }
 .custom-btn{
-    padding: 10px 50px 10px 50px;
+    padding: 10px 60px 10px 60px;
     border: none;
-    background-color: #878787;
-    color: #ffffff;
+    background-color: #f5f5f5;
+    color: #333;
     margin: 0 auto;
     border-radius: 0px;
+}
+.custom-btn:hover{
+    background-color: #ddd;
 }
 .btn-action{
     background-color: #ffffff;
@@ -453,7 +477,8 @@ Myapps
     border-left: 6px solid transparent;
 }
 #cog-dropdown{
-    float: right
+    display: inline-block;
+    margin-left: 20px;
 }
 #cog-dropdown .dropdown-menu{
     left: auto;
