@@ -160,11 +160,13 @@ if $RUN_DEMO || $VAULT_DEMO; then
     docker stop $APP_NAME
     docker rm $(docker ps -q -f status=exited)
     docker rm $(docker ps -q -f status=created)
+    APP_SUFFIX="_demo"
+    APP_DEMO="$APP$APP_SUFFIX"
     if $RUN_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 oydeu/$APP)
+        DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 oydeu/$APP_DEMO)
     fi
     if $VAULT_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 -e MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT oydeu/$APP)
+        DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 -e MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT oydeu/$APP_DEMO)
     fi
     sleep 10
 
