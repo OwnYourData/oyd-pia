@@ -1,6 +1,7 @@
 ######################
 # Project Specific
 ######################
+/docker/oyd-pia/oyd-pia
 /src/main/webapp/bower_components
 /src/main/webapp/dist
 
