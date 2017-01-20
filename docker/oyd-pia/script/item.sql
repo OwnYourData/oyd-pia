@@ -4902,7 +4902,7 @@ INSERT INTO item (id, value, belongs_id) VALUES (8878, '{"timestamp":14849268631
 INSERT INTO item (id, value, belongs_id) VALUES (8879, '{"timestamp":1484926891770,"url":"https://people-mozilla.org"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (8880, '{"timestamp":1484926918281,"url":"https://www.apple.com"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (8881, '{"timestamp":1484926933300,"url":"https://support.apple.com"}', 14);
-INSERT INTO item (id, value, belongs_id) VALUES (8881, '{"date":"2017-01-05 08:43:35","description":"Webhistory: Änderungen im Datenblatt gespeichert (0 Datensätze gelöscht, 1 Datensätze erstellt)"}', 13);
+INSERT INTO item (id, value, belongs_id) VALUES (8882, '{"date":"2017-01-05 08:43:35","description":"Webhistory: Änderungen im Datenblatt gespeichert (0 Datensätze gelöscht, 1 Datensätze erstellt)"}', 13);
 
 
 --
