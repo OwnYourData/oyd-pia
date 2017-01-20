@@ -32,6 +32,8 @@ INSERT INTO repo (id, creator, description, identifier) VALUES (9, NULL, 'Kontod
 INSERT INTO repo (id, creator, description, identifier) VALUES (10, NULL, 'Protokoll', 'eu.ownyourdata.bank.log');
 INSERT INTO repo (id, creator, description, identifier) VALUES (11, NULL, 'Referenzwert', 'eu.ownyourdata.bank.reference');
 INSERT INTO repo (id, creator, description, identifier) VALUES (12, NULL, 'Info', 'eu.ownyourdata.info');
+INSERT INTO repo (id, creator, description, identifier) VALUES (13, NULL, 'Protokoll', 'eu.ownyourdata.webhistory.log');
+INSERT INTO repo (id, creator, description, identifier) VALUES (14, NULL, 'Webhistory', 'eu.ownyourdata.webhistory');
 
 
 --
