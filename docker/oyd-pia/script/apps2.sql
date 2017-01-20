@@ -24,6 +24,7 @@ INSERT INTO external_plugin (id, url, mobileurl) VALUES (1, 'https://kontoentwic
 INSERT INTO external_plugin (id, url, mobileurl) VALUES (2, 'https://allergie.datentresor.org', 'https://allergie-mobil.datentresor.org');
 INSERT INTO external_plugin (id, url, mobileurl) VALUES (3, 'https://raumklima.datentresor.org', 'https://raumklima-mobil.datentresor.org');
 INSERT INTO external_plugin (id, url, mobileurl) VALUES (4, 'https://www.ownyourdata.eu', 'https://www.ownyourdata.eu');
+INSERT INTO external_plugin (id, url, mobileurl) VALUES (5, 'https://webhistory.datentresor.org', 'https://webhistory.datentresor.org');
 
 
 --
