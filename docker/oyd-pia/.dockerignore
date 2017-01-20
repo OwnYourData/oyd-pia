@@ -1,0 +1,3 @@
+build.sh
+oyd-pia*
+!oyd-pia/target/*.war
