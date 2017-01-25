@@ -11,7 +11,7 @@
     <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql,oracle"/>
 
     <changeSet id="00000000000000" author="jhipster" dbms="postgresql,oracle">
-        <createSequence sequenceName="hibernate_sequence" startValue="1000" incrementBy="1"/>
+        <createSequence sequenceName="hibernate_sequence" startValue="100000" incrementBy="1"/>
     </changeSet>
 
     <!--
