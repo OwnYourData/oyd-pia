@@ -4,7 +4,7 @@ MAINTAINER "Christoph Fabianek" christoph@ownyourdata.eu
 ARG PG_PWD
 ARG DEBUG_MODE=false
 
-RUN git clone https://github.com/OwnYourData/service-scheduler.git  \
+RUN git clone https://github.com/OwnYourData/service-scheduler.git \
         && cd service-scheduler \
         && bundle update
 

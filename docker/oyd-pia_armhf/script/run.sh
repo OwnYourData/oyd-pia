@@ -18,7 +18,11 @@ else
 fi
 
 echo "starting PIA"
-java -jar /oyd-pia/*.war --spring.profiles.active=prod >/dev/null 2>&1
+if $DEBUG_MODE; then
+    java -jar /oyd-pia/*.war --spring.profiles.active=prod
+else
+    java -jar /oyd-pia/*.war --spring.profiles.active=prod >/dev/null 2>&1
+fi
 
 # keep the stdin
 /bin/bash

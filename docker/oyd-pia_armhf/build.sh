@@ -10,8 +10,6 @@ DEBUG_MODE=false
 DOCKER_UPDATE=false
 RUN_LOCAL=false
 RUN_DEMO=false
-VAULT_UPDATE=false
-VAULT_DEMO=false
 while [ $# -gt 0 ]; do
     case "$1" in
         --clean*)
@@ -35,12 +33,6 @@ while [ $# -gt 0 ]; do
         --run*)
             RUN_LOCAL=true
             ;;
-        --vault-demo*)
-            VAULT_DEMO=true
-            ;;
-        --vault*)
-            VAULT_UPDATE=true
-            ;;
         --help*)
             echo "Verwendung: [source] ./build.sh  --options"
             echo "erzeugt und startet OwnYourData Komponenten"
@@ -50,13 +42,11 @@ while [ $# -gt 0 ]; do
             echo "  --debug      Debug-Messages der Java-Applikation werden ausgegeben"
             echo "  --dockerhub  pushed Docker-Image auf hub.docker.com"
             echo "  --help       zeigt diese Hilfe an"
-            echo "  --name=TEXT  Name für Docker-Image und bei --vault für Subdomain"
+            echo "  --name=TEXT  Name für Docker-Image"
             echo "  --refresh    aktualisiert docker Verzeichnis von Github"
             echo "               (Achtung: löscht alle vorhandenen Zwischenschritte)"
             echo "  --run        startet Docker Container"
             echo "  --run-demo   startet Docker Container mit Demodaten"
-            echo "  --vault      startet Docker Container auf datentresor.org"
-            echo "  --vault-demo startet Docker Container auf datentresor.org mit Demodaten"
             if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
                 return 1
             else
@@ -95,7 +85,7 @@ if $BUILD_CLEAN; then
     cd oyd-pia
 
     # demo specifc adoptions
-    if $RUN_DEMO || $VAULT_DEMO; then
+    if $RUN_DEMO; then
         cp src/main/webapp/i18n/de/global.json.demo src/main/webapp/i18n/de/global.json
         cp src/main/webapp/i18n/en/global.json.demo src/main/webapp/i18n/en/global.json
     fi
@@ -126,7 +116,7 @@ if $BUILD_CLEAN; then
     npm install
     mvn -DskipTests -Pprod clean package
     cd ..
-    if $RUN_DEMO || $VAULT_DEMO; then
+    if $RUN_DEMO; then
         APP_SUFFIX="_demo"
         APP_DEMO="$APP$APP_SUFFIX"
         docker build --no-cache -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
@@ -135,7 +125,7 @@ if $BUILD_CLEAN; then
     fi
 else
     PG_PWD=$(grep 'password:' oyd-pia/src/main/resources/config/application-prod.yml | head -n1); PG_PWD=${PG_PWD//*password: /};
-    if $RUN_DEMO || $VAULT_DEMO; then
+    if $RUN_DEMO; then
         APP_SUFFIX="_demo"
         APP_DEMO="$APP$APP_SUFFIX"
         docker build -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
@@ -155,34 +145,21 @@ if $RUN_LOCAL; then
     docker run -d -p 8080:8080 --name $APP_NAME oydeu/$APP
 fi
 
-if $RUN_DEMO || $VAULT_DEMO; then
+if $RUN_DEMO; then
     # restart demo
     docker stop $APP_NAME
     docker rm $(docker ps -q -f status=exited)
     docker rm $(docker ps -q -f status=created)
     APP_SUFFIX="_demo"
     APP_DEMO="$APP$APP_SUFFIX"
-    if $RUN_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 oydeu/$APP_DEMO)
-    fi
-    if $VAULT_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 -e MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT oydeu/$APP_DEMO)
-    fi
+    DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 oydeu/$APP_DEMO)
     sleep 10
 
     # wait until demo pia is up and running
-    if $RUN_DEMO; then
-        until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
-            printf '.'
-            sleep 5
-        done
-    fi
-    if $VAULT_DEMO; then
-        until $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
-            printf '.'
-            sleep 5
-        done
-    fi
+    until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do
+        printf '.'
+        sleep 5
+    done
 
     # copy and execute SQL scripts to create demo data set
     docker cp script/demo_credentials.sql $DEMO_ID:/oyd-pia/script/
