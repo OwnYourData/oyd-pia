@@ -42,7 +42,7 @@ while [ $# -gt 0 ]; do
             echo "  --debug      Debug-Messages der Java-Applikation werden ausgegeben"
             echo "  --dockerhub  pushed Docker-Image auf hub.docker.com"
             echo "  --help       zeigt diese Hilfe an"
-            echo "  --name=TEXT  Name für Docker-Image"
+            echo "  --name=TEXT  Name für Docker Container"
             echo "  --refresh    aktualisiert docker Verzeichnis von Github"
             echo "               (Achtung: löscht alle vorhandenen Zwischenschritte)"
             echo "  --run        startet Docker Container"
