@@ -1,0 +1,114 @@
+#!/bin/sh
+
+app=""
+force_pull=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --app=*)
+      app="${1#*=}"
+      ;;
+    --update*)
+      force_pull=true
+      ;;
+    --help*)
+      printf "Verwendung: datentresor [--app=App-Name]\n"
+      printf "Startet den Datentresor und optional eine App.\n\n"
+      printf "Optionale Argumente:\n"
+      printf "  --app=App-Name  installiert die angegebene App und richtet sie im\n"
+      printf "                  Datentresor ein\n"
+      printf "  --help          zeigt diese Informationen an\n"
+      printf "  --update        erzwingt die Aktualisierung der Docker Images\n"
+      printf "\nweitere Infos unter https://www.ownyourdata.eu oder via\n"
+      printf "email: support@ownyourdata.eu\n"
+      exit
+      ;;
+    *)
+      printf "datentresor: ungültige Option(en)\n"
+      printf "Verwende 'datentresor --help' für weitere informationen.\n"
+      exit 1
+  esac
+  shift
+done
+
+if [ "$(uname)" == "Darwin" ]; then
+  IP_ADR=`ifconfig en0 | grep inet | grep -v inet6 | awk '{print $2}'`
+else # elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  IP_ADR=`ip route get 8.8.8.8 | awk 'NR==1 {print $NF}'`
+fi
+
+if [ "$app" == "raumklima" ]; then
+  if $force_pull ; then
+    if [[ "$(uname -m)" == *"arm"* ]]; then
+      docker pull oydeu/app-room_armhf
+    else
+      docker pull oydeu/app-room
+    fi
+  fi
+  echo "starte Raumklima-App..."
+  docker stop raumklima >/dev/null 2>&1
+  docker rm $(docker ps -q -f status=exited) >/dev/null 2>&1
+  room_port=8080
+  if [[ "$(uname -m)" == *"arm"* ]]; then
+    docker run --name raumklima -d -p $room_port:3838 oydeu/app-room_armhf >/dev/null 2>&1
+  else
+    docker run --name raumklima -d -p $room_port:3838 oydeu/app-room >/dev/null 2>&1
+  fi
+  printf "Die Raumklima-App wurde gestartet und ist unter http://$IP_ADR:$room_port erreichbar.\n\n"
+
+fi
+
+if $force_pull ; then
+  if [[ "$(uname -m)" == *"arm"* ]]; then
+    docker pull oydeu/oyd-pia_armhf 
+  else
+    docker pull oydeu/oyd-pia
+  fi
+fi
+
+# stop and remove any running PIA instances
+echo "starte Datentresor (das kann einige Minuten dauern)"
+docker stop datentresor >/dev/null 2>&1
+docker rm $(docker ps -q -f status=exited) >/dev/null 2>&1
+port=80
+if [[ "$(uname -m)" == *"arm"* ]]; then
+  PIA_ID=$(docker run --name datentresor -d -p $port:8080 oydeu/oyd-pia_armhf)
+else
+  PIA_ID=$(docker run --name datentresor -d -p $port:8080 oydeu/oyd-pia)
+fi
+sleep 30
+
+# wait until PIA is up and running
+until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:$port); do
+  printf '.'
+  sleep 10
+done
+
+# run SQL scripts to prepare PIA for personal use
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/lang.sql" >/dev/null 2>&1
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/store.sql" >/dev/null 2>&1
+PIA_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
+if [ "$app" == "raumklima" ]; then
+  docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/apps_room.sql" >/dev/null 2>&1
+  docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO external_plugin (id, url, mobileurl) VALUES (1, 'http://$IP_ADR:$room_port/?PIA_URL=http%3A%2F%2F$IP_ADR%3A$port', 'http://$IP_ADR:$room_port/?PIA_URL=http%3A%2F%2F$IP_ADR%3A$port');\"" >/dev/null 2>&1
+  docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/permissions_room.sql" >/dev/null 2>&1
+  ROOM_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
+  docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.room', '', '$ROOM_SECRET', 'eu.ownyourdata.info:read,eu.ownyourdata.info:write,eu.ownyourdata.info:update,eu.ownyourdata.scheduler:read,eu.ownyourdata.scheduler:write,eu.ownyourdata.scheduler:update,eu.ownyourdata.scheduler:delete,eu.ownyourdata.room.*:read,eu.ownyourdata.room.*:write,eu.ownyourdata.room.*:update,eu.ownyourdata.room.*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\"" >/dev/null 2>&1
+fi
+
+# configure and run scheduler service
+SCHEDULER_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_scheduler', '', '$SCHEDULER_SECRET', 'eu.ownyourdata.scheduler:read,eu.ownyourdata.scheduler.status:read,eu.ownyourdata.scheduler.email_config:read', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\"" >/dev/null 2>&1
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (1, 'Scheduler Status', 'eu.ownyourdata.scheduler.status');\"" >/dev/null 2>&1
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 2, false);\"" >/dev/null 2>&1
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 1);\"" >/dev/null 2>&1
+docker exec $PIA_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 2, false);\"" >/dev/null 2>&1
+
+docker exec -d $PIA_ID bash -c "cd /service-scheduler; rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET" >/dev/null 2>&1
+
+if [ "$port" == "80" ]; then
+  echo -e "\nDer Datentresor wurde gestartet und ist unter http://$IP_ADR erreichbar."
+else
+  echo -e "\nDer Datentresor wurde gestartet und ist unter http://$IP_ADR:$port erreichbar."
+fi
+echo -e "  Zugangsdaten - Benuzter: admin  Passwort: admin\n"
+echo "Feedback: support@ownyourdata.eu"
