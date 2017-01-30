@@ -2,19 +2,19 @@
     "piaApp": {
         "store" : {
             "home": {
-                "title": "App-Anbieter",
-                "createLabel": "App-Anbieter hinzufügen",
-                "createOrEditLabel": "Konfiguriere oder bearbeite einen App-Anbieter",
-                "search": "Suche nach einem App-Anbieter"
+                "title": "App-Verzeichnis",
+                "createLabel": "App-Verzeichnis hinzufügen",
+                "createOrEditLabel": "Konfiguriere oder bearbeite einen App-Verzeichnis",
+                "search": "Suche nach einem App-Verzeichnis"
             },
-            "created": "Ein neuer App-Anbieter mit der id {{ param }} wurde erstellt",
-            "updated": "Ein App-Anbieter mit der id {{ param }} wurde aktualisiert",
-            "deleted": "Ein App-Anbieter mit der id {{ param }} wurde gelöscht",
+            "created": "Ein neuer App-Verzeichnis mit der id {{ param }} wurde erstellt",
+            "updated": "Ein App-Verzeichnis mit der id {{ param }} wurde aktualisiert",
+            "deleted": "Ein App-Verzeichnis mit der id {{ param }} wurde gelöscht",
             "delete": {
-                "question": "Sicher, dass sie App-Anbieter {{ id }} löschen wollen?"
+                "question": "Sicher, dass sie App-Verzeichnis {{ id }} löschen wollen?"
             },
             "detail": {
-                "title": "App-Anbieter"
+                "title": "App-Verzeichnis"
             },
             "name": "Name",
             "url": "Url"

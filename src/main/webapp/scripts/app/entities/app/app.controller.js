@@ -153,7 +153,7 @@ angular.module('piaApp')
                         }
                     }
 
-                    if (store.name === "OwnYourData Apps") {
+                    if (store.name === "OwnYourData App Store") {
                         var manualPlugin = {
                             "name": "Beziehungstracker",
                             "description": "Finde gemeinsam mit deiner/m Partner/in heraus, wie es euch in eurer Beziehung geht.",
