@@ -3493,7 +3493,7 @@ INSERT INTO item (id, value, belongs_id) VALUES (6436, '{"timestamp":14839966229
 INSERT INTO item (id, value, belongs_id) VALUES (6437, '{"timestamp":1483996625186,"url":"https://demo2.datentresor.org"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (6438, '{"timestamp":1483996656421,"url":"https://kontoentwicklung.datentresor.org"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (6439, '{"timestamp":1483996687463,"url":"https://demo2.datentresor.org"}', 14);
-INSERT INTO item (id, value, belongs_id) VALUES (6440, '{"app":"eu.ownyourdata.bank","task":"email","time":"0 9 1 * *","parameters":{"address":"christoph.fabianek@gmail.com","encrypt":"false","content":"upload bank csv"}}', 1007);
+INSERT INTO item (id, value, belongs_id) VALUES (6440, '{"app":"eu.ownyourdata.bank","task":"email","time":"0 9 1 * *","parameters":{"address":"christoph.fabianek@gmail.com","encrypt":"false","content":"upload bank csv"}}', 1);
 INSERT INTO item (id, value, belongs_id) VALUES (6441, '{"timestamp":1483997837739,"url":"http://192.168.1.206:8080"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (6442, '{"timestamp":1483997839248,"url":"http://192.168.1.206:8080"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (6443, '{"timestamp":1483998001861,"url":"http://192.168.1.206:8080"}', 14);
