@@ -2950,7 +2950,6 @@ INSERT INTO item (id, value, belongs_id) VALUES (1011, '{"value":37.704333333,"t
 INSERT INTO item (id, value, belongs_id) VALUES (1014, '{"value":37.304666667,"timestamp":1482381000}', 4);
 INSERT INTO item (id, value, belongs_id) VALUES (1008, '{"task":"Rscript","app":"eu.ownyourdata.room","time":"0 */2 * * *","parameters":{"replace":{"pia_url":"https://demo2.datentresor.org","app_key":"eu.ownyourdata.room","app_secret":"6XUmKUm4jH4myUm1fMi1"},"Rscript_reference":"nagios_import","Rscript_repo":"eu.ownyourdata.room.script"}}', 1);
 INSERT INTO item (id, value, belongs_id) VALUES (2343, '{"value":43.208666667,"timestamp":1482867000}', 4);
-INSERT INTO item (id, value, belongs_id) VALUES (1003, '{"app":"eu.ownyourdata.bank","task":"email","time":"0 9 * * *","parameters":{"address":"christoph.fabianek@gmail.com","encrypt":"false","content":"upload bank csv"}}', 1);
 INSERT INTO item (id, value, belongs_id) VALUES (5466, '{"timestamp":1483607282954,"url":"https://www.google.at"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (5467, '{"timestamp":1483607285853,"url":"https://www.google.at"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (5468, '{"timestamp":1483607292535,"url":"https://www.kinderarzt-franzen.at"}', 14);
