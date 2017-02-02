@@ -19,7 +19,7 @@ SET search_path = public, pg_catalog;
 -- Data for Name: store; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO store (id, name, url) VALUES (1, 'OwnYourData Apps', 'https://sam.datentresor.org');
+INSERT INTO store (id, name, url) VALUES (1, 'OwnYourData App Store', 'https://sam.datentresor.org');
 
 
 --

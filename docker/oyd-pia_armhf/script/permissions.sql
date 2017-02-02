@@ -64,8 +64,13 @@ INSERT INTO permissions (plugin_id, permission) VALUES (3, 'eu.ownyourdata.room.
 INSERT INTO permissions (plugin_id, permission) VALUES (3, 'eu.ownyourdata.room.*:write');
 INSERT INTO permissions (plugin_id, permission) VALUES (3, 'eu.ownyourdata.room.*:update');
 INSERT INTO permissions (plugin_id, permission) VALUES (3, 'eu.ownyourdata.room.*:delete');
-INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler:read');
-INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler.email_config:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.info:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.info:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.info:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler*:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler*:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler*:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (4, 'eu.ownyourdata.scheduler*:delete');
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory:read');
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory:write');
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory:update');

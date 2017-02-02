@@ -202,7 +202,7 @@ if $RUN_DEMO || $VAULT_DEMO; then
     docker cp script/item.sql $DEMO_ID:/oyd-pia/script/
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/item.sql"
 
-    # setup scheduler
+    # setup scheduler service
     SCHEDULER_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_scheduler', '', '$SCHEDULER_SECRET', 'eu.ownyourdata.scheduler*:read,eu.ownyourdata.scheduler*:write,eu.ownyourdata.scheduler*:update,eu.ownyourdata.scheduler*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (50, 'Scheduler Status', 'eu.ownyourdata.scheduler.status');\""
