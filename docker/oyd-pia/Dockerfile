@@ -7,9 +7,7 @@ ARG DEBUG_MODE=false
 
 RUN git clone https://github.com/OwnYourData/service-scheduler.git \
         && cd service-scheduler \
-        && bundle update \
-        && rake db:create \
-        && rake db:migrate
+        && bundle update
 
 RUN su postgres -c "initdb -D /var/lib/postgresql/data" \
         && mkdir -p /oyd-pia/script
