@@ -129,18 +129,18 @@ if $BUILD_CLEAN; then
     if $RUN_DEMO || $VAULT_DEMO; then
         APP_SUFFIX="_demo"
         APP_DEMO="$APP$APP_SUFFIX"
-        docker build --no-cache -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+        docker build --no-cache -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE --build-arg EMAIL_PWD=$EMAIL_PWD .
     else
-        docker build --no-cache -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+        docker build --no-cache -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE --build-arg EMAIL_PWD=$EMAIL_PWD .
     fi
 else
     PG_PWD=$(grep 'password:' oyd-pia/src/main/resources/config/application-prod.yml | head -n1); PG_PWD=${PG_PWD//*password: /};
     if $RUN_DEMO || $VAULT_DEMO; then
         APP_SUFFIX="_demo"
         APP_DEMO="$APP$APP_SUFFIX"
-        docker build -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+        docker build -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE --build-arg EMAIL_PWD=$EMAIL_PWD .
     else
-        docker build -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+        docker build -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE --build-arg EMAIL_PWD=$EMAIL_PWD .
     fi
 fi
 
@@ -209,5 +209,5 @@ if $RUN_DEMO || $VAULT_DEMO; then
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 50);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 100000, false);\""
-    docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET"
+    docker exec -d $DEMO_ID bash -c "cd /service-scheduler; MAILER_PASSWORD_DEFAULT=$EMAIL_PWD rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET"
 fi
