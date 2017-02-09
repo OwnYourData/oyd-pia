@@ -2,16 +2,21 @@
 
 APP="oyd-pia"
 APP_NAME="datentresor"
+IMAGE="oydeu/oyd-pia"
+LOGIN_PASSWORD=""
 
 # read commandline options
 REFRESH=false
 BUILD_CLEAN=false
 DEBUG_MODE=false
 DOCKER_UPDATE=false
+LOAD_IMAGE=false
+SET_PASSWORD=false
 RUN_LOCAL=false
 RUN_DEMO=false
 VAULT_UPDATE=false
 VAULT_DEMO=false
+VAULT_PERSONAL=false
 while [ $# -gt 0 ]; do
     case "$1" in
         --clean*)
@@ -23,8 +28,16 @@ while [ $# -gt 0 ]; do
         --dockerhub*)
             DOCKER_UPDATE=true
             ;;
+        --load-image=*)
+            LOAD_IMAGE=true
+            IMAGE="${1#*=}"
+            ;;
         --name=*)
             APP_NAME="${1#*=}"
+            ;;
+        --password=*)
+            SET_PASSWORD=true
+            LOGIN_PASSWORD="${1#*=}"
             ;;
         --refresh*)
             REFRESH=true
@@ -35,28 +48,35 @@ while [ $# -gt 0 ]; do
         --run*)
             RUN_LOCAL=true
             ;;
+        --vault*)
+            VAULT_UPDATE=true
+            ;;
         --vault-demo*)
             VAULT_DEMO=true
             ;;
-        --vault*)
-            VAULT_UPDATE=true
+        --vault-personal*)
+            VAULT_PERSONAL=true
             ;;
         --help*)
             echo "Verwendung: [source] ./build.sh  --options"
             echo "erzeugt und startet OwnYourData Komponenten"
             echo " "
             echo "Optionale Argumente:"
-            echo "  --clean      baut neues Docker-Image (--no-cache, alle neu kompilieren)"
-            echo "  --debug      Debug-Messages der Java-Applikation werden ausgegeben"
-            echo "  --dockerhub  pushed Docker-Image auf hub.docker.com"
-            echo "  --help       zeigt diese Hilfe an"
-            echo "  --name=TEXT  Name für Docker Container und bei --vault für Subdomain"
-            echo "  --refresh    aktualisiert docker Verzeichnis von Github"
-            echo "               (Achtung: löscht alle vorhandenen Zwischenschritte)"
-            echo "  --run        startet Docker Container"
-            echo "  --run-demo   startet Docker Container mit Demodaten"
-            echo "  --vault      startet Docker Container auf datentresor.org"
-            echo "  --vault-demo startet Docker Container auf datentresor.org mit Demodaten"
+            echo "  --clean           baut neues Docker-Image (--no-cache, alles neu kompilieren)"
+            echo "  --debug           Debug-Messages der Java-Applikation werden ausgegeben"
+            echo "  --dockerhub       pushed Docker-Image auf hub.docker.com"
+            echo "  --help            zeigt diese Hilfe an"
+            echo "  --load-image=TEXT verwendet angegebenes image anstatt docker build auszuführen"
+            echo "  --name=TEXT       Name für Docker Container und bei --vault für Subdomain"
+            echo "  --password=TEXT   setzt das angegebene Passwort"
+            echo "  --refresh         aktualisiert docker Verzeichnis von Github"
+            echo "                    (Achtung: löscht alle vorhandenen Zwischenschritte)"
+            echo "  --run             startet Docker Container"
+            echo "  --run-demo        startet Docker Container mit Demodaten"
+            echo "  --vault           startet Docker Container auf datentresor.org"
+            echo "  --vault-demo      startet Docker Container auf datentresor.org mit Demodaten"
+            echo "  --vault-personal  startet Docker Container auf datentresor.org mit"
+            echo "                    Daten für individuelle Nutzung vorkonfiguriert"
             if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
                 return 1
             else
@@ -129,30 +149,30 @@ if $BUILD_CLEAN; then
     if $RUN_DEMO || $VAULT_DEMO; then
         APP_SUFFIX="_demo"
         APP_DEMO="$APP$APP_SUFFIX"
-        docker build --no-cache -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
-    else
-        docker build --no-cache -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+        IMAGE="oydeu/$APP_DEMO"
     fi
+    docker build --no-cache -t $IMAGE --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
 else
-    PG_PWD=$(grep 'password:' oyd-pia/src/main/resources/config/application-prod.yml | head -n1); PG_PWD=${PG_PWD//*password: /};
-    if $RUN_DEMO || $VAULT_DEMO; then
-        APP_SUFFIX="_demo"
-        APP_DEMO="$APP$APP_SUFFIX"
-        docker build -t oydeu/$APP_DEMO --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
-    else
-        docker build -t oydeu/$APP --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
+    if ! $LOAD_IMAGE; then
+        PG_PWD=$(grep 'password:' oyd-pia/src/main/resources/config/application-prod.yml | head -n1); PG_PWD=${PG_PWD//*password: /};
+        if $RUN_DEMO || $VAULT_DEMO; then
+            APP_SUFFIX="_demo"
+            APP_DEMO="$APP$APP_SUFFIX"
+            IMAGE="oydeu/$APP_DEMO"
+        fi
+        docker build -t $IMAGE --build-arg PG_PWD=$PG_PWD --build-arg DEBUG_MODE=$DEBUG_MODE .
     fi
 fi
 
 if $DOCKER_UPDATE; then
-    docker push oydeu/$APP
+    docker push $IMAGE
 fi
 
 if $RUN_LOCAL; then
     docker stop $APP_NAME
     docker rm $(docker ps -q -f status=exited)
     docker rm $(docker ps -q -f status=created)
-    docker run -d -p 8080:8080 --name $APP_NAME oydeu/$APP
+    docker run -d -p 8080:8080 --name $APP_NAME $IMAGE
 fi
 
 if $RUN_DEMO || $VAULT_DEMO; then
@@ -160,13 +180,11 @@ if $RUN_DEMO || $VAULT_DEMO; then
     docker stop $APP_NAME
     docker rm $(docker ps -q -f status=exited)
     docker rm $(docker ps -q -f status=created)
-    APP_SUFFIX="_demo"
-    APP_DEMO="$APP$APP_SUFFIX"
     if $RUN_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 oydeu/$APP_DEMO)
+        DEMO_ID=$(docker run -d --name $APP_NAME -p 8080:8080 $IMAGE)
     fi
     if $VAULT_DEMO; then
-        DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 -e MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT oydeu/$APP_DEMO)
+        DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 $IMAGE)
     fi
     sleep 10
 
@@ -209,6 +227,29 @@ if $RUN_DEMO || $VAULT_DEMO; then
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 50);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 100000, false);\""
-
     docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET"
+fi
+
+if $VAULT_PERSONAL; then
+    DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 $IMAGE)
+    sleep 10
+    until $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
+        printf '.'
+        sleep 5
+    done
+
+    # copy and execute SQL scripts to create initial data set for personal use
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/store.sql"
+    SERVICE_SCHEDULER_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_scheduler', '', '$SERVICE_SCHEDULER_SECRET', 'eu.ownyourdata.scheduler*:read,eu.ownyourdata.scheduler*:write,eu.ownyourdata.scheduler*:update,eu.ownyourdata.scheduler*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (50, 'Scheduler Status', 'eu.ownyourdata.scheduler.status');\""
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 50);\""
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 1000, false);\""
+    docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET"
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/update.sql"
+    docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET lang_key='de', login='data' WHERE id=3;\""
+    if $SET_PASSWORD; then
+        docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET password_hash='$LOGIN_PASSWORD' WHERE id=3;\""
+    fi
 fi
