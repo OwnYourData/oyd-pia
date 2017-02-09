@@ -2,7 +2,6 @@ FROM oydeu/oyd-pia_base:latest
 MAINTAINER "Christoph Fabianek" christoph@ownyourdata.eu
 
 ARG PG_PWD
-ARG EMAIL_PWD
 ARG DEBUG_MODE=false
 
 RUN git clone https://github.com/OwnYourData/service-scheduler.git \
