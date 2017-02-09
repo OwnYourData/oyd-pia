@@ -48,14 +48,14 @@ while [ $# -gt 0 ]; do
         --run*)
             RUN_LOCAL=true
             ;;
-        --vault*)
-            VAULT_UPDATE=true
-            ;;
         --vault-demo*)
             VAULT_DEMO=true
             ;;
         --vault-personal*)
             VAULT_PERSONAL=true
+            ;;
+        --vault*)
+            VAULT_UPDATE=true
             ;;
         --help*)
             echo "Verwendung: [source] ./build.sh  --options"
