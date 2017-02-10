@@ -232,7 +232,7 @@ fi
 
 if $VAULT_PERSONAL; then
     DEMO_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 $IMAGE)
-    sleep 10
+    sleep 60
     until $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
         printf '.'
         sleep 5
@@ -246,7 +246,7 @@ if $VAULT_PERSONAL; then
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 50);\""
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 1000, false);\""
-    docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT rails runner \"ApplicationController.helpers.execute\" -s $SCHEDULER_SECRET"
+    docker exec -d $DEMO_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT=$MAILER_PASSWORD_DEFAULT rails runner \"ApplicationController.helpers.execute\" -s $SERVICE_SCHEDULER_SECRET"
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/update.sql"
     docker exec $DEMO_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET lang_key='de', login='data' WHERE id=3;\""
     if $SET_PASSWORD; then
