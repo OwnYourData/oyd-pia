@@ -68,7 +68,7 @@ while [ $# -gt 0 ]; do
             echo "  --help            zeigt diese Hilfe an"
             echo "  --load-image=TEXT verwendet angegebenes image anstatt docker build auszuführen"
             echo "  --name=TEXT       Name für Docker Container und bei --vault für Subdomain"
-            echo "  --password=TEXT   setzt das angegebene Passwort"
+            echo "  --password=TEXT   setzt das angegebene Passwort (als Hash)"
             echo "  --refresh         aktualisiert docker Verzeichnis von Github"
             echo "                    (Achtung: löscht alle vorhandenen Zwischenschritte)"
             echo "  --run             startet Docker Container"
@@ -77,6 +77,12 @@ while [ $# -gt 0 ]; do
             echo "  --vault-demo      startet Docker Container auf datentresor.org mit Demodaten"
             echo "  --vault-personal  startet Docker Container auf datentresor.org mit"
             echo "                    Daten für individuelle Nutzung vorkonfiguriert"
+            echo " "
+            echo "Beispiele:"
+            echo " ./build.sh --clean --dockerhub"
+            echo " ./build.sh --debug --vault-personal --name=test"
+            echo " ./build.sh --clean --name=demo --vault-demo"
+            echo " ./build.sh --load-image=oydeu/oyd-pia --name=funny-kant_101 --vault-personal"
             if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
                 return 1
             else
