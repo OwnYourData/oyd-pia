@@ -17,7 +17,8 @@ SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: repo; Type: TABLE DATA; Schema: public; Owner: postgres
---
+-- pg_dump --column-inserts --data-only --table=repo pia > /repo.sql
+-- cat /repo.sql
 
 INSERT INTO repo (id, creator, description, identifier) VALUES (1, NULL, 'Scheduler', 'eu.ownyourdata.scheduler');
 INSERT INTO repo (id, creator, description, identifier) VALUES (2, NULL, 'Raumklima-Skript', 'eu.ownyourdata.room.script');
@@ -33,7 +34,6 @@ INSERT INTO repo (id, creator, description, identifier) VALUES (11, NULL, 'Refer
 INSERT INTO repo (id, creator, description, identifier) VALUES (12, NULL, 'Info', 'eu.ownyourdata.info');
 INSERT INTO repo (id, creator, description, identifier) VALUES (13, NULL, 'Protokoll', 'eu.ownyourdata.webhistory.log');
 INSERT INTO repo (id, creator, description, identifier) VALUES (14, NULL, 'Webhistory', 'eu.ownyourdata.webhistory');
-
 
 --
 -- Name: repo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres

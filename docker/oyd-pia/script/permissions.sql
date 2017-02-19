@@ -17,7 +17,8 @@ SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: permissions; Type: TABLE DATA; Schema: public; Owner: postgres
---
+-- pg_dump --column-inserts --data-only --table=permissions pia > /permissions.sql
+-- cat /permissions.sql
 
 INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.info:read');
 INSERT INTO permissions (plugin_id, permission) VALUES (1, 'eu.ownyourdata.info:write');
@@ -82,7 +83,19 @@ INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhi
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory.log:write');
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory.log:update');
 INSERT INTO permissions (plugin_id, permission) VALUES (5, 'eu.ownyourdata.webhistory.log:delete');
-
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.info:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.info:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.info:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.collect:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.collect.*:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.collect*:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.collect*:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.collect*:delete');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.scheduler:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.scheduler.*:read');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.scheduler*:write');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.scheduler*:update');
+INSERT INTO permissions (plugin_id, permission) VALUES (6, 'eu.ownyourdata.scheduler*:delete');
 
 --
 -- PostgreSQL database dump complete

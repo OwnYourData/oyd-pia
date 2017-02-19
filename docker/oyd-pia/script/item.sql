@@ -17,7 +17,8 @@ SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: item; Type: TABLE DATA; Schema: public; Owner: postgres
---
+-- pg_dump --column-inserts --data-only --table=item pia > /item.sql
+-- cat /item.sql
 
 INSERT INTO item (id, value, belongs_id) VALUES (1015, '{"value":42.7,"timestamp":1479591000}', 4);
 INSERT INTO item (id, value, belongs_id) VALUES (1016, '{"value":42.418333333,"timestamp":1479592800}', 4);
@@ -4902,7 +4903,7 @@ INSERT INTO item (id, value, belongs_id) VALUES (8879, '{"timestamp":14849268917
 INSERT INTO item (id, value, belongs_id) VALUES (8880, '{"timestamp":1484926918281,"url":"https://www.apple.com"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (8881, '{"timestamp":1484926933300,"url":"https://support.apple.com"}', 14);
 INSERT INTO item (id, value, belongs_id) VALUES (8882, '{"date":"2017-01-05 08:43:35","description":"Webhistory: Änderungen im Datenblatt gespeichert (0 Datensätze gelöscht, 1 Datensätze erstellt)"}', 13);
-
+INSERT INTO item (id, value, belongs_id) VALUES (8883, '{"app":"eu.ownyourdata.collect","task":"Rscript","active":true,"time":"1 */6 * * *","parameters":{"Rscript_base64":"bGlicmFyeShYTUwpCnBhZ2U8LWh0bWxUcmVlUGFyc2UoJ2h0dHA6Ly9kZXJzdGFuZGFyZC5hdCcsIHVzZUludGVybmFsPVRSVUUpCmhlYWRsaW5lPC14cGF0aFNBcHBseShwYWdlLCcvL2gyJywgeG1sVmFsdWUpWzFdCnJlc3VsdDwtdXRmOFRvSW50KGhlYWRsaW5lKQ==","pia_url":"https://demo.datentresor.org","app_key":"eu.ownyourdata.collect","response_structure":[{"repoName":"derStandard.at","repo":"eu.ownyourdata.collect.derstandard","fields":{"value":"Rscript.result","timestamp":"Timestamp"}}],"app_secret":"oinBfHVNdcr8zQ9PDlSN"}}', 1);
 
 --
 -- Name: item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
