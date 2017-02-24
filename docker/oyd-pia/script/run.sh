@@ -3,6 +3,17 @@
 # Stop on error
 set -e
 
+# install gems
+# loop according to http://www.zhuwu.me/blog/posts/solve-gem-installation-timeout-when-building-docker-image
+N=0
+until [ ${N} -ge 5 ]
+do
+  bundle install  && break
+  echo 'Try bundle again ...'
+  N=$[${N}+1]
+  sleep 1
+done
+
 #start postgreSQL
 echo "starting postgreSQL ... "
 su postgres -c "postgres -D /var/lib/postgresql/data &"

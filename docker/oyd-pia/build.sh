@@ -64,7 +64,7 @@ while [ $# -gt 0 ]; do
             echo "Optionale Argumente:"
             echo "  --clean           baut neues Docker-Image (--no-cache, alles neu kompilieren)"
             echo "  --debug           Debug-Messages der Java-Applikation werden ausgegeben"
-            echo "  --dockerhub       pushed Docker-Image auf hub.docker.com"
+            echo "  --dockerhub       pusht Docker-Image auf hub.docker.com"
             echo "  --help            zeigt diese Hilfe an"
             echo "  --load-image=TEXT verwendet angegebenes image anstatt docker build auszuführen"
             echo "  --name=TEXT       Name für Docker Container und bei --vault für Subdomain"
