@@ -8,7 +8,7 @@ set -e
 N=0
 until [ ${N} -ge 5 ]
 do
-  bundle install  && break
+  cd /service-scheduler && bundle install  && break
   echo 'Try bundle again ...'
   N=$[${N}+1]
   sleep 1
