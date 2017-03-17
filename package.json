@@ -1,6 +1,6 @@
 {
   "name": "pia",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Data Vault for OwnYourData (PIA)",
   "private": true,
   "cacheDirectories": [
