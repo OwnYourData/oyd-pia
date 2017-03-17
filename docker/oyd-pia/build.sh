@@ -82,7 +82,7 @@ while [ $# -gt 0 ]; do
             echo " ./build.sh --clean --dockerhub"
             echo " ./build.sh --debug --vault-personal --name=test"
             echo " ./build.sh --clean --name=demo --vault-demo"
-            echo " ./build.sh --load-image=oydeu/oyd-pia --name=funny-kant_101 --vault-personal"
+            echo " ./build.sh --load-image=oydeu/oyd-pia --vault-personal --name=funny-kant_101"
             if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
                 return 1
             else
@@ -263,6 +263,7 @@ if $VAULT_PERSONAL; then
     # setup Backup Service
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_backup', '', '$SERVICE_BACKUP_SECRET', 'eu.ownyourdata.backup*:read,eu.ownyourdata.backup*:write,eu.ownyourdata.backup*:update,eu.ownyourdata.backup*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (51, 'Backup Status', 'eu.ownyourdata.backup.status');\""
-    docker exec $CONTAINER_ID echo "4 2 * * * Rscript --vanilla /oyd-pia/script/backup.R https://$APP_NAME.datentresor.org $SERVICE_BACKUP_SECRET" > /oyd-pia/script/cronfile
+    docker exec $CONTAINER_ID bash -c "echo \"4 2 * * * Rscript --vanilla /oyd-pia/script/backup.R https://$APP_NAME.datentresor.org $SERVICE_BACKUP_SECRET\" > /oyd-pia/script/cronfile"
     docker exec $CONTAINER_ID crontab /oyd-pia/script/cronfile
+    docker exec $CONTAINER_ID crond
 fi
