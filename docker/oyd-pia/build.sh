@@ -276,7 +276,7 @@ if $VAULT_PERSONAL; then
     docker exec $CONTAINER_ID crontab /oyd-pia/script/cronfile
     docker exec $CONTAINER_ID crond
 
-    echo "$APP_NAME" >> /home/user/oyd/service-archive/pia_list.txt
+    echo "$APP_NAME" >> /home/user/oyd/service-backup/pia_list.txt
 fi
 
 if $LOAD_DATA; then
