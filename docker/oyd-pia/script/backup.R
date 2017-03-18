@@ -53,10 +53,11 @@ app <- setupApp(pia_url, app_key, app_secret)
 url <- itemsUrl(pia_url, 'eu.ownyourdata.backup')
 samp<-c(0:9,letters,LETTERS,"_")
 filename <- paste(sample(samp,20),collapse="")
+system('su postgres -c "pg_dump --column-inserts --data-only --table=store pia > /stores.sql"')
 system('su postgres -c "pg_dump --column-inserts --data-only --table=repo pia > /repos.sql"')
 system('su postgres -c "pg_dump --column-inserts --data-only --table=item pia > /items.sql"')
 system('rm /archive/*')
-system(paste0('zip /archive/', filename, '.zip /items.sql /repos.sql'))
+system(paste0('zip /archive/', filename, '.zip /stores.sql /items.sql /repos.sql'))
 data <- list(timestamp = as.numeric(Sys.time()),
              name = filename,
              link = paste0('https://archive.datentresor.org/',

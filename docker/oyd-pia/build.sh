@@ -4,12 +4,14 @@ APP="oyd-pia"
 APP_NAME="datentresor"
 IMAGE="oydeu/oyd-pia"
 LOGIN_PASSWORD=""
+DATA=""
 
 # read commandline options
 REFRESH=false
 BUILD_CLEAN=false
 DEBUG_MODE=false
 DOCKER_UPDATE=false
+LOAD_DATA=false
 LOAD_IMAGE=false
 SET_PASSWORD=false
 RUN_LOCAL=false
@@ -21,6 +23,10 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --clean*)
             BUILD_CLEAN=true
+            ;;
+        --data=*)
+            LOAD_DATA=true
+            DATA="${1#*=}"
             ;;
         --debug*)
             DEBUG_MODE=true
@@ -63,6 +69,7 @@ while [ $# -gt 0 ]; do
             echo " "
             echo "Optionale Argumente:"
             echo "  --clean           baut neues Docker-Image (--no-cache, alles neu kompilieren)"
+            echo "  --data=file.zip   lädt die im ZIP-file angegebenen Daten"
             echo "  --debug           Debug-Messages der Java-Applikation werden ausgegeben"
             echo "  --dockerhub       pusht Docker-Image auf hub.docker.com"
             echo "  --help            zeigt diese Hilfe an"
@@ -244,6 +251,8 @@ if $VAULT_PERSONAL; then
         sleep 5
     done
 
+    sleep 30
+    
     # copy and execute SQL scripts to create initial data set for personal use
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/store.sql"
     SERVICE_SCHEDULER_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
@@ -268,4 +277,13 @@ if $VAULT_PERSONAL; then
     docker exec $CONTAINER_ID crond
 
     echo "$APP_NAME" >> /home/user/oyd/service-archive/pia_list.txt
+fi
+
+if $LOAD_DATA; then
+    mkdir tmp_data
+    unzip -d tmp_data $DATA
+    docker cp tmp_data/store.sql $CONTAINER_ID:import
+    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -a -f /import/store.sql"
+
+    rm -rf tmp_data
 fi

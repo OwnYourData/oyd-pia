@@ -15,6 +15,8 @@ RUN git clone https://github.com/OwnYourData/service-scheduler.git \
 RUN su postgres -c "initdb -D /var/lib/postgresql/data" \
         && mkdir -p /oyd-pia/script \
         && mkdir -p /archive \
+        && mkdir -p /import \
+        && touch /stores.sql \
         && touch /items.sql \
         && touch /repos.sql \
         && chmod 666 /*.sql
