@@ -266,4 +266,6 @@ if $VAULT_PERSONAL; then
     docker exec $CONTAINER_ID bash -c "echo \"4 2 * * * Rscript --vanilla /oyd-pia/script/backup.R https://$APP_NAME.datentresor.org $SERVICE_BACKUP_SECRET\" > /oyd-pia/script/cronfile"
     docker exec $CONTAINER_ID crontab /oyd-pia/script/cronfile
     docker exec $CONTAINER_ID crond
+
+    echo "$APP_NAME" >> /home/user/oyd/service-archive/pia_list.txt
 fi

@@ -50,7 +50,7 @@ pia_url <- args[1]
 app_key <- 'eu.ownyourdata.service_backup'
 app_secret <- args[2]
 app <- setupApp(pia_url, app_key, app_secret)
-url <- itemsUrl(pia_url, app_key)
+url <- itemsUrl(pia_url, 'eu.ownyourdata.backup')
 samp<-c(0:9,letters,LETTERS,"_")
 filename <- paste(sample(samp,20),collapse="")
 system('su postgres -c "pg_dump --column-inserts --data-only --table=repo pia > /repos.sql"')
