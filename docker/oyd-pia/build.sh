@@ -259,9 +259,7 @@ if $VAULT_PERSONAL; then
     SERVICE_BACKUP_SECRET=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 1)
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_scheduler', '', '$SERVICE_SCHEDULER_SECRET', 'eu.ownyourdata.scheduler*:read,eu.ownyourdata.scheduler*:write,eu.ownyourdata.scheduler*:update,eu.ownyourdata.scheduler*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (50, 'Scheduler Status', 'eu.ownyourdata.scheduler.status');\""
-    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 50);\""
-    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 1000, false);\""
     docker exec -d $CONTAINER_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT='$MAILER_PASSWORD_DEFAULT' rails runner \"ApplicationController.helpers.execute\" -s $SERVICE_SCHEDULER_SECRET"
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/update.sql"
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET lang_key='de', login='data' WHERE id=3;\""
@@ -272,9 +270,13 @@ if $VAULT_PERSONAL; then
     # setup Backup Service
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_backup', '', '$SERVICE_BACKUP_SECRET', 'eu.ownyourdata.backup*:read,eu.ownyourdata.backup*:write,eu.ownyourdata.backup*:update,eu.ownyourdata.backup*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (51, 'Backup Status', 'eu.ownyourdata.backup.status');\""
+    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 51);\""
     docker exec $CONTAINER_ID bash -c "echo \"4 2 * * * Rscript --vanilla /oyd-pia/script/backup.R https://$APP_NAME.datentresor.org $SERVICE_BACKUP_SECRET\" > /oyd-pia/script/cronfile"
     docker exec $CONTAINER_ID crontab /oyd-pia/script/cronfile
     docker exec $CONTAINER_ID crond
+
+    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('repo_id_seq', 1000, false);\""
+    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"SELECT pg_catalog.setval('item_id_seq', 1000, false);\""
 
     echo "$APP_NAME" >> /home/user/oyd/service-backup/pia_list.txt
 fi
