@@ -73,6 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("api/repos/**").permitAll()*/
             .and()
                 .authorizeRequests()
+                .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/oauth/token").permitAll()
                 .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/api/**").permitAll();
     }
 
