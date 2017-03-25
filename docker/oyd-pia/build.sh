@@ -246,12 +246,12 @@ fi
 if $VAULT_PERSONAL; then
     CONTAINER_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 $IMAGE)
     sleep 60
-    until $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
+    docker logs $CONTAINER_ID | grep 'Local:            http://127.0.0.1:8080' &> /dev/null
+    until [ $? == 0 ]; do  # $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
         printf '.'
-        sleep 5
+        sleep 10
+        docker logs $CONTAINER_ID | grep 'Local:                http://127.0.0.1:8080' &> /dev/null
     done
-
-    sleep 30
     
     # copy and execute SQL scripts to create initial data set for personal use
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/store.sql"
@@ -270,7 +270,7 @@ if $VAULT_PERSONAL; then
     # setup Backup Service
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO oauth_client_details (client_id, resource_ids, client_secret, scope, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove) VALUES ('eu.ownyourdata.service_backup', '', '$SERVICE_BACKUP_SECRET', 'eu.ownyourdata.backup*:read,eu.ownyourdata.backup*:write,eu.ownyourdata.backup*:update,eu.ownyourdata.backup*:delete', 'client_credentials', NULL, '', 3600, 3600, '{}', '');\""
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO repo (id, description, identifier) VALUES (51, 'Backup Status', 'eu.ownyourdata.backup.status');\""
-    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (1, '{\\\"active\\\": true}', 51);\""
+    docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"INSERT INTO item (id, value, belongs_id) VALUES (2, '{\\\"active\\\": true}', 51);\""
     docker exec $CONTAINER_ID bash -c "echo \"4 2 * * * Rscript --vanilla /oyd-pia/script/backup.R https://$APP_NAME.datentresor.org $SERVICE_BACKUP_SECRET\" > /oyd-pia/script/cronfile"
     docker exec $CONTAINER_ID crontab /oyd-pia/script/cronfile
     docker exec $CONTAINER_ID crond
