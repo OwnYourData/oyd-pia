@@ -1,4 +1,5 @@
-# Personal Information Archive (PIA) 
+# <img src="https://raw.githubusercontent.com/OwnYourData/oyd-pia/master/src/main/resources/logo_grey.png" width="92"> Datentresor
+
 [![Build Status](https://travis-ci.org/OwnYourData/oyd-pia.svg?branch=master)](https://travis-ci.org/OwnYourData/oyd-pia)
 [![Dependency Status](https://david-dm.org/OwnYourData/oyd-pia.svg)](https://david-dm.org/OwnYourData/oyd-pia) 
 
@@ -62,27 +63,3 @@ Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in
 
 
 
-### Continuous Integration
-
-To setup this project in Jenkins, use the following configuration:
-
-* Project name: `pia`
-* Source Code Management
-    * Git Repository: `git@github.com:xxxx/pia.git`
-    * Branches to build: `*/master`
-    * Additional Behaviours: `Wipe out repository & force clone`
-* Build Triggers
-    * Poll SCM / Schedule: `H/5 * * * *`
-* Build
-    * Invoke Maven / Tasks: `-Pprod clean package`
-* Post-build Actions
-    * Publish JUnit test result report / Test Report XMLs: `build/test-results/*.xml`
-
-[JHipster]: https://jhipster.github.io/
-[Node.js]: https://nodejs.org/
-[Bower]: http://bower.io/
-[Grunt]: http://gruntjs.com/
-[BrowserSync]: http://www.browsersync.io/
-[Karma]: http://karma-runner.github.io/
-[Jasmine]: http://jasmine.github.io/2.0/introduction.html
-[Protractor]: https://angular.github.io/protractor/
