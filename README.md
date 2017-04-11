@@ -3,6 +3,16 @@
 [![Build Status](https://travis-ci.org/OwnYourData/oyd-pia.svg?branch=master)](https://travis-ci.org/OwnYourData/oyd-pia)
 [![Dependency Status](https://david-dm.org/OwnYourData/oyd-pia.svg)](https://david-dm.org/OwnYourData/oyd-pia) 
 
+## Dein Datentresor
+Üblicherweise musst du deine Daten an die Betreiber von Webservices und Apps weitergeben, um diese nutzen zu können. OwnYourData dreht den Spieß jedoch um: Du behältst all deine Daten und du verwahrst sie in deinem eigenen Datentresor. Apps (Datensammlung, Algorithmen und Visualisierung) holst du zu dir, in den Datentresor hinein.
+
+Mehr Infos und Demo: https://www.ownyourdata.eu  
+Hintergrund-Infos für Entwickler: https://www.ownyourdata.eu/developer/
+Datentresor als Docker Image: https://hub.docker.com/r/oydeu/oyd-pia/    
+(auch verfügbar für armhf: https://hub.docker.com/r/oydeu/oyd-pia_armhf/ )
+
+&nbsp;    
+
 ## Security
 
 Before building your pia make sure you adapt the security settings in:
