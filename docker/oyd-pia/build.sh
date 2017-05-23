@@ -250,7 +250,7 @@ if $VAULT_PERSONAL; then
     until [ $? == 0 ]; do  # $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
         printf '.'
         sleep 10
-        docker logs $CONTAINER_ID | grep 'Local:                http://127.0.0.1:8080' &> /dev/null
+        docker logs $CONTAINER_ID | grep 'Local:\s*http://127.0.0.1:8080' &> /dev/null
     done
     
     # copy and execute SQL scripts to create initial data set for personal use
