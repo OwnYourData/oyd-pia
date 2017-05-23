@@ -5,7 +5,9 @@ angular.module('piaApp').controller('ItemDialogController',
         function($scope, $stateParams, $uibModalInstance, entity, Item, Repo) {
 
         $scope.item = entity;
-        $scope.repos = Repo.query();
+        $scope.repos = Repo.query({
+            page: 0,
+            size: 100});
         $scope.load = function(id) {
             Item.get({id : id}, function(result) {
                 $scope.item = result;

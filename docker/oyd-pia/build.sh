@@ -246,7 +246,7 @@ fi
 if $VAULT_PERSONAL; then
     CONTAINER_ID=$(docker run -d --name $APP_NAME --expose 8080 -e VIRTUAL_HOST=$APP_NAME.datentresor.org -e VIRTUAL_PORT=8080 $IMAGE)
     sleep 60
-    docker logs $CONTAINER_ID | grep 'Local:            http://127.0.0.1:8080' &> /dev/null
+    docker logs $CONTAINER_ID | grep 'Local:\s*http://127.0.0.1:8080' &> /dev/null
     until [ $? == 0 ]; do  # $(curl --output /dev/null --silent --head --fail https://$APP_NAME.datentresor.org); do
         printf '.'
         sleep 10
