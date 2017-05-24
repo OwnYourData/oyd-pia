@@ -5,6 +5,7 @@ APP_NAME="datentresor"
 IMAGE="oydeu/oyd-pia"
 LOGIN_PASSWORD=""
 DATA=""
+EMAIL=""
 
 # read commandline options
 REFRESH=false
@@ -13,6 +14,7 @@ DEBUG_MODE=false
 DOCKER_UPDATE=false
 LOAD_DATA=false
 LOAD_IMAGE=false
+SET_EMAIL=false
 SET_PASSWORD=false
 RUN_LOCAL=false
 RUN_DEMO=false
@@ -33,6 +35,10 @@ while [ $# -gt 0 ]; do
             ;;
         --dockerhub*)
             DOCKER_UPDATE=true
+            ;;
+        --email=*)
+            SET_EMAIL=true
+            EMAIL="${1#*=}"
             ;;
         --load-image=*)
             LOAD_IMAGE=true
@@ -72,6 +78,7 @@ while [ $# -gt 0 ]; do
             echo "  --data=file.zip   lädt die im ZIP-file angegebenen Daten"
             echo "  --debug           Debug-Messages der Java-Applikation werden ausgegeben"
             echo "  --dockerhub       pusht Docker-Image auf hub.docker.com"
+            echo "  --email=a@b.co    setzt die angegebene Emailadresse im Account"
             echo "  --help            zeigt diese Hilfe an"
             echo "  --load-image=TEXT verwendet angegebenes image anstatt docker build auszuführen"
             echo "  --name=TEXT       Name für Docker Container und bei --vault für Subdomain"
@@ -152,7 +159,7 @@ if $BUILD_CLEAN; then
     # PostgreSQL
     PG_PWD=$(cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 21 | head -n 1)
     $SED_COMMAND -ri 's/^(\s+)(name:\s*.*\s*$)/\1name: pia/' src/main/resources/config/application-prod.yml
-    $SED_COMMAND -ri 's/^(\s+)(username:\s*.*\s*$)/\1username: postgres/' src/main/resources/config/application-prod.yml
+    $SED_COMMAND -ri '0,/RE/s/^(\s+)(username:\s*.*\s*$)/\1username: postgres/' src/main/resources/config/application-prod.yml
     $SED_COMMAND -ri '0,/RE/s/^(\s+)(password:\s*.*\s*$)/\1password: '"$PG_PWD"'/' src/main/resources/config/application-prod.yml
 
     # build war file---
@@ -263,6 +270,9 @@ if $VAULT_PERSONAL; then
     docker exec -d $CONTAINER_ID bash -c "cd /service-scheduler; rake db:create; rake db:migrate; MAILER_PASSWORD_DEFAULT='$MAILER_PASSWORD_DEFAULT' rails runner \"ApplicationController.helpers.execute\" -s $SERVICE_SCHEDULER_SECRET"
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -a -f /oyd-pia/script/update.sql"
     docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET lang_key='de', login='data' WHERE id=3;\""
+    if $SET_EMAIL; then
+        docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET email='$EMAIL' WHERE id=3;\""
+    fi
     if $SET_PASSWORD; then
         docker exec $CONTAINER_ID su postgres -c "psql -U postgres -d pia -c \"UPDATE jhi_user SET password_hash='$LOGIN_PASSWORD' WHERE id=3;\""
     fi

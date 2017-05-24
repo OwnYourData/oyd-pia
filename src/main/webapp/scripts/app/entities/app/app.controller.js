@@ -37,6 +37,9 @@ angular.module('piaApp')
                     $scope.authenticationError = true;
                 });
             };
+            $scope.requestResetPassword = function() {
+                $state.go('requestReset');
+            };
 
 
             // New stuff

@@ -6,9 +6,9 @@
                 "button": "Passwort zurücksetzen"
             },
             "messages": {
-                "info": "Geben Sie die E-Mail Adresse ein, welche Sie bei der Registrierung verwendet haben.",
+                "info": "Gib die E-Mail Adresse ein, welche Du bei der Registrierung verwendet hast.",
                 "success": "Eine E-Mail mit weiteren Instruktionen für das Zurücksetzen des Passworts wurde gesendet.",
-                "notfound": "<strong>Diese E-Mail Adresse existiert nicht!</strong> Überprüfen Sie Ihre E-Mail Adresse und versuchen Sie es nochmal."
+                "notfound": "<strong>Diese E-Mail Adresse existiert nicht!</strong> Überprüfe die E-Mail Adresse und versuche es nochmal."
 
             }
 
@@ -19,10 +19,10 @@
                 "button": "Neues Passwort setzen"
             },
             "messages": {
-                "info": "Wählen Sie ein neues Passwort",
-                "success": "<strong>Ihr Passwort wurde zurückgesetzt.</strong> Bitte <a class=\"alert-link\" href=\"#/login\">melden</a> Sie sich erneut an.",
+                "info": "Wähle ein neues Passwort",
+                "success": "<strong>Dein Passwort wurde zurückgesetzt.</strong> Bitte <a class=\"alert-link\" href=\"#/login\">melde</a> Dich erneut an.",
                 "keymissing": "Der Reset Schlüssel fehlt.",
-                "error": "Ihr Passwort konnte nicht zurückgesetzt werden. Zur Erinnerung Ihre Anfrage ist nur 24 Stunden gültig."
+                "error": "Dein Passwort konnte nicht zurückgesetzt werden. Zur Erinnerung: Deine Anfrage ist nur 24 Stunden gültig."
             }
         }
     }
