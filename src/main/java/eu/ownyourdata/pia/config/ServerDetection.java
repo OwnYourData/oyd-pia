@@ -28,7 +28,7 @@ public class ServerDetection implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         InetAddress address = InetAddress.getByName(request.getLocalAddr());
         if (!address.isAnyLocalAddress() && !address.isLoopbackAddress()) {
-            if (request.getServerName().indexOf("datentresor.org") == -1) {
+            if (request.getServerName().indexOf("datentresor.org") == -1 && request.getServerName().indexOf("data-vault.eu") == -1) {
                 host.compareAndSet(null, request.getScheme() + "://" + request.getServerName() + ":" + request.getLocalPort()); 
             } else {
                 host.compareAndSet(null, "https://" + request.getServerName()); 
