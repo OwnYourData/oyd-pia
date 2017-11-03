@@ -1,8 +1,5 @@
 # <img src="https://raw.githubusercontent.com/OwnYourData/oyd-pia/master/src/main/resources/logo_grey.png" width="92"> Datentresor
 
-[![Build Status](https://travis-ci.org/OwnYourData/oyd-pia.svg?branch=master)](https://travis-ci.org/OwnYourData/oyd-pia)
-[![Dependency Status](https://david-dm.org/OwnYourData/oyd-pia.svg)](https://david-dm.org/OwnYourData/oyd-pia) 
-
 ## Dein Datentresor
 Üblicherweise musst du deine Daten an die Betreiber von Webservices und Apps weitergeben, um diese nutzen zu können. OwnYourData dreht den Spieß jedoch um: Du behältst all deine Daten und du verwahrst sie in deinem eigenen Datentresor. Apps (Datensammlung, Algorithmen und Visualisierung) holst du zu dir, in den Datentresor hinein.
 
